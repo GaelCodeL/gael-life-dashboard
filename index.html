@@ -476,9 +476,9 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  async function syncFromCloud(user){
    const result=await client.from('gael_life_data').select('data').eq('user_id',user.id).maybeSingle();
    if(result.error) throw result.error;
-   if(result.data&&result.data.data){d=result.data.data;localStorage.setItem(K,JSON.stringify(d));render()}
+   if(result.data&&result.data.data){d=result.data.data;localStorage.setItem(K,JSON.stringify(d))}
    else {const local=JSON.parse(localStorage.getItem(K)||'null');if(local){d=local;const saved=await client.from('gael_life_data').upsert({user_id:user.id,data:d,updated_at:new Date().toISOString()});if(saved.error)throw saved.error}}
-   ready=true;status.textContent='☁ Sincronizado · '+user.email;gate.style.display='none';
+   ready=true;status.textContent='☁ Sincronizado · '+user.email;gate.style.display='none';render();if(window.cloudSave)window.cloudSave();
    if(channel)client.removeChannel(channel);
    channel=client.channel('gael-data-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'gael_life_data',filter:'user_id=eq.'+user.id},payload=>{if(payload.new&&payload.new.data){d=payload.new.data;localStorage.setItem(K,JSON.stringify(d));render();status.textContent='☁ Actualizado desde otro dispositivo'}}).subscribe();
  }
