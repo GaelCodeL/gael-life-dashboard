@@ -611,8 +611,12 @@ function ensureData(){
   d.appointments.push({id:'physio-usual',days:['Martes','Jueves'],skipDates:['2026-11-19'],start:'19:10',end:'20:10',title:'Fisioterapia',description:'Cita habitual de fisioterapia. Bloque provisional de una hora; puedes ajustar el final si la sesión dura más.',category:'Salud'});
  }
  if(!d.appointments.some(function(x){return x.id==='physio-simancas-2026-11-20'})){
-  d.appointments.push({id:'physio-simancas-2026-11-20',date:'2026-11-20',start:'18:00',end:'21:30',title:'Fisioterapia privada · Simancas',description:'Cita a las 19:15. Bloque reservado desde las 18:00 para el desplazamiento de más de una hora, la sesión y la vuelta. Final provisional para proteger la tarde; edítalo si necesitas otro margen.',category:'Salud'});
+  d.appointments.push({id:'physio-simancas-2026-11-20',date:'2026-11-20',start:'18:00',end:'21:30',title:'Fisioterapia privada · Simancas',description:'Cita a las 19:15. Salida reservada desde las 18:00 por el desplazamiento de más de una hora. Fin orientativo a las 21:30; ajusta el regreso si necesitas más margen.',category:'Salud'});
  }
+ var regularPhysio=d.appointments.find(function(x){return x.id==='physio-usual'});
+ if(regularPhysio){regularPhysio.days=['Martes','Jueves'];regularPhysio.skipDates=[];regularPhysio.start='19:10';regularPhysio.end='20:10';regularPhysio.title='Fisioterapia';regularPhysio.description='Cita habitual a las 19:10. Duración estimada de una hora; ajustable.'}
+ var simancas=d.appointments.find(function(x){return x.id==='physio-simancas-2026-11-20'});
+ if(simancas){simancas.date='2026-11-20';simancas.start='18:00';simancas.end='21:30';simancas.title='Fisioterapia privada · Simancas';simancas.description='Cita a las 19:15. Salida reservada desde las 18:00 por el desplazamiento de más de una hora. Fin orientativo a las 21:30; ajusta el regreso si necesitas más margen.'}
 }
 function localDateKey(date){return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-')}
 function weekDateForDay(name){
@@ -648,17 +652,14 @@ window.editLifeAppointment=function(id){
 };
 window.getLifeAgendaForDay=function(name){
  let base=(d.agenda[name]||[]).map(function(e,i){var copy=e.slice();copy._baseIndex=i;return copy});
- const date=weekDateForDay(name);
- const special=(d.appointments||[]).filter(function(a){return a.date===date});
- if(special.length){
-  function toMin(value){var m=String(value||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
-  base=base.filter(function(e){
-   var times=String(e[0]||'').match(/\d{1,2}:\d{2}/g)||[];if(times.length<2)return true;
-   var start=toMin(times[0]),end=toMin(times[1]);
-   return !special.some(function(a){var aStart=toMin(a.start),aEnd=toMin(a.end);return start!==null&&end!==null&&aStart!==null&&aEnd!==null&&start<aEnd&&aStart<end});
-  });
- }
- return base.concat(window.getLifeAppointmentsForDay(name));
+ const appointments=window.getLifeAppointmentsForDay(name);
+ function toMin(value){var m=String(value||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
+ base=base.filter(function(e){
+  var times=String(e[0]||'').match(/\d{1,2}:\d{2}/g)||[];if(times.length<2)return true;
+  var start=toMin(times[0]),end=toMin(times[1]);
+  return !appointments.some(function(a){var aTimes=String(a[0]).match(/\d{1,2}:\d{2}/g)||[];if(aTimes.length<2)return false;var aStart=toMin(aTimes[0]),aEnd=toMin(aTimes[1]);return start!==null&&end!==null&&aStart!==null&&aEnd!==null&&start<aEnd&&aStart<end});
+ });
+ return base.concat(appointments);
 }
 const baseRender=window.render;
 function dateKey(){return new Date().toLocaleDateString('sv-SE')}
