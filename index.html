@@ -344,7 +344,7 @@ window.go=function(p){
  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===top));
  window.scrollTo({top:0,behavior:'smooth'});
 };
-document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>window.go(b.dataset.p)));
+document.querySelectorAll('#nav button').forEach(b=>{b.onclick=null;b.addEventListener('click',()=>window.go(b.dataset.p))});
 document.getElementById('menuShopBtn').addEventListener('click',function(){
  const rules=[['Pollo',/pollo/i],['Pavo',/pavo/i],['Carne picada o ternera',/ternera|carne picada|hamburguesa/i],['Huevos',/huevo|tortilla/i],['Arroz',/arroz/i],['Pasta',/pasta/i],['Patata',/patata/i],['Cuscús',/cuscús/i],['Tomate',/tomate/i],['Calabacín',/calabacín/i],['Zanahoria',/zanahoria/i],['Pimientos',/pimiento/i],['Lechuga / ensalada',/lechuga|ensalada/i],['Champiñones',/champiñón/i],['Judías verdes',/judías verdes/i],['Queso',/queso/i]];
  const text=d.weekMenu.map(x=>[x.lunch,x.dinner].join(' ')).join(' ');
