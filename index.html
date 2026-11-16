@@ -613,7 +613,7 @@ window.getLifeAppointmentsForDay=function(name){
 };
 window.toggleLifeBlock=function(dayName,index){
  const entries=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):(d.agenda[dayName]||[]).slice()).sort(function(a,b){
-  function start(e){var m=String(e[0]||'').match(/(\\d{1,2}):(\\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
+  function start(e){var m=String(e[0]||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
   return start(a)-start(b);
  });
  const item=entries[index];if(!item)return;
