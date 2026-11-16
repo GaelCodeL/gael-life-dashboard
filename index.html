@@ -216,11 +216,152 @@ input,textarea,select{color-scheme:dark}
 #authGate{background:#050a13f5!important}
 #authGate .authbox{background:linear-gradient(150deg,#17263e,#0d1729)!important;border-color:#384e70!important;color:#f1f5ff!important}
 @media(max-width:720px){.nowpanel{grid-template-columns:1fr}.module-grid,.training-grid,.habit-grid,.library-grid,.menu-grid{grid-template-columns:1fr}.nav{overflow-x:auto;white-space:nowrap}.nav button{flex:0 0 auto}.now-actions{gap:7px}.module-card{min-height:104px!important}}
+
+/* iPhone-first command surface */
+:root{--bg:#070c16;--p:#101b2d;--line:#263a57;--muted:#95a7c0;--txt:#edf4ff;--cyan:#5bd8ec;--violet:#a58cff}
+html,body{max-width:100%;overflow-x:hidden}
+body{padding:12px 12px calc(22px + env(safe-area-inset-bottom));font-size:14px}
+.wrap{max-width:1050px}
+.topbar{margin:0 0 12px;min-height:42px}
+.topbar .brandline .logo{width:34px;height:34px;border-radius:11px}
+.topbar h1{font-size:15px;letter-spacing:.2px}
+.topbar .brandline .muted{font-size:8px!important}
+.topmeta .pill{display:none}
+.home-greeting{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 14px;gap:12px}
+.home-date{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#8298b5;font-weight:800}
+.home-greeting h2{font-size:clamp(23px,5vw,29px);line-height:1.1;margin:4px 0 0;color:#f2f6ff;letter-spacing:-.8px}
+.home-clock{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;color:#9edfec;background:#112139;border:1px solid #2a4161;padding:8px 11px;border-radius:12px}
+#nav{position:sticky;top:5px;z-index:80;display:flex;gap:6px;margin:8px 0 13px;padding:5px;border-radius:15px;background:#0c1627f2;border:1px solid #263b58;backdrop-filter:blur(18px)}
+#nav button{flex:1;min-width:0;min-height:40px;padding:8px 6px;font-size:11px;white-space:nowrap}
+#subNav:not([hidden]){display:flex;overflow-x:auto;white-space:nowrap;flex-wrap:nowrap;margin:0 0 12px;padding:5px;background:#0c1729;border:1px solid #233955;border-radius:12px}
+#subNav button{flex:0 0 auto;font-size:11px;padding:7px 10px}
+.page{min-height:45vh}
+.today-focus{position:relative;overflow:hidden;padding:17px 17px 14px;border-radius:18px;border:1px solid #365373;background:linear-gradient(125deg,#172e49 0%,#122139 65%,#211d3c 100%);box-shadow:0 12px 38px #0004}
+.today-focus:after{content:"";position:absolute;right:-62px;top:-92px;width:190px;height:190px;border:1px solid #73d9ed24;border-radius:50%;box-shadow:0 0 0 22px #73d9ed08,0 0 0 44px #73d9ed05;pointer-events:none}
+.focus-label{font-size:9px;font-weight:900;letter-spacing:1.7px;color:#93cfe1;position:relative;z-index:1}
+.focus-title{font-size:clamp(23px,5vw,31px);line-height:1.1;letter-spacing:-.9px;color:#f4f7ff;margin:11px 0 5px;position:relative;z-index:1}
+.focus-desc{font-size:12px;line-height:1.5;color:#b8c9df;margin:0;max-width:660px;position:relative;z-index:1}
+.focus-next{margin-top:14px;padding-top:12px;border-top:1px solid #ffffff17;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1}
+.focus-next>div:first-child{display:grid;gap:2px;min-width:0}
+.focus-next small{font-size:8px;letter-spacing:1.5px;color:#8ca5c2;font-weight:900}
+.focus-next b{font-size:13px;color:#eff5ff}
+.focus-next span{font-size:10px;color:#a8bbd3}
+.focus-progress{width:76px;height:4px;border-radius:5px;background:#ffffff1b;overflow:hidden;flex:0 0 auto}
+.focus-progress i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#5bd8ec,#a58cff)}
+.focus-actions{display:flex;gap:7px;margin-top:13px;position:relative;z-index:2}
+.focus-actions .actionbtn{padding:9px 12px;font-size:11px;min-height:36px}
+.focus-hint{font-size:10px;color:#9eb1c9;margin:10px 0 0;line-height:1.4;position:relative;z-index:1}
+.home-section{margin:18px 2px 0}
+.section-line{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.section-line h3{font-size:14px;margin:0;color:#eaf1fc}
+.text-action{border:0;background:none;color:#78d3e2;font-size:11px;font-weight:800;padding:6px}
+.priority-list{display:grid;gap:6px}
+.priority-list .item{padding:10px 11px;border-radius:11px;background:#0d192b;border:1px solid #223651;display:flex;align-items:center;gap:10px;min-height:42px}
+.priority-list .item b{font-size:12px;color:#eaf2ff;font-weight:650}
+.priority-list .item small{font-size:9px;color:#8196b2}
+.priority-list .item input{accent-color:#5bd8ec;width:16px;height:16px;flex:0 0 auto}
+.home-quickadd{display:flex;gap:7px;margin-top:8px}
+.home-quickadd .field{height:39px;font-size:12px}
+.home-quickadd button{min-width:42px;padding:7px}
+.today-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.today-menu-row{padding:9px 10px;background:#0d192b;border:1px solid #223651;border-radius:10px;min-width:0}
+.today-menu-row small{display:block;font-size:9px;color:#8196b2;margin-bottom:3px}
+.today-menu-row b{font-size:11px;line-height:1.35;color:#dce8f7;font-weight:650;display:block}
+.home-shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:17px 1px 4px}
+.home-shortcuts button{display:flex;align-items:center;justify-content:center;gap:6px;flex-direction:column;min-height:54px;background:#0d192b;border:1px solid #223651;border-radius:11px;color:#b8c9df;font-size:10px;font-weight:750}
+.home-shortcuts button span{font-size:16px;color:#6bd6e7}
+.home-data-cache,.smartbar{display:none!important}
+.nowpanel{display:block}
+#nowSnooze{display:none!important}
+#actionModal .modal{width:min(440px,calc(100vw - 28px));border-radius:20px;padding:18px}
+.module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.module-card{min-height:100px!important;padding:13px!important}
+.card{padding:14px!important}
+.page-intro{padding:6px 2px 12px}
+.page-intro h2{font-size:24px}
+.fab{width:48px;height:48px;border-radius:16px}
+@media(max-width:720px){
+ body{padding:9px 10px calc(94px + env(safe-area-inset-bottom))}
+ .topbar{margin:0 0 9px;min-height:36px}
+ .topbar .brandline .logo{width:31px;height:31px}
+ .topbar h1{font-size:13px}
+ .topbar .brandline .muted{display:none}
+ .topmeta .tag{font-size:9px;padding:4px 7px}
+ #nav{position:fixed;left:9px;right:9px;bottom:calc(7px + env(safe-area-inset-bottom));top:auto;margin:0;z-index:999;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:5px 4px calc(5px + env(safe-area-inset-bottom));border-radius:17px;background:#0b1527f5;box-shadow:0 12px 38px #0009;border:1px solid #314969}
+ #nav button{min-width:0;min-height:47px;padding:4px 1px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:9px;white-space:normal;line-height:1.1;border:0;background:transparent!important;color:#91a5bf!important;border-radius:11px}
+ #nav button:before{font-size:16px;line-height:18px}
+ #nav button[data-p="inicio"]:before{content:"⌂"}
+ #nav button[data-p="organizar"]:before{content:"▦"}
+ #nav button[data-p="entreno"]:before{content:"↗"}
+ #nav button[data-p="bienestar"]:before{content:"♡"}
+ #nav button[data-p="diario"]:before{content:"✎"}
+ #nav button.active{background:#1b304a!important;color:#79dcec!important;box-shadow:inset 0 0 0 1px #365a7d}
+ #subNav:not([hidden]){margin:7px 0 10px;border-radius:11px}
+ .home-greeting{margin:3px 1px 11px}
+ .home-greeting h2{font-size:22px}
+ .home-clock{font-size:15px;padding:7px 9px}
+ .today-focus{padding:15px 14px 12px;border-radius:16px}
+ .focus-title{font-size:25px}
+ .focus-next{margin-top:11px;padding-top:10px}
+ .focus-progress{width:48px}
+ .focus-hint{margin-top:8px}
+ .home-section{margin-top:15px}
+ .today-menu{gap:6px}
+ .today-menu-row{padding:8px}
+ .home-shortcuts{gap:6px;margin-top:14px}
+ .home-shortcuts button{font-size:9px;min-height:52px}
+ .module-grid,.training-grid,.habit-grid,.library-grid,.menu-grid{grid-template-columns:1fr 1fr;gap:7px}
+ .module-card{min-height:88px!important;padding:11px!important}
+ .module-card span{font-size:18px}
+ .module-card b{font-size:12px}
+ .module-card small{font-size:9px}
+ .cols{grid-template-columns:1fr}
+ .event{grid-template-columns:75px 4px minmax(0,1fr);gap:8px;padding:9px}
+ .event .actions{grid-column:3}
+ .tabs{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .focus-actions .actionbtn{flex:1}
+ .fab{right:13px;bottom:calc(75px + env(safe-area-inset-bottom))}
+}
+@media(max-width:370px){
+ .home-shortcuts button{gap:3px}
+ .home-shortcuts button span{font-size:14px}
+ .today-menu{grid-template-columns:1fr}
+ .focus-title{font-size:22px}
+ #nav button{font-size:8px}
+}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div id="authMessage" class="mutedbox">Tus datos se guardarán de forma privada en tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL / LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">PERSONAL COMMAND CENTER</div></div></div><div class="topmeta"><span class="pill"><span class="pulse"></span> SISTEMA ACTIVO</span><span class="tag" id="liveDate">Cargando fecha…</span></div></div>
-<section class="hero"><div><span class="pill">TU VIDA, EN UNA SOLA VISTA</span><h2 id="greetingTitle">Tu espacio.<br><span style="color:var(--cyan)">Tu ritmo.</span></h2><p class="muted" id="greetingText">Tu panel se adapta al día, muestra lo siguiente en tu agenda y te ayuda a mantener el rumbo sin tener que organizarlo todo manualmente.</p></div><div class="stats"><div class="stat"><small>AHORA MISMO</small><b id="liveClock">--:--</b><small id="todayLabel">Tu día</small></div><div class="stat"><small>PRÓXIMO BLOQUE</small><b id="nextBlock">Calculando…</b><small id="nextBlockTime">Agenda de hoy</small></div><div class="stat"><small>OBJETIVO DE SUEÑO</small><b>22:45</b><small>Descanso prioritario</small></div><div class="stat"><small>ENFOQUE</small><b style="color:var(--lime)" id="focusLabel">Un paso cada vez</b><small id="focusSub">Organización inteligente</small></div></div></section>
+<div class="home-greeting"><div><span class="home-date" id="liveDate">Cargando fecha…</span><h2 id="greetingTitle">Vamos paso a paso.</h2></div><div class="home-clock" id="liveClock">--:--</div></div>
 <nav class="nav" id="nav"><button class="active" data-p="inicio">⌂ Hoy</button><button data-p="organizar">▦ Organizar</button><button data-p="entreno">↗ Entreno</button><button data-p="bienestar">♡ Bienestar</button><button data-p="diario">✎ Diario & ocio</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button></div></div>
-<section id="inicio" class="page active"><div class="nowpanel" id="nowPanel"><div class="nowmain"><div class="now-kicker"><span class="pulse"></span> AHORA · TU ASISTENTE PERSONAL</div><div class="now-title" id="nowTitle">Calculando qué toca ahora…</div><div class="now-desc" id="nowDesc">Tu agenda se está sincronizando.</div><div class="now-actions"><button class="actionbtn primary" id="nowStart">Empezar ahora</button><button class="actionbtn" id="nowSnooze">Recordar en 15 min</button><button class="actionbtn" id="nowDetails">Ver detalles</button></div></div><div class="now-side"><div class="now-kicker">A CONTINUACIÓN</div><div class="now-next" id="nowNext">Leyendo agenda…</div><div class="muted" id="nowNextTime">Próximo bloque</div><div class="now-progress"><i id="nowProgress" style="width:0%"></i></div><div class="muted" id="nowAdvice">Tu día, organizado en tiempo real.</div></div></div><div class="smartbar" id="smartHome"><div class="smartpanel"><div class="eyebrow">TU DÍA EN TIEMPO REAL</div><div class="bigline" id="smartHeadline">Preparando tu día…</div><div class="muted" id="smartDetail">Calculando agenda y prioridades.</div><div class="smartgrid"><div class="smartmetric"><b id="todayTasks">0</b><small>Tareas pendientes</small></div><div class="smartmetric"><b id="todayStudy">0m</b><small>Estudio registrado</small></div><div class="smartmetric"><b id="todayDone">0%</b><small>Progreso diario</small></div></div></div><div class="smartpanel focus"><div class="eyebrow">CAPTURA RÁPIDA</div><div class="bigline">Saca eso de tu cabeza.</div><div class="muted">Añade una tarea en segundos. Después podrás clasificarla desde el apartado de tareas.</div><form class="quickadd" id="quickTaskForm"><input class="field" name="text" placeholder="Ej. Revisar apuntes de Sistemas…" required><button class="btn primary">Añadir +</button></form><div class="muted" style="font-size:10px;margin-top:9px">Se guardará como tarea personal para hoy.</div></div></div><div class="cols"><div class="card"><h3>Resumen</h3><div class="stats"><div class="stat"><b id="countHome">0/0</b><small>Tareas completadas</small></div><div class="stat"><b id="minsHome">0 min</b><small>Estudio registrado</small></div></div><div class="bar"><i id="homeBar"></i></div><h3>Prioridades pendientes</h3><div id="priorities" class="stack"></div></div><div class="card"><h3>Accesos rápidos</h3><div class="stack"><button class="btn" onclick="go('agenda')">Ver horario completo</button><button class="btn" onclick="go('tareas')">Gestionar tareas</button><button class="btn" onclick="go('estudios')">Registrar estudio</button><button class="btn" onclick="go('salud')">Registrar recuperación</button></div><div class="mutedbox">Los datos se guardan localmente en este dispositivo. No se sincronizan entre dispositivos.</div></div></div></section>
+<section id="inicio" class="page active">
+ <section class="today-focus" id="nowPanel">
+  <div class="focus-label"><span class="pulse"></span> AHORA MISMO</div>
+  <h1 class="focus-title" id="nowTitle">Calculando tu siguiente paso…</h1>
+  <p class="focus-desc" id="nowDesc">Leyendo tu agenda.</p>
+  <div class="focus-next">
+   <div><small>DESPUÉS</small><b id="nowNext">Leyendo agenda…</b><span id="nowNextTime">Próximo bloque</span></div>
+   <div class="focus-progress"><i id="nowProgress" style="width:0%"></i></div>
+  </div>
+  <div class="focus-actions"><button class="actionbtn primary" id="nowStart">Ver actividad</button><button class="actionbtn" id="nowDetails">Abrir agenda</button><button class="actionbtn" id="nowSnooze" hidden>Recordar</button></div>
+  <p class="focus-hint" id="nowAdvice"></p>
+ </section>
+ <section class="home-section">
+  <div class="section-line"><h3>Lo importante de hoy</h3><button class="text-action" onclick="go('tareas')">Ver todas</button></div>
+  <div id="priorities" class="priority-list"></div>
+  <form class="quickadd home-quickadd" id="quickTaskForm"><input class="field" name="text" placeholder="Añadir algo que no quieres olvidar…" required><button class="btn primary">＋</button></form>
+ </section>
+ <section class="home-section home-lower">
+  <div class="section-line"><h3>Tu menú de hoy</h3><button class="text-action" onclick="go('comidas')">Planificar</button></div>
+  <div class="today-menu" id="todayMenuSummary"></div>
+ </section>
+ <section class="home-shortcuts">
+  <button onclick="go('organizar')"><span>▦</span>Organizar</button>
+  <button onclick="go('entreno')"><span>↗</span>Entreno</button>
+  <button onclick="go('bienestar')"><span>♡</span>Bienestar</button>
+  <button onclick="go('diario')"><span>✎</span>Diario</button>
+ </section>
+ <div class="home-data-cache" aria-hidden="true"><span id="countHome">0/0</span><span id="minsHome">0 min</span><div id="homeBar"></div><div id="todayTasks"></div><div id="todayStudy"></div><div id="todayDone"></div><div id="smartHeadline"></div><div id="smartDetail"></div><span id="nextBlock"></span><span id="nextBlockTime"></span><span id="todayLabel"></span><span id="focusLabel"></span><span id="focusSub"></span></div>
+ </section>
 <section id="agenda" class="page"><div class="card"><div class="row"><h3>Agenda semanal editable</h3><button class="btn" onclick="resetAgenda()">Restaurar horarios</button></div><div id="daytabs" class="tabs"></div><div id="events" class="timeline"></div></div><div class="card"><h3>Añadir bloque al día seleccionado</h3><form id="eventForm" class="form"><input class="field" name="time" placeholder="Hora, ej. 19:15–20:15" required><input class="field" name="title" placeholder="Actividad" required><input class="field full" name="desc" placeholder="Descripción"><select class="field" name="cat"><option>Estudios</option><option>Trabajo</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option></select><button class="btn primary full">Añadir bloque</button></form></div></section>
 <section id="tareas" class="page"><div class="cols"><div class="card"><div class="row"><h3>Mis tareas</h3><span class="pill" id="taskCount"></span></div><div class="bar"><i id="taskBar"></i></div><div id="taskList" class="stack"></div></div><div class="card"><h3>Nueva tarea</h3><form id="taskForm" class="stack"><input class="field" name="text" placeholder="¿Qué tienes que hacer?" required><select class="field" name="area"><option>Personal</option><option>Estudios</option><option>Trabajo</option><option>Hogar</option><option>Salud</option><option>Compra</option></select><select class="field" name="day"><option>Hoy</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select><button class="btn primary">Añadir tarea</button></form></div></div></section>
 <section id="estudios" class="page"><div class="cols"><div class="card"><h3>Asignaturas y ruta</h3><div id="subjects" class="stack"></div><div class="mutedbox">Ruta: 16–22 nov revisar plataforma y fechas · finales de nov dividir temarios · diciembre avanzar contenidos · 1–15 enero completar · 16–31 enero repasar y hacer simulacros · febrero exámenes.</div><h3 style="margin-top:15px">Historial de sesiones</h3><div id="sessions" class="stack"></div></div><div class="card"><h3>Registrar sesión</h3><form id="studyForm" class="stack"><select class="field" name="subject"><option>Programación de dispositivos móviles</option><option>Sistemas</option></select><input class="field" name="minutes" type="number" min="1" placeholder="Minutos" required><input class="field" name="note" placeholder="Qué has avanzado"><button class="btn primary">Guardar sesión</button></form><div class="mutedbox">Bloques previstos: lunes y jueves Programación 19:15–20:15; martes Sistemas 19:15–20:15; viernes Sistemas 16:15–17:45; sábado práctica 10:30–12:30.</div></div></div></section>
