@@ -579,7 +579,24 @@ function renderDiary(){
  host.innerHTML=d.diary.slice(0,20).map(x=>'<article class="item"><div class="row"><b>'+esc(x.date)+' · '+['','Día difícil','Bajo de ánimo','Normal','Bien','Muy bien'][Number(x.mood)]+'</b><button class="btn" data-diary-delete="'+x.id+'">Eliminar</button></div><p>'+esc(x.entry||'')+'</p>'+(x.good?'<small>Me quedo con: '+esc(x.good)+'</small>':'')+'</article>').join('')||'<p class="muted">Tu diario empieza cuando tú quieras. No hay obligación de escribir a diario.</p>';
  document.getElementById('leisureList').innerHTML=d.leisure.map((x,i)=>'<div class="item row"><span><b>'+esc(x.idea)+'</b><br><small>'+esc(x.type)+'</small></span><button class="btn" data-leisure-delete="'+i+'">Quitar</button></div>').join('')||'<p class="muted">Aún no has guardado ideas de ocio.</p>';
 }
-function renderNew(){renderMenu();renderShopping();renderHabits();renderTraining();renderDiary()}
+function renderToday(){
+ const host=document.getElementById('priorities');if(!host)return;
+ const weekday=new Intl.DateTimeFormat('es-ES',{weekday:'long'}).format(new Date());
+ const today=DAY.find(x=>x.toLowerCase()===weekday.toLowerCase())||'Lunes';
+ const due=d.tasks.map(function(t,i){return {t:t,i:i}}).filter(function(x){return !x.t.done&&(x.t.day==='Hoy'||x.t.day===today||x.t.day==='Esta semana')}).slice(0,3);
+ host.innerHTML=due.map(function(x){return '<label class="item"><input type="checkbox" data-home-done="'+x.i+'"><span><b>'+esc(x.t.text)+'</b><br><small>'+esc(x.t.area)+' · '+esc(x.t.day)+'</small></span></label>'}).join('')||'<div class="emptyhint">No hay prioridades pendientes para hoy. Puedes descansar o elegir algo que te apetezca.</div>';
+ const menu=d.weekMenu.find(function(x){return x.day===today});
+ const target=document.getElementById('todayMenuSummary');if(!target)return;
+ if(!menu){target.innerHTML='<div class="muted">Todavía no hay menú para hoy.</div>';return}
+ const mins=new Date().getHours()*60+new Date().getMinutes();
+ const meals=[{name:'Desayuno',time:'07:15',min:435,value:menu.breakfast},{name:'Comida',time:'14:00',min:840,value:menu.lunch},{name:'Merienda',time:'17:00',min:1020,value:menu.snack},{name:'Cena',time:'20:15',min:1215,value:menu.dinner}];
+ let current=meals.find(function(x){return mins>=x.min&&mins<x.min+60});
+ let next=meals.find(function(x){return x.min>mins});
+ const chosen=current||next||meals[3];
+ target.innerHTML='<div class="today-menu-row"><small>'+(current?'AHORA · '+current.name:'SIGUIENTE · '+chosen.name)+' · '+chosen.time+'</small><b>'+esc(chosen.value)+'</b></div><div class="today-menu-row"><small>MENÚ COMPLETO</small><b>Desayuno · Comida · Merienda · Cena</b><button class="text-action" onclick="go(\'comidas\')">Ver semana →</button></div>';
+}
+document.getElementById('priorities').addEventListener('change',function(e){const i=e.target.dataset.homeDone;if(i!==undefined){d.tasks[Number(i)].done=e.target.checked;save()}});
+function renderNew(){renderToday();renderMenu();renderShopping();renderHabits();renderTraining();renderDiary()}
 window.render=function(){ensureData();baseRender();renderNew()};
 window.go=function(p){
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
