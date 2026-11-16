@@ -498,7 +498,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   activeItems.sort(function(a,b){return Number(b.appointment)-Number(a.appointment)});
   var current=activeItems[0]||null;
   var next=entries.filter(function(x){return !x.done&&x.start!==null&&x.start>minute}).sort(function(a,b){return a.start-b.start})[0]||null;
-  var mostRecentDone=entries.filter(function(x){return x.done&&x.start!==null&&x.start<=minute}).sort(function(a,b)=>b.start-a.start)[0]||null;
+  var mostRecentDone=entries.filter(function(x){return x.done&&x.start!==null&&x.start<=minute}).sort(function(a,b){return b.start-a.start})[0]||null;
   var target=current||next;
   if(current){
     $('nowTitle').textContent='Ahora toca: '+current.event[1];
@@ -518,7 +518,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   $('nowProgress').style.width=current?Math.max(0,Math.min(100,Math.round((minute-current.start)/(current.end-current.start)*100)))+'%':'0%';
   var pending=d.tasks.filter(function(t){return !t.done&&(t.day==='Hoy'||t.day===dayName||t.day==='Esta semana')});
   var conflict=entries.find(function(x){return x.appointment&&x.start!==null&&x.end!==null&&entries.some(function(y){return !y.appointment&&y!==x&&y.start!==null&&y.end!==null&&x.start<y.end&&y.start<x.end})});
-  $('nowAdvice').textContent=conflict?'⚠ '+conflict.event[1]+' coincide con otro bloque de tu agenda. Revisa el horario.':(pending.length?pending.length+' prioridades abiertas · '+pending[0].event?pending.length+' tareas pendientes. Prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.');
+  $('nowAdvice').textContent=conflict?'⚠ '+conflict.event[1]+' coincide con otro bloque de tu agenda. Revisa el horario.':(pending.length?pending.length+' tareas pendientes. Prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.');
   var doneButton=$('nowDone');
   doneButton.hidden=!target;
   doneButton.textContent=current?'✓ Ya he terminado':'✓ Ya lo he hecho';
