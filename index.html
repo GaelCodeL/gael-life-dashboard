@@ -419,7 +419,8 @@ button:focus-visible{outline:2px solid #5bd8ec;outline-offset:2px}
  .priority-list .item{min-height:46px}
  .today-focus[data-state="active"]{box-shadow:0 11px 30px #0005,0 0 20px #3bd1e51c}
 }
-</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div id="authMessage" class="mutedbox">Tus datos se guardarán de forma privada en tu cuenta.</div></div></div><div class="wrap">
+.guest-divider{display:flex;align-items:center;gap:10px;margin:17px 0 9px;color:#8fa4c1;font-size:9px;font-weight:900;letter-spacing:1.5px}.guest-divider:before,.guest-divider:after{content:"";height:1px;flex:1;background:#344965}.guest-entry{width:100%;padding:13px!important;border-color:#4c6687!important;background:linear-gradient(120deg,#1a2b43,#18243b)!important;color:#e8f1ff!important;font-size:13px!important}.guest-entry span{color:#71e1ef}.guest-privacy{font-size:10px;line-height:1.45;color:#9aabc4;text-align:center;margin:8px 0 0}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
 <nav class="nav" id="nav"><button class="active" data-p="inicio">Hoy</button><button data-p="organizar">Organizar</button><button data-p="entreno">Entreno</button><button data-p="bienestar">Bienestar</button><button data-p="diario">Diario</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button></div></div>
@@ -466,14 +467,15 @@ button:focus-visible{outline:2px solid #5bd8ec;outline-offset:2px}
 <section id="diario" class="page"><div class="page-intro"><div class="eyebrow">TU ESPACIO PERSONAL</div><h2>También hay vida fuera de la lista de tareas.</h2><p class="muted">Un diario privado para ordenar pensamientos y un rincón de ocio para guardar planes que te ilusionen.</p></div><div class="cols"><div class="card"><h3>Escribir una entrada</h3><form id="diaryForm" class="stack"><label class="muted">¿Cómo te encuentras?<select class="field" name="mood"><option value="5">Muy bien</option><option value="4">Bien</option><option value="3" selected>Normal</option><option value="2">Bajo de ánimo</option><option value="1">Día difícil</option></select></label><textarea class="field" name="entry" rows="5" placeholder="Escribe para ti. No hace falta que quede bonito."></textarea><input class="field" name="good" placeholder="Algo que agradeces o reconoces (opcional)"><button class="btn primary">Guardar entrada</button></form></div><div class="card"><h3>Planes e ideas de ocio</h3><p class="muted">Cosas que quieres probar, sitios que visitar y momentos que te apetece reservar.</p><form id="leisureForm" class="stack"><input class="field" name="idea" placeholder="Una idea que te apetezca…" required><select class="field" name="type"><option>Plan pendiente</option><option>Ocio en casa</option><option>Naturaleza</option><option>Cultura / tecnología</option><option>Conocer gente</option></select><button class="btn">Guardar idea</button></form><div id="leisureList" class="stack"></div></div></div><div class="card"><h3>Mis entradas</h3><div id="diaryEntries" class="stack"></div></div></section>
 <div class="mutedbox row"><span id="cloudStatus">Conectando con la nube…</span><button class="btn" id="logoutBtn" type="button">Cerrar sesión</button></div><p class="muted" style="text-align:center;font-size:10px">GAEL · LIFE OS · sincronización en la nube</p></div>
 <script>
-const K='gael-life-os-v2',days=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+window.__lifeGuestMode=sessionStorage.getItem('gael-life-os-mode')==='guest';
+const K='gael-life-os-v2',GUEST_K='gael-life-os-demo-v1',days=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 const common=[['07:00','Despertar','Aseo y empezar el día','Rutina'],['07:15–07:40','Desayuno','Tortitas habituales','Comida'],['07:40–08:30','Preparación','Vestirte, mochila y atender a Celine','Rutina'],['08:30–08:40','Margen de salida','Recoger y salir','Rutina'],['08:40–09:00','Desplazamiento','Trayecto al trabajo','Personal'],['09:00–18:30','TRABAJO','Jornada laboral','Trabajo'],['18:30–18:45','Vuelta a casa','Desplazamiento','Personal'],['18:45–19:15','Desconexión','Merienda y descanso','Descanso']];
 const ending=[['20:15–20:45','Cena','Cena sencilla','Comida'],['20:45–21:05','Paseo flexible','10–20 min si te encaja; puede moverse a otro momento del día. Sin convertirlo en obligación.','Personal'],['21:05–21:45','Tiempo personal','Ocio y Celine','Personal'],['21:45–22:15','Preparar mañana y táper','Dejar lista una comida completa para mañana: proteína, hidrato y verdura; además de ropa y mochila.','Rutina'],['22:15–22:45','Desconexión','Higiene y relajación','Descanso'],['22:45','Dormir','Objetivo de descanso','Descanso']];
 const study=x=>['19:15–20:15','Estudio · '+x,'Contenido y práctica 25/5/25','Estudios'];
 const defaults={'Lunes':[...common,study('Programación móvil'),...ending],'Martes':[...common,study('Sistemas'),...ending],'Miércoles':[...common,['19:15–20:00','Fisioterapia / recuperación','Franja provisional o descanso','Salud'],...ending],'Jueves':[...common,study('Programación móvil'),...ending],'Viernes':[['06:45','Despertar','Aseo','Rutina'],['07:00–07:25','Desayuno','Tortitas','Comida'],['07:25–08:10','Preparación','Vestirte y atender a Celine','Rutina'],['08:10–08:30','Desplazamiento','Trayecto al trabajo','Personal'],['08:30–15:00','TRABAJO','Jornada laboral','Trabajo'],['15:00–15:15','Vuelta a casa','Desplazamiento','Personal'],['15:15–15:45','Comida','Comida preparada','Comida'],['15:45–16:15','Descanso','Desconexión','Descanso'],['16:15–17:45','Sistemas / fisioterapia','Estudio o cita si se asigna','Estudios'],['17:45–18:30','Compra / recados','Compra semanal','Hogar'],['18:30–20:15','Tiempo libre','Ocio','Personal'],...ending,['23:00','Dormir','Descanso','Descanso']],'Sábado':[['09:00–09:30','Despertar y desayuno','Mañana tranquila','Rutina'],['09:30–10:30','Aseo y tiempo personal','Prepararte y Celine','Personal'],['10:30–12:30','Estudio práctico','Ejercicios y actividades','Estudios'],['12:30–13:00','Descanso','Pausa','Descanso'],['13:00–14:00','Limpieza ligera','Orden de casa','Hogar'],['14:00–15:00','Comida','Comida','Comida'],['15:00 en adelante','Ocio y paseo flexible','Planes, naturaleza o un paseo si te apetece.','Personal'],['20:15–20:45','Cena','Cena sencilla','Comida'],['22:45','Dormir','Descanso','Descanso']],'Domingo':[['09:00–10:00','Despertar y desayuno','Mañana tranquila','Rutina'],['10:30–11:30','Revisión semanal','Estudios, salud, compra, casa','Personal'],['11:30–13:30','Tiempo libre','Ocio','Personal'],['14:00–15:00','Comida','Comida','Comida'],['15:00–17:00','Descanso y ocio','Tiempo personal','Descanso'],['17:00–18:00','Preparación de comidas','Bases lunes–miércoles','Hogar'],['18:00–20:15','Tiempo personal','Ocio y Celine','Personal'],...ending,['20:45–22:15','Preparar lunes','Ropa, mochila y agenda','Rutina']]};
 const initial={agenda:defaults,tasks:[['Revisar plataforma y temarios ILERNA','Estudios','Esta semana'],['Comprobar fechas de exámenes y tutorías','Estudios','Esta semana'],['Hacer compra semanal','Compra','Viernes'],['Preparar comidas lunes–miércoles','Hogar','Domingo'],['Preparar ropa y mochila','Personal','Hoy']].map(x=>({text:x[0],area:x[1],day:x[2],done:false})),sessions:[],health:[],meals:[['07:15','Desayuno','Tortitas habituales'],['11:00','Media mañana','Yogur + fruta'],['14:00','Comida','Arroz/pasta + pollo o pavo'],['17:00','Merienda','Bocadillo pequeño o fruta'],['20:15','Cena','Tortilla, wrap o sándwich']].map((x,i)=>({id:String(i),time:x[0],name:x[1],food:x[2]})),chores:[['Cocina','Lunes','10 min'],['Lavadora si hace falta','Martes','Según necesidad'],['Recoger y ordenar','Miércoles','10 min'],['Baño y superficies','Jueves','15 min'],['Compra semanal','Viernes','30–45 min'],['Limpieza ligera','Sábado','30 min'],['Preparar comidas','Domingo','60 min']].map(x=>({name:x[0],day:x[1],duration:x[2],done:false}))};
-let d;try{d=JSON.parse(localStorage.getItem(K))||JSON.parse(JSON.stringify(initial))}catch(e){d=JSON.parse(JSON.stringify(initial))}const todayName= new Intl.DateTimeFormat('es-ES',{weekday:'long'}).format(new Date());let day=days.find(x=>x.toLowerCase()===todayName.toLowerCase())||'Lunes';
-function save(){localStorage.setItem(K,JSON.stringify(d));render();if(typeof cloudSave==='function')cloudSave()}
+let d;try{d=JSON.parse(localStorage.getItem(window.__lifeGuestMode?GUEST_K:K))||JSON.parse(JSON.stringify(initial))}catch(e){d=JSON.parse(JSON.stringify(initial))}const todayName= new Intl.DateTimeFormat('es-ES',{weekday:'long'}).format(new Date());let day=days.find(x=>x.toLowerCase()===todayName.toLowerCase())||'Lunes';
+function save(){localStorage.setItem(window.__lifeGuestMode?GUEST_K:K,JSON.stringify(d));render();if(!window.__lifeGuestMode&&typeof cloudSave==='function')cloudSave()}
 function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===p));scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -538,6 +540,62 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  const gate=document.getElementById('authGate'),msg=document.getElementById('authMessage'),status=document.getElementById('cloudStatus');
  let currentUser=null,ready=false,timer=null,channel=null;
  const say=t=>msg.textContent=t;
+ function guestData(){
+  const week=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+  const agenda={};
+  week.forEach(function(day){
+   agenda[day]=[
+    ['07:30–08:00','Rutina de mañana','Prepararse y organizar el día','Rutina'],
+    ['09:00–13:00','Trabajo / estudio','Bloque principal de concentración','Trabajo'],
+    ['13:00–14:00','Pausa para comer','Comida y descanso','Comida'],
+    ['16:00–17:00','Proyecto personal','Avanzar en una tarea importante','Estudios'],
+    ['18:00–18:30','Paseo o movimiento','Actividad flexible y adaptable','Personal'],
+    ['20:00–20:45','Cena','Preparar una cena sencilla','Comida'],
+    ['22:30','Descanso','Desconectar y cerrar el día','Descanso']
+   ];
+  });
+  return {
+   agenda:agenda,
+   tasks:[
+    {text:'Revisar las tareas de la semana',area:'Organización',day:'Hoy',done:false},
+    {text:'Avanzar en el proyecto personal',area:'Estudios',day:'Esta semana',done:false},
+    {text:'Preparar la lista de la compra',area:'Hogar',day:'Esta semana',done:false}
+   ],
+   sessions:[],health:[],
+   meals:[
+    {id:'demo-1',time:'08:00',name:'Desayuno',food:'Tostadas, fruta y café o té'},
+    {id:'demo-2',time:'13:30',name:'Comida',food:'Arroz con pollo y verduras'},
+    {id:'demo-3',time:'17:00',name:'Merienda',food:'Yogur y fruta'},
+    {id:'demo-4',time:'20:30',name:'Cena',food:'Tortilla y ensalada'}
+   ],
+   chores:[
+    {name:'Ordenar una zona de casa',day:'Lunes',duration:'15 min',done:false},
+    {name:'Poner una lavadora',day:'Miércoles',duration:'10 min',done:false},
+    {name:'Compra semanal',day:'Viernes',duration:'30 min',done:false}
+   ],
+   weekMenu:week.map(function(day){return {day:day,breakfast:'Tostadas y fruta',lunch:'Arroz con pollo y verduras',snack:'Yogur y fruta',dinner:'Tortilla y ensalada'}}),
+   shopping:[{item:'Fruta de temporada',category:'Frescos',done:false},{item:'Arroz',category:'Despensa',done:false}],
+   trainingLogs:[],
+   trainingTemplates:[
+    {name:'Sesión A',day:'Lunes',focus:'Fuerza general',plan:'Ejemplo editable de entrenamiento. Adapta ejercicios y cargas.'},
+    {name:'Sesión B',day:'Martes',focus:'Tren inferior',plan:'Ejemplo editable de entrenamiento. Adapta ejercicios y cargas.'},
+    {name:'Sesión C',day:'Jueves',focus:'Fuerza general',plan:'Ejemplo editable de entrenamiento. Adapta ejercicios y cargas.'},
+    {name:'Sesión D',day:'Viernes',focus:'Movilidad y acondicionamiento',plan:'Ejemplo editable de entrenamiento.'}
+   ],
+   habitLogs:{},diary:[],leisure:[],completedBlocks:{},appointments:[]
+  };
+ }
+ async function startGuest(){
+  ready=false;currentUser=null;clearTimeout(timer);
+  if(channel){await client.removeChannel(channel);channel=null;}
+  window.__lifeGuestMode=true;sessionStorage.setItem('gael-life-os-mode','guest');
+  d=JSON.parse(localStorage.getItem('gael-life-os-demo-v1')||'null')||guestData();
+  localStorage.setItem('gael-life-os-demo-v1',JSON.stringify(d));
+  gate.style.display='none';
+  status.textContent='MODO DEMOSTRACIÓN · datos independientes · sin nube';
+  document.getElementById('logoutBtn').textContent='Salir del modo invitado';
+  if(typeof window.render==='function')window.render();
+ }
  async function syncFromCloud(user){
    const result=await client.from('gael_life_data').select('data').eq('user_id',user.id).maybeSingle();
    if(result.error) throw result.error;
@@ -547,13 +605,14 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
    if(channel)client.removeChannel(channel);
    channel=client.channel('gael-data-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'gael_life_data',filter:'user_id=eq.'+user.id},payload=>{if(payload.new&&payload.new.data){d=payload.new.data;localStorage.setItem(K,JSON.stringify(d));render();status.textContent='☁ Actualizado desde otro dispositivo'}}).subscribe();
  }
- window.cloudSave=()=>{if(!ready||!currentUser)return;clearTimeout(timer);timer=setTimeout(async()=>{status.textContent='Guardando…';const result=await client.from('gael_life_data').upsert({user_id:currentUser.id,data:d,updated_at:new Date().toISOString()});status.textContent=result.error?'Error al sincronizar: '+result.error.message:'☁ Todos los cambios guardados';},500)};
+ window.cloudSave=()=>{if(window.__lifeGuestMode||!ready||!currentUser)return;clearTimeout(timer);timer=setTimeout(async()=>{status.textContent='Guardando…';const result=await client.from('gael_life_data').upsert({user_id:currentUser.id,data:d,updated_at:new Date().toISOString()});status.textContent=result.error?'Error al sincronizar: '+result.error.message:'☁ Todos los cambios guardados';},500)};
  async function enter(user){currentUser=user;ready=false;status.textContent='Sincronizando…';try{await syncFromCloud(user)}catch(e){say('No se ha podido sincronizar: '+e.message);gate.style.display='grid';status.textContent='Error de sincronización'}}
  async function signIn(){const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;const result=await client.auth.signInWithPassword({email,password});if(result.error){say(result.error.message);return}say('Sesión iniciada. Cargando tus datos…');await enter(result.data.user)}
  document.getElementById('authForm').addEventListener('submit',async e=>{e.preventDefault();say('Comprobando acceso…');await signIn()});
  document.getElementById('signupBtn').addEventListener('click',async()=>{const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;if(!email||password.length<6){say('Introduce tu correo y una contraseña de al menos 6 caracteres.');return}say('Creando cuenta…');const result=await client.auth.signUp({email,password});if(result.error){say(result.error.message);return}if(result.data.session){say('Cuenta creada. Sincronizando…');await enter(result.data.user)}else say('Cuenta creada. Revisa tu correo para confirmar el registro y después inicia sesión.')});
- document.getElementById('logoutBtn').addEventListener('click',async()=>{ready=false;currentUser=null;if(channel)await client.removeChannel(channel);await client.auth.signOut();gate.style.display='grid';say('Has cerrado sesión. Tus datos siguen guardados en la nube.')});
- client.auth.getSession().then(async result=>{if(result.error){say(result.error.message);return}if(result.data.session)await enter(result.data.session.user);else{gate.style.display='grid';status.textContent='Inicia sesión para sincronizar'}});
+ document.getElementById('guestBtn').addEventListener('click',startGuest);
+ document.getElementById('logoutBtn').addEventListener('click',async()=>{if(window.__lifeGuestMode){sessionStorage.removeItem('gael-life-os-mode');window.__lifeGuestMode=false;d=JSON.parse(localStorage.getItem(K)||'null')||JSON.parse(JSON.stringify(initial));document.getElementById('logoutBtn').textContent='Cerrar sesión';gate.style.display='grid';say('Has salido del modo invitado. Inicia sesión para volver a tus datos privados.');status.textContent='Sesión no iniciada';return}ready=false;currentUser=null;if(channel)await client.removeChannel(channel);await client.auth.signOut();gate.style.display='grid';say('Has cerrado sesión. Tus datos siguen guardados en la nube.')});
+ client.auth.getSession().then(async result=>{if(window.__lifeGuestMode){gate.style.display='none';status.textContent='MODO DEMOSTRACIÓN · datos independientes · sin nube';document.getElementById('logoutBtn').textContent='Salir del modo invitado';return}if(result.error){say(result.error.message);return}if(result.data.session)await enter(result.data.session.user);else{gate.style.display='grid';status.textContent='Inicia sesión para sincronizar'}});
 })();
 </script><div class="modal-backdrop" id="actionModal" role="dialog" aria-modal="true"><div class="modal"><div class="modal-head"><div><div class="now-kicker">GAEL · LIFE OS</div><h2 id="modalTitle">Acción rápida</h2></div><button class="modal-close" id="modalClose" aria-label="Cerrar">×</button></div><div id="modalBody"></div></div></div><button class="fab" id="globalFab" aria-label="Crear">＋</button><script>
 (function(){
@@ -634,10 +693,13 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   doneButton.hidden=!target;
   doneButton.textContent=currentItem?'✓ Ya lo he hecho':'✓ Ya lo he hecho';
   doneButton.onclick=function(){
-    if(!target)return;
+    if(!target||doneButton.disabled)return;
     d.completedBlocks[dateKey]=d.completedBlocks[dateKey]||{};
     d.completedBlocks[dateKey][target.key]=new Date().toISOString();
-    save();
+    localStorage.setItem(window.__lifeGuestMode?'gael-life-os-demo-v1':K,JSON.stringify(d));
+    doneButton.disabled=true;doneButton.textContent='Registrado ✓';
+    updateNow();
+    if(!window.__lifeGuestMode&&typeof cloudSave==='function')cloudSave();
   };
   $('nowStart').textContent=currentItem?'Ver actividad':next?'Ver lo siguiente':'Añadir tarea';
   $('nowStart').onclick=function(){
@@ -686,7 +748,7 @@ function ensureData(){
  d.habitLogs=d.habitLogs||{};d.diary=d.diary||[];d.leisure=d.leisure||[];
  d.completedBlocks=d.completedBlocks||{};
  d.appointments=d.appointments||[];
- if(!d.appointments.some(function(x){return x.id==='physio-usual'})){
+ if(!window.__lifeGuestMode&&!d.appointments.some(function(x){return x.id==='physio-usual'})){
   d.appointments.push({id:'physio-usual',days:['Martes','Jueves'],skipDates:['2026-11-19'],start:'19:10',end:'20:10',title:'Fisioterapia',description:'Cita habitual de fisioterapia. Bloque provisional de una hora; puedes ajustar el final si la sesión dura más.',category:'Salud'});
  }
  if(!d.appointments.some(function(x){return x.id==='physio-simancas-2026-11-20'})){
