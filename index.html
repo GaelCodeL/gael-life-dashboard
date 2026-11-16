@@ -1612,7 +1612,7 @@ function trHandleInput(event){
  const plan=trCurrentPlan(),session=trCurrentDay();if(!plan||!session)return;
  if(field&&exerciseId){
   const ex=session.exercises.find(function(item){return item.id===exerciseId});if(!ex)return;
-  if(['name','howTo','sensations','photoUrl','videoUrl'].includes(field)){ex[field]=target.value;if(field==='name'){const card=target.closest('[data-tr-exercise-card]');if(card){const number=card.querySelector('.training-exercise-number');if(number)number.textContent=number.textContent;}}}
+  if(['name','howTo','sensations','photoUrl','videoUrl'].includes(field))ex[field]=target.value;
   if(['reps','kg','rir','done'].includes(field)){const set=ex.sets[Number(target.dataset.trSetIndex)];if(!set)return;set[field]=field==='done'?target.checked:target.value}
   trPersist();return;
  }
@@ -1627,6 +1627,7 @@ trainingWorkspace.addEventListener('change',function(event){
  if(target.id==='trainingPlanGoal'){const plan=trCurrentPlan();if(plan){plan.goal=target.value;trPersist()}return}
  if(target.id==='trainingCategory'){trainingCategoryValue=target.value;trRenderCatalog();return}
  if(target.dataset.trDayMeta){trHandleInput(event);return}
+ if(target.type==='checkbox'&&target.dataset.trField==='done'){trHandleInput(event);return}
  if(target.dataset.trPhoto){
   const session=trCurrentDay(),ex=session&&session.exercises.find(function(item){return item.id===target.dataset.trPhoto});
   if(!ex||!target.files||!target.files[0])return;
