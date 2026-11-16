@@ -420,12 +420,21 @@ button:focus-visible{outline:2px solid #5bd8ec;outline-offset:2px}
  .today-focus[data-state="active"]{box-shadow:0 11px 30px #0005,0 0 20px #3bd1e51c}
 }
 .guest-divider{display:flex;align-items:center;gap:10px;margin:17px 0 9px;color:#8fa4c1;font-size:9px;font-weight:900;letter-spacing:1.5px}.guest-divider:before,.guest-divider:after{content:"";height:1px;flex:1;background:#344965}.guest-entry{width:100%;padding:13px!important;border-color:#4c6687!important;background:linear-gradient(120deg,#1a2b43,#18243b)!important;color:#e8f1ff!important;font-size:13px!important}.guest-entry span{color:#71e1ef}.guest-privacy{font-size:10px;line-height:1.45;color:#9aabc4;text-align:center;margin:8px 0 0}
+.home-greeting-copy{min-width:0;flex:1}
+.home-status-tools{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex:0 0 auto}
+.sleep-countdown{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:102px;padding:6px 9px;border-radius:11px;border:1px solid #806d49;background:linear-gradient(125deg,#362d1c,#22233a 78%);box-shadow:0 0 18px #f4bc5530,inset 0 1px #ffffff12;font-variant-numeric:tabular-nums}
+.sleep-countdown-label{font-size:8px;line-height:1.1;letter-spacing:1.15px;font-weight:950;color:#ffd58b}
+.sleep-countdown strong{font-size:13px;line-height:1.15;white-space:nowrap;color:#fff2d4}
+.sleep-countdown[data-urgent="true"]{border-color:#d59a4f;box-shadow:0 0 20px #ffbb5c46,inset 0 1px #ffffff18;animation:sleepGlow 2.6s ease-in-out infinite}
+@keyframes sleepGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.22)}}
+@media(max-width:420px){.home-greeting{gap:7px}.home-status-tools{gap:5px}.sleep-countdown{min-width:88px;padding:6px 7px}.sleep-countdown-label{font-size:7px}.sleep-countdown strong{font-size:11px}.home-clock{font-size:14px;padding:7px 8px}}
+@media(max-width:350px){.sleep-countdown{min-width:80px}.sleep-countdown strong{font-size:10px}.home-clock{font-size:13px;padding:6px 7px}.home-greeting h2{font-size:20px}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
 <nav class="nav" id="nav"><button class="active" data-p="inicio">Hoy</button><button data-p="organizar">Organizar</button><button data-p="entreno">Entreno</button><button data-p="bienestar">Bienestar</button><button data-p="diario">Diario</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button></div></div>
 <section id="inicio" class="page active">
- <div class="home-greeting"><div><span class="home-date" id="liveDate">Cargando fecha…</span><h2 id="greetingTitle">Vamos paso a paso.</h2></div><div class="home-clock" id="liveClock">--:--</div></div>
+ <div class="home-greeting"><div class="home-greeting-copy"><span class="home-date" id="liveDate">Cargando fecha…</span><h2 id="greetingTitle">Vamos paso a paso.</h2></div><div class="home-status-tools"><div class="sleep-countdown" id="sleepCountdown" title="Tiempo que falta para tu hora prevista de dormir"><span class="sleep-countdown-label">🌙 DORMIR EN</span><strong id="sleepCountdownValue">-- h -- min</strong></div><div class="home-clock" id="liveClock">--:--</div></div></div>
  <section class="today-focus" id="nowPanel">
   <div class="focus-label"><span class="pulse"></span><span id="focusModeLabel">AHORA MISMO</span></div>
   <h1 class="focus-title" id="nowTitle">Calculando tu siguiente paso…</h1>
@@ -528,6 +537,45 @@ function renderHome(){let n=d.tasks.filter(x=>x.done).length;countHome.textConte
 
 function getTodayName(){const s=new Intl.DateTimeFormat('es-ES',{weekday:'long'}).format(new Date());return days.find(x=>x.toLowerCase()===s.toLowerCase())||'Lunes'}
 function timeMinutes(value){const m=String(value).match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
+function updateSleepCountdown(now){
+ const host=document.getElementById('sleepCountdown');
+ const value=document.getElementById('sleepCountdownValue');
+ if(!host||!value)return;
+ const weekdayNames=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+ let target=null;
+ for(let offset=0;offset<8&&!target;offset++){
+  const date=new Date(now.getFullYear(),now.getMonth(),now.getDate()+offset);
+  const dayName=weekdayNames[date.getDay()];
+  const titleCase=dayName.charAt(0).toUpperCase()+dayName.slice(1);
+  const events=(d.agenda&&d.agenda[titleCase])||[];
+  const choices=events.map(function(event){
+   const start=timeMinutes(event[0]);
+   const title=String(event[1]||'').trim();
+   const isSleep=/dormir|acostarse|hora de dormir|ir a la cama|para dormir/i.test(title);
+   const isNightRest=/^descanso$/i.test(title)&&start!==null&&start>=20*60;
+   return {start:start,title:title,match:isSleep||isNightRest};
+  }).filter(function(x){return x.match&&x.start!==null;}).sort(function(a,b){return a.start-b.start;});
+  if(choices.length){
+   const chosen=choices[0];
+   const candidate=new Date(date.getFullYear(),date.getMonth(),date.getDate(),Math.floor(chosen.start/60),chosen.start%60,0,0);
+   if(candidate.getTime()>now.getTime())target=candidate;
+  }
+ }
+ let isFallback=false;
+ if(!target){
+  isFallback=true;
+  target=new Date(now.getFullYear(),now.getMonth(),now.getDate(),22,window.__lifeGuestMode?30:45,0,0);
+  if(target.getTime()<=now.getTime())target.setDate(target.getDate()+1);
+ }
+ const diff=Math.max(0,target.getTime()-now.getTime());
+ const totalMinutes=Math.ceil(diff/60000);
+ const hours=Math.floor(totalMinutes/60),minutes=totalMinutes%60;
+ value.textContent=hours>0?hours+' h '+String(minutes).padStart(2,'0')+' min':minutes+' min';
+ const targetTime=target.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+ host.dataset.urgent=totalMinutes<=120?'true':'false';
+ host.title=(isFallback?'Hora de descanso estimada':'Hora de dormir según tu agenda')+': '+targetTime;
+ host.setAttribute('aria-label','Te quedan '+(hours?hours+' horas y ':'')+minutes+' minutos para dormir a las '+targetTime);
+}
 function refreshSmartHome(){
  const now=new Date(),today=getTodayName(),mins=now.getHours()*60+now.getMinutes(),events=d.agenda[today]||[];
  const dateText=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(now);
@@ -536,6 +584,7 @@ function refreshSmartHome(){
  const title=document.getElementById('greetingTitle');if(title)title.innerHTML=greet+'.<br><span style="color:var(--cyan)">Vamos paso a paso.</span>';
  const date=document.getElementById('liveDate');if(date)date.textContent=dateText;
  const live=document.getElementById('liveClock');if(live)live.textContent=clock;
+ updateSleepCountdown(now);
  const todayLabel=document.getElementById('todayLabel');if(todayLabel)todayLabel.textContent=today+' · '+dateText;
  const next=events.map(e=>({e,start:timeMinutes(e[0])})).filter(x=>x.start!==null&&x.start>mins).sort((a,b)=>a.start-b.start)[0];
  const active=events.map(e=>({e,start:timeMinutes(e[0])})).filter(x=>x.start!==null&&x.start<=mins).sort((a,b)=>b.start-a.start)[0];
