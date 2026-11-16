@@ -1019,6 +1019,22 @@ select.field option{background:#101d30;color:#f1f6ff}
  #entreno .training-catalog-item .catalog-add{padding:7px 6px;font-size:8px}
 }
 
+
+/* AGENDA · estados visibles y actualización temporal */
+.agenda-legend{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border:1px solid #2b405e;border-radius:12px;background:#0b1729}
+.agenda-legend span,.agenda-state{display:inline-flex;align-items:center;gap:5px;width:max-content;border-radius:999px;padding:4px 8px;font-size:9px;font-weight:900;letter-spacing:.45px;white-space:nowrap}
+.agenda-legend span:before,.agenda-state:before{content:"";width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+.agenda-legend small{flex-basis:100%;font-size:10px;color:#9fb3cc}
+.agenda-state{margin-left:7px;vertical-align:middle;font-size:8px;padding:3px 7px}
+.state-pending{color:#c2cce0;background:#24334b;border:1px solid #435571}
+.state-active{color:#8be6f2;background:#123849;border:1px solid #28758b}
+.state-unconfirmed{color:#ffd08a;background:#46351f;border:1px solid #98703b}
+.state-done{color:#a9efc8;background:#173c32;border:1px solid #367d64}
+.state-unknown{color:#c0bdd5;background:#302e47;border:1px solid #5c587e}
+.event.completed-event{opacity:1!important;border-style:solid!important;border-color:#367d64!important;background:linear-gradient(120deg,#102c2a,#0e1d2d)!important}
+.event.completed-event .et{text-decoration:none!important;color:#e9fff4!important}
+.event .agenda-state{line-height:1.25}
+@media(max-width:720px){.agenda-legend{gap:6px;padding:9px}.agenda-legend span{font-size:8px;padding:4px 6px}.agenda-legend small{font-size:9px}.agenda-state{margin-left:4px;font-size:7px;padding:3px 5px}.event .et{line-height:1.6}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -1053,7 +1069,7 @@ select.field option{background:#101d30;color:#f1f6ff}
  </section>
  <div class="home-data-cache" aria-hidden="true"><span id="countHome">0/0</span><span id="minsHome">0 min</span><div id="homeBar"></div><div id="todayTasks"></div><div id="todayStudy"></div><div id="todayDone"></div><div id="smartHeadline"></div><div id="smartDetail"></div><span id="nextBlock"></span><span id="nextBlockTime"></span><span id="todayLabel"></span><span id="focusLabel"></span><span id="focusSub"></span></div>
  </section>
-<section id="agenda" class="page"><div class="card"><div class="row"><h3>Agenda semanal editable</h3><button class="btn" onclick="resetAgenda()">Restaurar horarios</button></div><div id="daytabs" class="tabs"></div><div id="events" class="timeline"></div></div><div class="card"><h3>Añadir bloque al día seleccionado</h3><form id="eventForm" class="form"><input class="field" name="time" placeholder="Hora, ej. 19:15–20:15" required><input class="field" name="title" placeholder="Actividad" required><input class="field full" name="desc" placeholder="Descripción"><select class="field" name="cat"><option>Estudios</option><option>Trabajo</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option></select><button class="btn primary full">Añadir bloque</button></form></div></section>
+<section id="agenda" class="page"><div class="card"><div class="row"><h3>Agenda semanal editable</h3><button class="btn" onclick="resetAgenda()">Restaurar horarios</button></div><div id="daytabs" class="tabs"></div><div class="agenda-legend"><span class="state-pending">Por empezar</span><span class="state-active">En curso</span><span class="state-unconfirmed">Sin confirmar</span><span class="state-done">Hecha</span><small>El estado horario cambia solo. Para contarla como hecha, márcala tú.</small></div><div id="events" class="timeline"></div></div><div class="card"><h3>Añadir bloque al día seleccionado</h3><form id="eventForm" class="form"><input class="field" name="time" placeholder="Hora, ej. 19:15–20:15" required><input class="field" name="title" placeholder="Actividad" required><input class="field full" name="desc" placeholder="Descripción"><select class="field" name="cat"><option>Estudios</option><option>Trabajo</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option></select><button class="btn primary full">Añadir bloque</button></form></div></section>
 <section id="tareas" class="page"><div class="cols"><div class="card"><div class="row"><h3>Mis tareas</h3><span class="pill" id="taskCount"></span></div><div class="bar"><i id="taskBar"></i></div><div id="taskList" class="stack"></div></div><div class="card"><h3>Nueva tarea</h3><form id="taskForm" class="stack"><input class="field" name="text" placeholder="¿Qué tienes que hacer?" required><select class="field" name="area"><option>Personal</option><option>Estudios</option><option>Trabajo</option><option>Hogar</option><option>Salud</option><option>Compra</option></select><select class="field" name="day"><option>Hoy</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select><button class="btn primary">Añadir tarea</button></form></div></div></section>
 <section id="estudios" class="page"><div class="cols"><div class="card"><h3>Asignaturas y ruta</h3><div id="subjects" class="stack"></div><div class="mutedbox">Ruta: 16–22 nov revisar plataforma y fechas · finales de nov dividir temarios · diciembre avanzar contenidos · 1–15 enero completar · 16–31 enero repasar y hacer simulacros · febrero exámenes.</div><h3 style="margin-top:15px">Historial de sesiones</h3><div id="sessions" class="stack"></div></div><div class="card"><h3>Registrar sesión</h3><form id="studyForm" class="stack"><select class="field" name="subject"><option>Programación de dispositivos móviles</option><option>Sistemas</option></select><input class="field" name="minutes" type="number" min="1" placeholder="Minutos" required><input class="field" name="note" placeholder="Qué has avanzado"><button class="btn primary">Guardar sesión</button></form><div class="mutedbox">Bloques previstos: lunes y jueves Programación 19:15–20:15; martes Sistemas 19:15–20:15; viernes Sistemas 16:15–17:45; sábado práctica 10:30–12:30.</div></div></div></section>
 <section id="salud" class="page"><div class="cols"><div class="card"><h3>Seguimiento de recuperación</h3><p class="muted">Registro orientativo de síntomas. No sustituye las indicaciones médicas o de fisioterapia.</p><form id="healthForm" class="stack"><label class="muted">Dolor percibido: <b id="painVal">3</b>/10<input class="field" type="range" min="0" max="10" value="3" name="pain" oninput="painVal.textContent=this.value"></label><input class="field" name="note" placeholder="Síntomas o cambios observados"><button class="btn primary">Guardar registro de hoy</button></form></div><div class="card"><h3>Historial</h3><div id="healthList" class="stack"></div><div class="mutedbox">Evitar ejercicios o agarres que provoquen dolor. Volver a entrenar según la valoración profesional.</div></div></div></section>
@@ -1132,7 +1148,47 @@ function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove(
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function col(c){return ({Trabajo:'#7ca8ff',Estudios:'#a78bfa',Salud:'#ff83b7',Comida:'#ffb86b',Hogar:'#b6ed72',Personal:'#54d8ee',Descanso:'#7ca8ff',Rutina:'#7ca8ff'})[c]||'#54d8ee'}
-function renderAgenda(){const today=getTodayName();document.getElementById('daytabs').innerHTML=days.map(x=>{const count=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(x):(d.agenda[x]||[])).length;return '<button class="'+(x===day?'active ':'')+(x===today?'today':'')+'" data-day="'+x+'"><b>'+x.slice(0,3)+'</b><small>'+count+' bloques</small>'+(x===today?'<em>HOY</em>':'')+'</button>'}).join('');document.getElementById('daytabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{day=b.dataset.day;renderAgenda()});const events=window.getLifeAgendaForDay?window.getLifeAgendaForDay(day):(d.agenda[day]||[]).slice();events.sort((a,b)=>{const start=x=>{const m=String(x[0]).match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999};return start(a)-start(b)});const doneMap=(d.completedBlocks||{})[window.weekDateForDay?window.weekDateForDay(day):'']||{};document.getElementById('events').innerHTML=events.map((e,i)=>{const isAppointment=String(e[4]||'').indexOf('appointment:')===0;const appointmentId=isAppointment?String(e[4]).replace('appointment:',''):'';const key=e[4]||String(e[0])+'|'+String(e[1]);const done=!!doneMap[key];const baseIndex=e._baseIndex===undefined?i:e._baseIndex;const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(\''+appointmentId+'\')">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn" onclick="delEvent('+baseIndex+')">×</button>';const mark='<button class="btn done-toggle" onclick="toggleLifeBlock(\''+day+'\','+i+')">'+(done?'↶ Deshacer':'✓ Hecho')+'</button>';return '<div class="event '+(done?'completed-event':'')+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+(done?' <span class="done-label">HECHO</span>':'')+'</div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+controls+mark+'</div></div>'}).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>'}
+function agendaStatus(event,dateKey,done){
+ if(done)return {label:'HECHA',cls:'state-done'};
+ var match=String(dateKey||'').match(/^(\\d{4})-(\\d{2})-(\\d{2})$/);
+ var times=String(event[0]||'').match(/(\\d{1,2}):(\\d{2})/g)||[];
+ if(!match||!times.length)return {label:'SIN HORARIO',cls:'state-unknown'};
+ var year=Number(match[1]),month=Number(match[2])-1,date=Number(match[3]);
+ function parts(value){var m=value.match(/(\\d{1,2}):(\\d{2})/);return [Number(m[1]),Number(m[2])]}
+ var startParts=parts(times[0]),start=new Date(year,month,date,startParts[0],startParts[1],0,0),end=null;
+ if(times.length>1){
+  var endParts=parts(times[1]);end=new Date(year,month,date,endParts[0],endParts[1],0,0);
+  if(end<=start)end.setDate(end.getDate()+1);
+ }
+ var now=new Date();
+ if(now<start)return {label:'POR EMPEZAR',cls:'state-pending'};
+ if(end&&now<end)return {label:'EN CURSO',cls:'state-active'};
+ return {label:'SIN CONFIRMAR',cls:'state-unconfirmed'};
+}
+function renderAgenda(){
+ const today=getTodayName(),selectedDate=window.weekDateForDay?window.weekDateForDay(day):'';
+ document.getElementById('daytabs').innerHTML=days.map(x=>{
+  const count=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(x):(d.agenda[x]||[])).length;
+  return '<button class="'+(x===day?'active ':'')+(x===today?'today':'')+'" data-day="'+x+'"><b>'+x.slice(0,3)+'</b><small>'+count+' bloques</small>'+(x===today?'<em>HOY</em>':'')+'</button>';
+ }).join('');
+ document.getElementById('daytabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{day=b.dataset.day;renderAgenda()});
+ const events=window.getLifeAgendaForDay?window.getLifeAgendaForDay(day):(d.agenda[day]||[]).slice();
+ events.sort((a,b)=>{
+  const start=x=>{const m=String(x[0]).match(/(\\d{1,2}):(\\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999};
+  return start(a)-start(b);
+ });
+ const doneMap=(d.completedBlocks||{})[selectedDate]||{};
+ document.getElementById('events').innerHTML=events.map((e,i)=>{
+  const isAppointment=String(e[4]||'').indexOf('appointment:')===0;
+  const appointmentId=isAppointment?String(e[4]).replace('appointment:',''):'';
+  const key=e[4]||String(e[0])+'|'+String(e[1]),done=!!doneMap[key];
+  const status=agendaStatus(e,selectedDate,done);
+  const baseIndex=e._baseIndex===undefined?i:e._baseIndex;
+  const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(\\''+appointmentId+'\\')">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn" onclick="delEvent('+baseIndex+')">×</button>';
+  const mark='<button class="btn done-toggle" onclick="toggleLifeBlock(\\''+day+'\\','+i+')">'+(done?'↶ Deshacer':'✓ Marcar hecha')+'</button>';
+  return '<div class="event '+(done?'completed-event ':'')+status.cls+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+controls+mark+'</div></div>';
+ }).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>';
+}
 function editEvent(i){let e=d.agenda[day][i];let a=prompt('Horario',e[0]);if(a===null)return;let b=prompt('Actividad',e[1]);if(b===null)return;let c=prompt('Descripción',e[2]);if(c===null)return;e[0]=a;e[1]=b;e[2]=c;save()}
 function delEvent(i){if(confirm('¿Eliminar este bloque?')){d.agenda[day].splice(i,1);save()}}
 function resetAgenda(){if(confirm('¿Restaurar horarios iniciales?')){d.agenda=JSON.parse(JSON.stringify(defaults));save()}}
@@ -1221,7 +1277,7 @@ function refreshSmartHome(){
 document.getElementById('quickTaskForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target),text=String(f.get('text')||'').trim();if(!text)return;d.tasks.unshift({text,area:'Personal',day:'Hoy',done:false});e.target.reset();save();refreshSmartHome();});
 
 function render(){renderAgenda();renderTasks();renderStudy();renderHealth();renderMeals();renderChores();renderHome();refreshSmartHome()}
-render();setInterval(refreshSmartHome,30000);
+render();setInterval(refreshSmartHome,30000);setInterval(renderAgenda,30000);document.addEventListener("visibilitychange",function(){if(!document.hidden)renderAgenda()});window.addEventListener("focus",renderAgenda);
 if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
 <script>
