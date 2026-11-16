@@ -108,7 +108,7 @@ function renderChores(){chores.innerHTML=d.chores.map((x,i)=>`<div class="item r
 function renderHome(){let n=d.tasks.filter(x=>x.done).length;countHome.textContent=n+'/'+d.tasks.length;minsHome.textContent=d.sessions.reduce((a,x)=>a+x.minutes,0)+' min';homeBar.style.width=(d.tasks.length?n/d.tasks.length*100:0)+'%';priorities.innerHTML=d.tasks.filter(x=>!x.done).slice(0,5).map(x=>`<div class="item"><b>${esc(x.text)}</b><br><small>${esc(x.area)} · ${esc(x.day)}</small></div>`).join('')||'<small>¡Todo al día!</small>'}
 
 function getTodayName(){const s=new Intl.DateTimeFormat('es-ES',{weekday:'long'}).format(new Date());return days.find(x=>x.toLowerCase()===s.toLowerCase())||'Lunes'}
-function timeMinutes(value){const m=String(value).match(/(\\d{1,2}):(\\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
+function timeMinutes(value){const m=String(value).match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
 function refreshSmartHome(){
  const now=new Date(),today=getTodayName(),mins=now.getHours()*60+now.getMinutes(),events=d.agenda[today]||[];
  const dateText=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(now);
@@ -121,7 +121,7 @@ function refreshSmartHome(){
  const next=events.map(e=>({e,start:timeMinutes(e[0])})).filter(x=>x.start!==null&&x.start>mins).sort((a,b)=>a.start-b.start)[0];
  const active=events.map(e=>({e,start:timeMinutes(e[0])})).filter(x=>x.start!==null&&x.start<=mins).sort((a,b)=>b.start-a.start)[0];
  const nextBlock=document.getElementById('nextBlock'),nextTime=document.getElementById('nextBlockTime');
- if(next){if(nextBlock)nextBlock.textContent=next.e[1];if(nextTime)nextTime.textContent='Empieza a las '+next.e[0].match(/\\d{1,2}:\\d{2}/)[0]}
+ if(next){if(nextBlock)nextBlock.textContent=next.e[1];if(nextTime)nextTime.textContent='Empieza a las '+next.e[0].match(/\d{1,2}:\d{2}/)[0]}
  else if(active){if(nextBlock)nextBlock.textContent='Tiempo personal';if(nextTime)nextTime.textContent='Has terminado los bloques previstos'}
  else{if(nextBlock)nextBlock.textContent='Día flexible';if(nextTime)nextTime.textContent='No hay más bloques programados'}
  const open=d.tasks.filter(x=>!x.done),todayTasks=document.getElementById('todayTasks');if(todayTasks)todayTasks.textContent=open.length;
@@ -131,7 +131,7 @@ function refreshSmartHome(){
  const headline=document.getElementById('smartHeadline'),detail=document.getElementById('smartDetail'),focus=document.getElementById('focusLabel'),sub=document.getElementById('focusSub');
  const todayOpen=open.filter(x=>x.day==='Hoy'||x.day===today||x.day==='Esta semana');
  if(headline)headline.textContent=active?'Ahora: '+active.e[1]:next?'Tu siguiente paso':'Hoy puedes ir a tu ritmo';
- if(detail)detail.textContent=next?'Después tendrás: '+next.e[1]+' a las '+next.e[0].match(/\\d{1,2}:\\d{2}/)[0]:todayOpen.length?todayOpen.length+' tareas por cerrar. Elige solo la siguiente.':'No tienes tareas urgentes registradas. Aprovecha para descansar o planificar.';
+ if(detail)detail.textContent=next?'Después tendrás: '+next.e[1]+' a las '+next.e[0].match(/\d{1,2}:\d{2}/)[0]:todayOpen.length?todayOpen.length+' tareas por cerrar. Elige solo la siguiente.':'No tienes tareas urgentes registradas. Aprovecha para descansar o planificar.';
  if(focus)focus.textContent=todayOpen.length?'Prioridad ligera':'Equilibrio';
  if(sub)sub.textContent=todayOpen.length?'Empieza por una tarea pequeña':'Mantén tus pausas y tu descanso';
 }
@@ -174,14 +174,14 @@ function closeModal(){overlay.classList.remove('open')}
 $('modalClose').onclick=closeModal;overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 function addTask(){openModal('Nueva tarea',`<form class="stack"><input class="field" name="text" placeholder="¿Qué necesitas hacer?" required autofocus><select class="field" name="area"><option>Personal</option><option>Estudios</option><option>Trabajo</option><option>Hogar</option><option>Salud</option><option>Compra</option></select><select class="field" name="day"><option>Hoy</option><option>Esta semana</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select><div class="modal-actions"><button type="button" class="actionbtn" id="cancelModal">Cancelar</button><button class="actionbtn primary">Guardar tarea</button></div></form>`,f=>{d.tasks.unshift({text:f.get('text'),area:f.get('area'),day:f.get('day'),done:false});save()});$('cancelModal').onclick=closeModal}
 $('globalFab').onclick=()=>openModal('¿Qué quieres hacer?',`<div class="stack"><button class="actionbtn primary" id="mTask">＋ Crear tarea</button><button class="actionbtn" id="mEvent">▦ Añadir a agenda</button><button class="actionbtn" id="mStudy">◷ Registrar estudio</button><button class="actionbtn" id="mHealth">♡ Registrar salud</button></div>`); 
-$('modalBody').addEventListener('click',e=>{if(e.target.id==='mTask')addTask();if(e.target.id==='mEvent'){closeModal();go('agenda');$('eventForm').scrollIntoView({behavior:'smooth',block:'center'})}if(e.target.id==='mStudy'){closeModal();go('estudios');$('studyForm').scrollIntoView({behavior:'smooth',block:'center'})}if(e.target.id==='mHealth){closeModal();go('salud')}});
-function minutes(s){let m=String(s||'').match(/(\\d{1,2}):(\\d{2})/);return m?+m[1]*60+ +m[2]:null}
-function renderNow(){let now=new Date(),today=getTodayName(),m=now.getHours()*60+now.getMinutes(),ev=(d.agenda[today]||[]).map(e=>({e,start:minutes(e[0]),end:(String(e[0]).match(/[-–](\\d{1,2}:\\d{2})/)||[])[1]})).filter(x=>x.start!==null);
+$('modalBody').addEventListener('click',e=>{if(e.target.id==='mTask')addTask();if(e.target.id==='mEvent'){closeModal();go('agenda');$('eventForm').scrollIntoView({behavior:'smooth',block:'center'})}if(e.target.id==='mStudy'){closeModal();go('estudios');$('studyForm').scrollIntoView({behavior:'smooth',block:'center'})}if(e.target.id==='mHealth'){closeModal();go('salud')}});
+function minutes(s){let m=String(s||'').match(/(\d{1,2}):(\d{2})/);return m?+m[1]*60+ +m[2]:null}
+function renderNow(){let now=new Date(),today=getTodayName(),m=now.getHours()*60+now.getMinutes(),ev=(d.agenda[today]||[]).map(e=>({e,start:minutes(e[0]),end:(String(e[0]).match(/[-–](\d{1,2}:\d{2})/)||[])[1]})).filter(x=>x.start!==null);
 let active=ev.find(x=>x.start<=m&&(!x.end||minutes(x.end)>m)),next=ev.filter(x=>x.start>m).sort((a,b)=>a.start-b.start)[0],title=$('nowTitle'),desc=$('nowDesc');
 if(active){title.textContent='Ahora toca: '+active.e[1];let end=active.end?minutes(active.end):null;desc.textContent=active.e[2]+(end?' · Termina a las '+active.end:'')+'. Este es tu bloque actual.'}
-else if(next){title.textContent='Ahora tienes un margen';desc.textContent='Tu siguiente bloque es '+next.e[1]+', a las '+next.e[0].match(/\\d{1,2}:\\d{2}/)[0]+'. Puedes prepararte con calma.'}
+else if(next){title.textContent='Ahora tienes un margen';desc.textContent='Tu siguiente bloque es '+next.e[1]+', a las '+next.e[0].match(/\d{1,2}:\d{2}/)[0]+'. Puedes prepararte con calma.'}
 else{title.textContent='No tienes nada programado ahora';desc.textContent='Buen momento para descansar, atender algo pendiente o planificar.'}
-$('nowNext').textContent=next?next.e[1]:'Agenda libre';$('nowNextTime').textContent=next?'Empieza a las '+next.e[0].match(/\\d{1,2}:\\d{2}/)[0]:'No quedan bloques hoy';
+$('nowNext').textContent=next?next.e[1]:'Agenda libre';$('nowNextTime').textContent=next?'Empieza a las '+next.e[0].match(/\d{1,2}:\d{2}/)[0]:'No quedan bloques hoy';
 let pct=active&&active.end?Math.max(0,Math.min(100,(m-active.start)/(minutes(active.end)-active.start)*100)):0;$('nowProgress').style.width=pct+'%';
 let pending=d.tasks.filter(x=>!x.done&&(x.day==='Hoy'||x.day===today||x.day==='Esta semana'));$('nowAdvice').textContent=pending.length?pending.length+' tareas pendientes. Prioriza una y deja el resto para después.':'Sin tareas urgentes registradas.';
 $('nowStart').textContent=active?'Marcar bloque como hecho':'Añadir tarea';$('nowSnooze').style.display=active?'inline-block':'none';
