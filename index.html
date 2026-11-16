@@ -167,28 +167,39 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  client.auth.getSession().then(async result=>{if(result.error){say(result.error.message);return}if(result.data.session)await enter(result.data.session.user);else{gate.style.display='grid';status.textContent='Inicia sesión para sincronizar'}});
 })();
 </script><div class="modal-backdrop" id="actionModal" role="dialog" aria-modal="true"><div class="modal"><div class="modal-head"><div><div class="now-kicker">GAEL · LIFE OS</div><h2 id="modalTitle">Acción rápida</h2></div><button class="modal-close" id="modalClose" aria-label="Cerrar">×</button></div><div id="modalBody"></div></div></div><button class="fab" id="globalFab" aria-label="Crear">＋</button><script>
-(()=>{
-const $=id=>document.getElementById(id), overlay=$('actionModal');
-function openModal(title,html,submit){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;overlay.classList.add('open');$('modalBody').querySelector('form')?.addEventListener('submit',e=>{e.preventDefault();submit(new FormData(e.target));closeModal()})}
-function closeModal(){overlay.classList.remove('open')}
-$('modalClose').onclick=closeModal;overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-function addTask(){openModal('Nueva tarea',`<form class="stack"><input class="field" name="text" placeholder="¿Qué necesitas hacer?" required autofocus><select class="field" name="area"><option>Personal</option><option>Estudios</option><option>Trabajo</option><option>Hogar</option><option>Salud</option><option>Compra</option></select><select class="field" name="day"><option>Hoy</option><option>Esta semana</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select><div class="modal-actions"><button type="button" class="actionbtn" id="cancelModal">Cancelar</button><button class="actionbtn primary">Guardar tarea</button></div></form>`,f=>{d.tasks.unshift({text:f.get('text'),area:f.get('area'),day:f.get('day'),done:false});save()});$('cancelModal').onclick=closeModal}
-$('globalFab').onclick=()=>openModal('¿Qué quieres hacer?',`<div class="stack"><button class="actionbtn primary" id="mTask">＋ Crear tarea</button><button class="actionbtn" id="mEvent">▦ Añadir a agenda</button><button class="actionbtn" id="mStudy">◷ Registrar estudio</button><button class="actionbtn" id="mHealth">♡ Registrar salud</button></div>`); 
-$('modalBody').addEventListener('click',e=>{if(e.target.id==='mTask')addTask();if(e.target.id==='mEvent'){closeModal();go('agenda');$('eventForm').scrollIntoView({behavior:'smooth',block:'center'})}if(e.target.id==='mStudy'){closeModal();go('estudios');$('studyForm').scrollIntoView({behavior:'smooth',block:'center'})}if(e.target.id==='mHealth'){closeModal();go('salud')}});
-function minutes(s){let m=String(s||'').match(/(\d{1,2}):(\d{2})/);return m?+m[1]*60+ +m[2]:null}
-function renderNow(){let now=new Date(),today=getTodayName(),m=now.getHours()*60+now.getMinutes(),ev=(d.agenda[today]||[]).map(e=>{let raw=String(e[0]),start=minutes(raw),match=raw.match(/[-–](\d{1,2}:\d{2})/);return {e,start,end:match?minutes(match[1]):null}}).filter(x=>x.start!==null);
-let active=ev.find(x=>x.end!==null&&x.start<=m&&x.end>m),next=ev.filter(x=>x.start>m).sort((a,b)=>a.start-b.start)[0],title=$('nowTitle'),desc=$('nowDesc');
-if(active){title.textContent='Ahora toca: '+active.e[1];desc.textContent=active.e[2]+' · Termina a las '+String(active.e[0]).match(/\d{1,2}:\d{2}/g)[1]+'. Este es tu bloque actual.'}
-else if(next){title.textContent='Ahora tienes un margen';desc.textContent='Tu siguiente bloque es '+next.e[1]+', a las '+String(next.e[0]).match(/\d{1,2}:\d{2}/)[0]+'. Puedes prepararte con calma.'}
-else{title.textContent='No tienes nada programado ahora';desc.textContent='Buen momento para descansar, atender algo pendiente o planificar.'}
-$('nowNext').textContent=next?next.e[1]:'Agenda libre';$('nowNextTime').textContent=next?'Empieza a las '+String(next.e[0]).match(/\d{1,2}:\d{2}/)[0]:'No quedan bloques hoy';
-let pct=active?Math.max(0,Math.min(100,(m-active.start)/(active.end-active.start)*100)):0;$('nowProgress').style.width=pct+'%';
-let pending=d.tasks.filter(x=>!x.done&&(x.day==='Hoy'||x.day===today||x.day==='Esta semana'));$('nowAdvice').textContent=pending.length?pending.length+' tareas pendientes. Prioriza una y deja el resto para después.':'Sin tareas urgentes registradas.';
-$('nowStart').textContent=active?'Ver bloque actual':'Añadir tarea';$('nowSnooze').style.display=active?'inline-block':'none';
-$('nowStart').onclick=()=>{if(active){openModal('Bloque actual',\`<p class="now-desc">\${esc(active.e[1])} · \${esc(active.e[2])}</p><p class="muted">Horario: \${esc(active.e[0])}</p><div class="modal-actions"><button class="actionbtn primary" id="blockClose">Cerrar</button></div>\`);$('blockClose').onclick=closeModal}else addTask()};
-$('nowSnooze').onclick=()=>{openModal('Recordatorio',\`<p class="now-desc">Puedes dejar una tarea anotada para retomarla dentro de 15 minutos.</p><button class="actionbtn primary" id="snoozeTask">Crear recordatorio como tarea</button>\`);$('snoozeTask').onclick=()=>{closeModal();addTask()}};
-$('nowDetails').onclick=()=>{openModal(active?'Tu bloque actual':'Tu agenda',\`<p class="now-desc">\${active?esc(active.e[1])+' · '+esc(active.e[2]):'No hay ningún bloque activo en este momento.'}</p><p class="muted">\${next?'Siguiente: '+esc(next.e[1])+' · '+esc(next.e[0]):'Has llegado al final de tu agenda.'}</p><div class="modal-actions"><button class="actionbtn primary" id="openAgenda">Abrir agenda</button></div>\`);$('openAgenda').onclick=()=>{closeModal();go('agenda')}};
-}
-const old=refreshSmartHome;refreshSmartHome=function(){old();renderNow()};renderNow();
+(function(){
+ const $=function(id){return document.getElementById(id)};
+ const modal=$('actionModal'), body=$('modalBody');
+ function close(){modal.classList.remove('open')}
+ function show(title,html){$('modalTitle').textContent=title;body.innerHTML=html;modal.classList.add('open')}
+ $('modalClose').onclick=close;
+ modal.onclick=function(e){if(e.target===modal)close()};
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+ $('globalFab').onclick=function(){show('Crear nuevo', '<div class="stack"><button class="actionbtn primary" data-action="task">＋ Nueva tarea</button><button class="actionbtn" data-action="agenda">▦ Añadir a agenda</button><button class="actionbtn" data-action="study">◷ Registrar estudio</button><button class="actionbtn" data-action="health">♡ Registrar salud</button></div>')};
+ body.onclick=function(e){
+  var action=e.target.getAttribute('data-action');
+  if(action==='task'){show('Nueva tarea','<form id="modalTaskForm" class="stack"><input class="field" name="text" placeholder="¿Qué tienes que hacer?" required><select class="field" name="area"><option>Personal</option><option>Estudios</option><option>Trabajo</option><option>Hogar</option><option>Salud</option><option>Compra</option></select><select class="field" name="day"><option>Hoy</option><option>Esta semana</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select><button class="actionbtn primary">Guardar tarea</button></form>');return}
+  if(action==='agenda'||action==='study'||action==='health'){close();var page=action==='agenda'?'agenda':action==='study'?'estudios':'salud';go(page);var form=action==='agenda'?'eventForm':action==='study'?'studyForm':'healthForm';$(form).scrollIntoView({behavior:'smooth',block:'center'})}
+ };
+ body.addEventListener('submit',function(e){if(e.target.id!=='modalTaskForm')return;e.preventDefault();var f=new FormData(e.target);d.tasks.unshift({text:f.get('text'),area:f.get('area'),day:f.get('day'),done:false});save();close()});
+ function mins(s){var m=String(s||'').match(/(\\d{1,2}):(\\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
+ function updateNow(){
+  var now=new Date(),dayName=getTodayName(),minute=now.getHours()*60+now.getMinutes();
+  var entries=(d.agenda[dayName]||[]).map(function(e){var raw=String(e[0]),times=raw.match(/\\d{1,2}:\\d{2}/g)||[];return {event:e,start:times.length?mins(times[0]):null,end:times.length>1?mins(times[1]):null,first:times[0]||''}});
+  var current=entries.find(function(x){return x.start!==null&&x.end!==null&&x.start<=minute&&minute<x.end});
+  var next=entries.filter(function(x){return x.start!==null&&x.start>minute}).sort(function(a,b){return a.start-b.start})[0];
+  $('nowTitle').textContent=current?'Ahora toca: '+current.event[1]:(next?'Tienes tiempo antes de '+next.event[1]:'Agenda libre por ahora');
+  $('nowDesc').textContent=current?(current.event[2]+' · Hasta las '+(String(current.event[0]).match(/\\d{1,2}:\\d{2}/g)||[])[1]):(next?'Tu siguiente bloque empieza a las '+next.first+'. No necesitas empezar otra actividad todavía.':'No hay más bloques en tu agenda para hoy.');
+  $('nowNext').textContent=next?next.event[1]:'Sin más actividades';
+  $('nowNextTime').textContent=next?'Empieza a las '+next.first:'Has terminado tu agenda';
+  $('nowProgress').style.width=current?Math.round((minute-current.start)/(current.end-current.start)*100)+'%':'0%';
+  var pending=d.tasks.filter(function(t){return !t.done&&(t.day==='Hoy'||t.day===dayName||t.day==='Esta semana')});
+  $('nowAdvice').textContent=pending.length?pending.length+' tareas pendientes. La siguiente prioridad: '+pending[0].text:'No tienes tareas prioritarias registradas.';
+  $('nowStart').textContent=current?'Ver actividad':'Añadir tarea';
+  $('nowStart').onclick=function(){if(current){show('Actividad actual','<p class="now-desc">'+esc(current.event[1])+' · '+esc(current.event[2])+'</p><p class="muted">Horario: '+esc(current.event[0])+'</p>')}else $('globalFab').click()};
+  $('nowDetails').onclick=function(){close();go('agenda')};
+  $('nowSnooze').style.display='none';
+ }
+ updateNow();setInterval(updateNow,30000);
 })();
 </script></body></html></html>
