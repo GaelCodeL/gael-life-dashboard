@@ -488,7 +488,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   d.completedBlocks=d.completedBlocks||{};
   var doneToday=d.completedBlocks[dateKey]||{};
   var extra=(window.getLifeAppointmentsForDay?window.getLifeAppointmentsForDay(dayName):[]);
-  var rawEvents=[...(d.agenda[dayName]||[]),...extra];
+  var rawEvents=window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):[...(d.agenda[dayName]||[]),...extra];
   var entries=rawEvents.map(function(e){
     var raw=String(e[0]),times=raw.match(/\d{1,2}:\d{2}/g)||[];
     var key=e[4]||raw+'|'+String(e[1]);
