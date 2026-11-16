@@ -623,9 +623,9 @@ window.getLifeAgendaForDay=function(name){
  const date=weekDateForDay(name);
  const special=(d.appointments||[]).filter(function(a){return a.date===date});
  if(special.length){
-  function toMin(value){var m=String(value||'').match(/(\\d{1,2}):(\\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
+  function toMin(value){var m=String(value||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
   base=base.filter(function(e){
-   var times=String(e[0]||'').match(/\\d{1,2}:\\d{2}/g)||[];if(times.length<2)return true;
+   var times=String(e[0]||'').match(/\d{1,2}:\d{2}/g)||[];if(times.length<2)return true;
    var start=toMin(times[0]),end=toMin(times[1]);
    return !special.some(function(a){var aStart=toMin(a.start),aEnd=toMin(a.end);return start!==null&&end!==null&&aStart!==null&&aEnd!==null&&start<aEnd&&aStart<end});
   });
