@@ -484,21 +484,61 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  function mins(s){var m=String(s||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
  function updateNow(){
   var now=new Date(),dayName=getTodayName(),minute=now.getHours()*60+now.getMinutes();
-  var entries=(d.agenda[dayName]||[]).map(function(e){var raw=String(e[0]),times=raw.match(/\d{1,2}:\d{2}/g)||[];return {event:e,start:times.length?mins(times[0]):null,end:times.length>1?mins(times[1]):null,first:times[0]||''}});
-  var current=entries.find(function(x){return x.start!==null&&x.end!==null&&x.start<=minute&&minute<x.end});
-  var next=entries.filter(function(x){return x.start!==null&&x.start>minute}).sort(function(a,b){return a.start-b.start})[0];
-  $('nowTitle').textContent=current?'Ahora toca: '+current.event[1]:(next?'Tienes tiempo antes de '+next.event[1]:'Agenda libre por ahora');
-  $('nowDesc').textContent=current?(current.event[2]+' · Hasta las '+(String(current.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1]):(next?'Tu siguiente bloque empieza a las '+next.first+'. No necesitas empezar otra actividad todavía.':'No hay más bloques en tu agenda para hoy.');
-  $('nowNext').textContent=next?next.event[1]:(current?'Tiempo personal / fin de jornada':'Agenda libre');
-  $('nowNextTime').textContent=next?'Empieza a las '+next.first:(current?'Después de las '+(String(current.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1]:'No quedan bloques posteriores');
-  $('nowProgress').style.width=current?Math.round((minute-current.start)/(current.end-current.start)*100)+'%':'0%';
+  var dateKey=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+  d.completedBlocks=d.completedBlocks||{};
+  var doneToday=d.completedBlocks[dateKey]||{};
+  var extra=(window.getLifeAppointmentsForDay?window.getLifeAppointmentsForDay(dayName):[]);
+  var rawEvents=[...(d.agenda[dayName]||[]),...extra];
+  var entries=rawEvents.map(function(e){
+    var raw=String(e[0]),times=raw.match(/\d{1,2}:\d{2}/g)||[];
+    var key=e[4]||raw+'|'+String(e[1]);
+    return {event:e,start:times.length?mins(times[0]):null,end:times.length>1?mins(times[1]):null,first:times[0]||'',key:key,done:!!doneToday[key],appointment:String(e[4]||'').indexOf('appointment:')===0};
+  });
+  var activeItems=entries.filter(function(x){return !x.done&&x.start!==null&&x.end!==null&&x.start<=minute&&minute<x.end});
+  activeItems.sort(function(a,b){return Number(b.appointment)-Number(a.appointment)});
+  var current=activeItems[0]||null;
+  var next=entries.filter(function(x){return !x.done&&x.start!==null&&x.start>minute}).sort(function(a,b){return a.start-b.start})[0]||null;
+  var mostRecentDone=entries.filter(function(x){return x.done&&x.start!==null&&x.start<=minute}).sort(function(a,b)=>b.start-a.start)[0]||null;
+  var target=current||next;
+  if(current){
+    $('nowTitle').textContent='Ahora toca: '+current.event[1];
+    $('nowDesc').textContent=current.event[2]+' · Hasta las '+(String(current.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1];
+  }else if(mostRecentDone){
+    $('nowTitle').textContent='Hecho: '+mostRecentDone.event[1];
+    $('nowDesc').textContent='Ya has completado este bloque. No volverá a aparecer como pendiente hoy.'+(next?' Después: '+next.event[1]+' a las '+next.first+'.':'');
+  }else if(next){
+    $('nowTitle').textContent='Lo siguiente: '+next.event[1];
+    $('nowDesc').textContent='Empieza a las '+next.first+'. Hasta entonces tienes margen; no hace falta adelantarte.';
+  }else{
+    $('nowTitle').textContent='Agenda despejada';
+    $('nowDesc').textContent='Has terminado los bloques previstos para hoy. Elige descansar o hacer algo por gusto.';
+  }
+  $('nowNext').textContent=next?next.event[1]:'Sin más bloques pendientes';
+  $('nowNextTime').textContent=next?'Empieza a las '+next.first:(current?'Después de las '+(String(current.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1]:'Por hoy, agenda cerrada');
+  $('nowProgress').style.width=current?Math.max(0,Math.min(100,Math.round((minute-current.start)/(current.end-current.start)*100)))+'%':'0%';
   var pending=d.tasks.filter(function(t){return !t.done&&(t.day==='Hoy'||t.day===dayName||t.day==='Esta semana')});
-  $('nowAdvice').textContent=pending.length?pending.length+' tareas pendientes. La siguiente prioridad: '+pending[0].text:'No tienes tareas prioritarias registradas.';
-  $('nowStart').textContent=current?'Ver actividad':'Añadir tarea';
-  $('nowStart').onclick=function(){if(current){show('Actividad actual','<p class="now-desc">'+esc(current.event[1])+' · '+esc(current.event[2])+'</p><p class="muted">Horario: '+esc(current.event[0])+'</p>')}else $('globalFab').click()};
-  $('nowDetails').onclick=function(){close();go('agenda')};
-  $('nowSnooze').style.display='none';
- }
+  var conflict=entries.find(function(x){return x.appointment&&x.start!==null&&x.end!==null&&entries.some(function(y){return !y.appointment&&y!==x&&y.start!==null&&y.end!==null&&x.start<y.end&&y.start<x.end})});
+  $('nowAdvice').textContent=conflict?'⚠ '+conflict.event[1]+' coincide con otro bloque de tu agenda. Revisa el horario.':(pending.length?pending.length+' prioridades abiertas · '+pending[0].event?pending.length+' tareas pendientes. Prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.');
+  var doneButton=$('nowDone');
+  doneButton.hidden=!target;
+  doneButton.textContent=current?'✓ Ya he terminado':'✓ Ya lo he hecho';
+  doneButton.onclick=function(){
+    if(!target)return;
+    d.completedBlocks[dateKey]=d.completedBlocks[dateKey]||{};
+    d.completedBlocks[dateKey][target.key]=true;
+    save();
+    updateNow();
+  };
+  $('nowStart').textContent=current?'Ver actividad':next?'Ver lo siguiente':'Añadir tarea';
+  $('nowStart').onclick=function(){
+    var item=current||next;
+    if(item){show(item.appointment?'Cita programada':'Actividad', '<p class="now-desc">'+esc(item.event[1])+' · '+esc(item.event[2])+'</p><p class="muted">Horario: '+esc(item.event[0])+'</p>')}
+    else $('globalFab').click();
+  };
+  $('nowDetails').onclick=function(){go('agenda')};
+  $('nowSnooze').hidden=true;
+}
+window.refreshNow=updateNow;
  updateNow();setInterval(updateNow,30000);
 })();
 </script>
