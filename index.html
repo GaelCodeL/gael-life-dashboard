@@ -1150,11 +1150,11 @@ function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function col(c){return ({Trabajo:'#7ca8ff',Estudios:'#a78bfa',Salud:'#ff83b7',Comida:'#ffb86b',Hogar:'#b6ed72',Personal:'#54d8ee',Descanso:'#7ca8ff',Rutina:'#7ca8ff'})[c]||'#54d8ee'}
 function agendaStatus(event,dateKey,done){
  if(done)return {label:'HECHA',cls:'state-done'};
- var match=String(dateKey||'').match(/^(\\d{4})-(\\d{2})-(\\d{2})$/);
- var times=String(event[0]||'').match(/(\\d{1,2}):(\\d{2})/g)||[];
+ var match=String(dateKey||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ var times=String(event[0]||'').match(/(\d{1,2}):(\d{2})/g)||[];
  if(!match||!times.length)return {label:'SIN HORARIO',cls:'state-unknown'};
  var year=Number(match[1]),month=Number(match[2])-1,date=Number(match[3]);
- function parts(value){var m=value.match(/(\\d{1,2}):(\\d{2})/);return [Number(m[1]),Number(m[2])]}
+ function parts(value){var m=value.match(/(\d{1,2}):(\d{2})/);return [Number(m[1]),Number(m[2])]}
  var startParts=parts(times[0]),start=new Date(year,month,date,startParts[0],startParts[1],0,0),end=null;
  if(times.length>1){
   var endParts=parts(times[1]);end=new Date(year,month,date,endParts[0],endParts[1],0,0);
@@ -1174,7 +1174,7 @@ function renderAgenda(){
  document.getElementById('daytabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{day=b.dataset.day;renderAgenda()});
  const events=window.getLifeAgendaForDay?window.getLifeAgendaForDay(day):(d.agenda[day]||[]).slice();
  events.sort((a,b)=>{
-  const start=x=>{const m=String(x[0]).match(/(\\d{1,2}):(\\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999};
+  const start=x=>{const m=String(x[0]).match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999};
   return start(a)-start(b);
  });
  const doneMap=(d.completedBlocks||{})[selectedDate]||{};
@@ -1184,8 +1184,8 @@ function renderAgenda(){
   const key=e[4]||String(e[0])+'|'+String(e[1]),done=!!doneMap[key];
   const status=agendaStatus(e,selectedDate,done);
   const baseIndex=e._baseIndex===undefined?i:e._baseIndex;
-  const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(\\''+appointmentId+'\\')">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn" onclick="delEvent('+baseIndex+')">×</button>';
-  const mark='<button class="btn done-toggle" onclick="toggleLifeBlock(\\''+day+'\\','+i+')">'+(done?'↶ Deshacer':'✓ Marcar hecha')+'</button>';
+  const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(\''+appointmentId+'\')">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn" onclick="delEvent('+baseIndex+')">×</button>';
+  const mark='<button class="btn done-toggle" onclick="toggleLifeBlock(\''+day+'\','+i+')">'+(done?'↶ Deshacer':'✓ Marcar hecha')+'</button>';
   return '<div class="event '+(done?'completed-event ':'')+status.cls+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+controls+mark+'</div></div>';
  }).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>';
 }
