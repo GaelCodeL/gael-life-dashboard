@@ -64,6 +64,53 @@ body{background:radial-gradient(ellipse at 12% 0%,#233b63 0,transparent 34%),rad
 .fab{position:fixed;right:24px;bottom:24px;z-index:80;width:58px;height:58px;border:0;border-radius:20px;background:linear-gradient(135deg,#62e2f2,#a991ff);color:#08111e;font-size:30px;box-shadow:0 12px 35px #0008;cursor:pointer}
 @keyframes fadein{from{opacity:0}to{opacity:1}}@keyframes rise{from{transform:translateY(12px) scale(.98);opacity:0}to{transform:none;opacity:1}}
 @media(max-width:720px){.nowpanel{grid-template-columns:1fr}.fab{right:16px;bottom:16px}}
+
+/* Life OS workspace: calmer, tighter and easier to scan */
+:root{--bg:#f3f6f5;--p:#fff;--line:#e0e8e5;--muted:#667773;--txt:#293c38;--cyan:#428c83;--violet:#8379a7;--pink:#b8758b;--orange:#bd905d;--lime:#6e9877}
+body{background:#f3f6f5;color:#293c38;padding:15px;font-size:14px}
+.wrap{max-width:1120px}
+.topbar{margin:5px 0 14px}.logo{background:#dcefeb;color:#2f7169;box-shadow:none;border-radius:13px}
+.pill,.tag{background:#e7f2ef;color:#426f67}
+.nav{position:sticky;top:6px;background:#ffffffed;border:1px solid #dbe5e1;box-shadow:0 7px 24px #223b3510;border-radius:15px;padding:6px;backdrop-filter:blur(14px)}
+.nav button,.tabs button,.btn{background:#fff;color:#4a5e58;border:1px solid #dce5e1;border-radius:10px;font-size:12px}
+.nav .active,.tabs .active,.primary,.btn.primary{background:#dcefea;color:#285f57;border:1px solid #c6e2db}
+.hero,.card,.smartpanel,.now-side,.nowmain{background:#fff;border:1px solid #e2e9e6;border-radius:18px;box-shadow:0 5px 20px #263b3508}
+.hero{background:linear-gradient(120deg,#edf6f3,#f5f3f8);border-color:#dce9e4}
+.hero h2{color:#2d403c}.hero .muted{color:#667773}
+.stat,.smartmetric,.item,.event,.check{background:#f8faf9;border:1px solid #e7eeeb}
+.smartpanel.focus{background:#f5f3f9;border-color:#e8e2f0}
+.nowpanel{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin:12px 0}
+.nowmain{background:#eaf4f1;border-color:#d8e8e2;box-shadow:none;padding:21px}
+.now-title{color:#293d39;font-size:clamp(25px,3.3vw,36px);font-weight:850;letter-spacing:-1px}
+.now-desc{color:#61736e}.now-side{background:#fff;padding:19px}
+.now-kicker,.eyebrow{color:#568078;letter-spacing:1.35px}
+.now-next{font-size:19px;color:#2e413c}.now-progress{background:#e7eeeb}.now-progress i{background:#5d9a8f}
+.now-actions{gap:7px}.actionbtn{border:1px solid #dbe5e1;border-radius:10px;background:#fff;color:#405651;font-weight:750}.actionbtn.primary{background:#dcefea;color:#285f57}
+.modal-backdrop{background:#263b3577}.modal{background:#fff;color:#293d39;border:1px solid #dce6e2;box-shadow:0 25px 80px #18312e2b}.modal-close{color:#314c46;background:#f5f8f7;border-color:#dce5e1}
+.field{background:#fff;color:#2e413c;border-color:#d8e3de;border-radius:10px}.field::placeholder{color:#9baaa5}
+#subNav:not([hidden]){display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 13px;padding:7px;background:#e9f0ed;border-radius:12px}
+#subNav[hidden]{display:none!important}
+#subNav button{border:0;background:transparent;color:#526862;border-radius:8px;padding:8px 11px;font-weight:700;cursor:pointer}
+#subNav button:hover{background:#fff}
+.page-intro{padding:8px 3px 14px}.page-intro h2{font-size:clamp(26px,3vw,34px);margin:7px 0 5px;letter-spacing:-.8px;color:#2c403b}.page-intro p{max-width:700px;line-height:1.55}
+.module-grid,.training-grid,.habit-grid,.library-grid,.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.module-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px;background:#fff;border:1px solid #e0e9e4;border-radius:15px;text-align:left;color:#304943;cursor:pointer;min-height:112px;transition:transform .16s,border-color .16s}
+.module-card:hover{transform:translateY(-2px);border-color:#b8d5cb}.module-card span{font-size:21px;color:#568d80}.module-card small{color:#71817b}
+.training-status{display:grid;gap:5px;padding:15px 17px;border:1px solid #eadfce;background:#faf6ef;border-radius:14px;margin-bottom:12px;color:#61553f}.training-status span{font-size:12px;line-height:1.45;color:#786e5d}
+.training-card,.habit-card,.library-card,.menu-day{padding:15px;background:#fff;border:1px solid #e2eae6;border-radius:15px}
+.training-card h3,.menu-day h3{margin-bottom:5px}.training-card p,.menu-day p{margin:4px 0;color:#667773;font-size:12px;line-height:1.5}
+.training-card button,.menu-day button{margin-top:7px}
+.habit-card{display:flex;gap:10px;align-items:flex-start}.habit-card input{margin-top:3px;accent-color:#4d9389}.habit-card small,.library-card small{display:block;color:#71817b;margin-top:5px;line-height:1.45}
+.wellbeing-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;border:1px solid #e3e9d9;background:#f5f7ed;border-radius:15px;margin-bottom:12px}
+.wellbeing-quote{font-size:19px;font-weight:780;line-height:1.35;color:#475b49;max-width:690px;margin-top:7px}
+.research-bar{display:flex;gap:8px;margin:10px 0 12px}.research-bar input{flex:1}
+.library-card a{display:inline-block;color:#327b70;margin-top:9px;font-size:12px;font-weight:750}
+.menu-day{display:flex;flex-direction:column;gap:7px}.meal-line{font-size:12px;color:#52645f;line-height:1.45}.meal-line b{display:block;color:#30463f}
+.prep-list{display:grid;gap:11px}.prep-list div{display:grid;gap:3px;padding-left:11px;border-left:3px solid #d7e9e1}.prep-list span{font-size:12px;color:#687973;line-height:1.45}
+#shoppingList .item{display:flex;align-items:center;gap:8px}#shoppingList .item label{flex:1}#shoppingList input{accent-color:#4d9389}
+#diaryEntries .item{padding:14px;line-height:1.5}.small-note{font-size:11px;line-height:1.45;margin-top:11px}
+.fab{background:#528f83;color:#fff;box-shadow:0 6px 20px #396e6833}
+@media(max-width:720px){body{padding:10px}.nav{display:flex;overflow-x:auto;white-space:nowrap}.nav button{flex:0 0 auto}.nowpanel{grid-template-columns:1fr}.module-grid,.training-grid,.habit-grid,.library-grid,.menu-grid{grid-template-columns:1fr}.research-bar{flex-direction:column}.training-status,.wellbeing-banner{align-items:flex-start;flex-direction:column}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div id="authMessage" class="mutedbox">Tus datos se guardarán de forma privada en tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL / LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">PERSONAL COMMAND CENTER</div></div></div><div class="topmeta"><span class="pill"><span class="pulse"></span> SISTEMA ACTIVO</span><span class="tag" id="liveDate">Cargando fecha…</span></div></div>
 <section class="hero"><div><span class="pill">TU VIDA, EN UNA SOLA VISTA</span><h2 id="greetingTitle">Tu espacio.<br><span style="color:var(--cyan)">Tu ritmo.</span></h2><p class="muted" id="greetingText">Tu panel se adapta al día, muestra lo siguiente en tu agenda y te ayuda a mantener el rumbo sin tener que organizarlo todo manualmente.</p></div><div class="stats"><div class="stat"><small>AHORA MISMO</small><b id="liveClock">--:--</b><small id="todayLabel">Tu día</small></div><div class="stat"><small>PRÓXIMO BLOQUE</small><b id="nextBlock">Calculando…</b><small id="nextBlockTime">Agenda de hoy</small></div><div class="stat"><small>OBJETIVO DE SUEÑO</small><b>22:45</b><small>Descanso prioritario</small></div><div class="stat"><small>ENFOQUE</small><b style="color:var(--lime)" id="focusLabel">Un paso cada vez</b><small id="focusSub">Organización inteligente</small></div></div></section>
@@ -206,5 +253,100 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   $('nowSnooze').style.display='none';
  }
  updateNow();setInterval(updateNow,30000);
+})();
+</script>
+<script>
+(function(){
+const DAY=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+function ensureData(){
+ d.weekMenu=d.weekMenu||[
+ {day:'Lunes',lunch:'Pollo a la plancha · arroz · calabacín y zanahoria',dinner:'Tortilla de patata y cebolla · tomate aliñado'},
+ {day:'Martes',lunch:'Pavo salteado · pasta · verduras salteadas',dinner:'Wrap de ternera picada · lechuga · tomate · queso'},
+ {day:'Miércoles',lunch:'Lomo de cerdo · patata en air fryer · judías verdes',dinner:'Revuelto de huevo con champiñones · pan · fruta'},
+ {day:'Jueves',lunch:'Pollo especiado · cuscús o arroz · pimientos',dinner:'Hamburguesa casera · patata · ensalada sencilla'},
+ {day:'Viernes',lunch:'Tupper de jueves: proteína · hidrato · verdura',dinner:'Quesadillas de pavo y queso · tomate'},
+ {day:'Sábado',lunch:'Pasta con carne picada y tomate · verduras',dinner:'Tortilla francesa · patata · ensalada'},
+ {day:'Domingo',lunch:'Pollo o pavo · patata/arroz · verduras',dinner:'Cena ligera a elegir y preparar bases'}
+ ];
+ d.shopping=d.shopping||[];d.trainingLogs=d.trainingLogs||[];d.trainingTemplates=d.trainingTemplates||[
+ {name:'Torso A',day:'Lunes',focus:'Pecho, espalda, hombro y brazos',plan:'Plantilla por completar con tu rutina habitual y la validación de fisioterapia.'},
+ {name:'Pierna A',day:'Martes',focus:'Trabajo de tren inferior',plan:'Plantilla por completar. Evitar ejercicios que requieran agarres dolorosos.'},
+ {name:'Torso B',day:'Jueves',focus:'Segundo estímulo de tren superior',plan:'Plantilla por completar con tu rutina habitual y la validación de fisioterapia.'},
+ {name:'Pierna B',day:'Viernes',focus:'Segundo trabajo de tren inferior',plan:'Plantilla por completar. Adaptar cargas y material con fisioterapia.'}
+ ];
+ d.habitLogs=d.habitLogs||{};d.diary=d.diary||[];d.leisure=d.leisure||[];
+}
+const baseRender=window.render;
+function dateKey(){return new Date().toLocaleDateString('sv-SE')}
+function renderMenu(){
+ const host=document.getElementById('menuGrid');if(!host)return;
+ host.innerHTML=d.weekMenu.map((x,i)=>'<article class="menu-day"><div class="eyebrow">'+x.day+'</div><div class="meal-line"><b>Comida</b>'+esc(x.lunch)+'</div><button class="btn" data-menu="'+i+'" data-kind="lunch">Editar comida</button><div class="meal-line"><b>Cena</b>'+esc(x.dinner)+'</div><button class="btn" data-menu="'+i+'" data-kind="dinner">Editar cena</button></article>').join('');
+}
+function renderShopping(){
+ const host=document.getElementById('shoppingList');if(!host)return;
+ const pending=d.shopping.filter(x=>!x.done).length;
+ document.getElementById('shoppingCount').textContent=pending+' pendientes';
+ host.innerHTML=d.shopping.map((x,i)=>'<div class="item"><input type="checkbox" data-shop-check="'+i+'" '+(x.done?'checked':'')+'><label><b>'+esc(x.item)+'</b><br><small>'+esc(x.category)+'</small></label><button class="btn" data-shop-delete="'+i+'">×</button></div>').join('')||'<p class="muted">La lista está vacía. Añade lo que falte; no hace falta esperar al día de compra.</p>';
+}
+const reminders=['No tienes que ganarte el descanso. También forma parte de cuidarte.','Un día difícil no invalida todo lo que estás construyendo.','Hazlo suficientemente bien; no necesitas hacerlo perfecto.','Tu valor no depende de cuántas tareas taches hoy.','Puedes empezar de nuevo sin reprocharte cómo fue ayer.','Cuida tu energía como cuidarías la de alguien a quien quieres.'];
+const habits=[['walk','Paseo o movimiento suave','Un paseo corto cuenta. Ajusta duración y ritmo a cómo te encuentres.'],['meal','Dejar lista la comida de mañana','Una ración completa: proteína, hidrato y verdura.'],['pause','Pausa mental','Cinco minutos para parar, respirar o salir de la pantalla.'],['sleep','Preparar el descanso','Bajar el ritmo y proteger tu hora de dormir.']];
+const evidence=[
+ {title:'Caminar y moverse durante el día',desc:'La actividad física puede acumularse; caminar cuenta. La OMS recomienda a adultos 150–300 min semanales de actividad moderada, adaptados a la capacidad y situación individual.',source:'OMS · Actividad física',url:'https://www.who.int/europe/news-room/fact-sheets/item/physical-activity',tags:'caminar paseo movimiento actividad física'},
+ {title:'Dormir con horarios regulares',desc:'La CDC indica que los adultos de 18–60 años necesitan al menos 7 horas; calidad y regularidad también importan.',source:'CDC · Sueño',url:'https://www.cdc.gov/sleep/about/index.html',tags:'sueño dormir descanso rutina'},
+ {title:'Manejar el estrés con herramientas prácticas',desc:'La guía ilustrada de la OMS propone habilidades como grounding, reconocer pensamientos difíciles y tratarse con amabilidad.',source:'OMS · Doing What Matters in Times of Stress',url:'https://www.who.int/publications/i/item/9789240003927/',tags:'estrés ansiedad respiración grounding amabilidad salud mental'},
+ {title:'Comer de forma variada y saludable',desc:'AESAN recomienda aumentar frutas y hortalizas, priorizar cereales integrales y grasas saludables y reducir carnes procesadas, sal y azúcar.',source:'AESAN · Recomendaciones dietéticas',url:'https://www.aesan.gob.es/es/nutricion/recomendaciones-dieteticas',tags:'alimentación comida proteína verduras dieta'},
+ {title:'Rutinas y conexión social',desc:'La OMS señala que mantener una rutina, dormir, moverse y conectar con personas de confianza puede apoyar el bienestar y el manejo del estrés.',source:'OMS · Estrés',url:'https://www.who.int/news-room/questions-and-answers/item/stress',tags:'rutina apoyo social relaciones estrés bienestar'}
+];
+function renderHabits(){
+ const host=document.getElementById('habitCards');if(!host)return;
+ const key=dateKey(),log=d.habitLogs[key]||{},done=habits.filter(h=>log[h[0]]).length;
+ document.getElementById('habitProgress').textContent=done+' / '+habits.length;
+ host.innerHTML=habits.map(h=>'<label class="habit-card"><input type="checkbox" data-habit="'+h[0]+'" '+(log[h[0]]?'checked':'')+'><span><b>'+h[1]+'</b><small>'+h[2]+'</small></span></label>').join('');
+ renderLibrary();
+}
+function renderLibrary(){
+ const host=document.getElementById('habitLibrary');if(!host)return;
+ const query=(document.getElementById('habitSearch').value||'').toLowerCase();
+ host.innerHTML=evidence.filter(x=>(x.title+' '+x.desc+' '+x.tags).toLowerCase().includes(query)).map(x=>'<article class="library-card"><b>'+x.title+'</b><small>'+x.desc+'</small><a href="'+x.url+'" target="_blank" rel="noopener">'+x.source+' ↗</a></article>').join('')||'<p class="muted">No hay resultados en la biblioteca. Busca literatura revisada en PubMed.</p>';
+}
+function renderTraining(){
+ const host=document.getElementById('trainingCards');if(!host)return;
+ host.innerHTML=d.trainingTemplates.map((x,i)=>'<article class="training-card"><div class="eyebrow">'+x.day+'</div><h3>'+x.name+'</h3><p>'+esc(x.focus)+'</p><p>'+esc(x.plan)+'</p><button class="btn" data-training-edit="'+i+'">Editar plantilla</button></article>').join('');
+ const sel=document.getElementById('trainingTemplate');sel.innerHTML=d.trainingTemplates.map((x,i)=>'<option value="'+i+'">'+x.name+'</option>').join('');
+ document.getElementById('trainingHistory').innerHTML=d.trainingLogs.slice(0,10).map(x=>'<div class="item"><b>'+esc(x.name)+' · '+x.minutes+' min</b><br><small>'+esc(x.date)+' · '+esc(x.note||'Sin nota')+'</small></div>').join('')||'<p class="muted">Todavía no has registrado sesiones.</p>';
+}
+function renderDiary(){
+ const host=document.getElementById('diaryEntries');if(!host)return;
+ host.innerHTML=d.diary.slice(0,20).map(x=>'<article class="item"><div class="row"><b>'+esc(x.date)+' · '+['','Día difícil','Bajo de ánimo','Normal','Bien','Muy bien'][Number(x.mood)]+'</b><button class="btn" data-diary-delete="'+x.id+'">Eliminar</button></div><p>'+esc(x.entry||'')+'</p>'+(x.good?'<small>Me quedo con: '+esc(x.good)+'</small>':'')+'</article>').join('')||'<p class="muted">Tu diario empieza cuando tú quieras. No hay obligación de escribir a diario.</p>';
+ document.getElementById('leisureList').innerHTML=d.leisure.map((x,i)=>'<div class="item row"><span><b>'+esc(x.idea)+'</b><br><small>'+esc(x.type)+'</small></span><button class="btn" data-leisure-delete="'+i+'">Quitar</button></div>').join('')||'<p class="muted">Aún no has guardado ideas de ocio.</p>';
+}
+function renderNew(){renderMenu();renderShopping();renderHabits();renderTraining();renderDiary()}
+window.render=function(){ensureData();baseRender();renderNew()};
+window.go=function(p){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ const page=document.getElementById(p);if(page)page.classList.add('active');
+ const org=['organizar','agenda','tareas','comidas','estudios','hogar'].includes(p),well=['bienestar','salud'].includes(p);
+ const sub=document.getElementById('subNav');sub.hidden=!(org||well);
+ document.getElementById('organizeSubNav').hidden=!org;document.getElementById('wellbeingSubNav').hidden=!well;
+ const top=org?'organizar':well?'bienestar':p;
+ document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===top));
+ window.scrollTo({top:0,behavior:'smooth'});
+};
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>window.go(b.dataset.p)));
+document.getElementById('shoppingForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target);d.shopping.unshift({item:String(f.get('item')).trim(),category:f.get('category'),done:false});e.target.reset();save()});
+document.getElementById('shoppingList').addEventListener('change',function(e){const i=e.target.dataset.shopCheck;if(i!==undefined){d.shopping[Number(i)].done=e.target.checked;save()}});
+document.getElementById('shoppingList').addEventListener('click',function(e){const i=e.target.dataset.shopDelete;if(i!==undefined){d.shopping.splice(Number(i),1);save()}});
+document.getElementById('menuGrid').addEventListener('click',function(e){const i=e.target.dataset.menu,kind=e.target.dataset.kind;if(i!==undefined&&kind){const entry=d.weekMenu[Number(i)],value=prompt('Editar '+(kind==='lunch'?'comida':'cena')+' · '+entry.day,entry[kind]);if(value!==null&&value.trim()){entry[kind]=value.trim();save()}}});
+document.getElementById('habitCards').addEventListener('change',function(e){const key=e.target.dataset.habit;if(key){const date=dateKey();d.habitLogs[date]=d.habitLogs[date]||{};d.habitLogs[date][key]=e.target.checked;save()}});
+document.getElementById('newReminder').onclick=function(){const node=document.getElementById('kindReminder'),current=reminders.indexOf(node.textContent);node.textContent=reminders[(current+1+reminders.length)%reminders.length]};
+document.getElementById('habitSearch').addEventListener('input',renderLibrary);
+document.getElementById('searchEvidence').onclick=function(){const q=document.getElementById('habitSearch').value.trim()||'healthy lifestyle physical activity sleep mental health';window.open('https://pubmed.ncbi.nlm.nih.gov/?term='+encodeURIComponent(q),'_blank','noopener')};
+document.getElementById('trainingCards').addEventListener('click',function(e){const i=e.target.dataset.trainingEdit;if(i===undefined)return;const item=d.trainingTemplates[Number(i)],value=prompt('Editar la plantilla '+item.name+'. Añade aquí la estructura que quieras reutilizar:',item.plan);if(value!==null){item.plan=value;save()}});
+document.getElementById('trainingLogForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target),item=d.trainingTemplates[Number(f.get('template'))];d.trainingLogs.unshift({name:item.name,minutes:Number(f.get('minutes')),note:f.get('note'),date:new Date().toLocaleDateString('es-ES')});e.target.reset();save()});
+document.getElementById('diaryForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target);d.diary.unshift({id:Date.now().toString(),date:new Date().toLocaleDateString('es-ES'),mood:f.get('mood'),entry:f.get('entry'),good:f.get('good')});e.target.reset();save()});
+document.getElementById('leisureForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target);d.leisure.unshift({idea:f.get('idea'),type:f.get('type')});e.target.reset();save()});
+document.getElementById('diaryEntries').addEventListener('click',function(e){const id=e.target.dataset.diaryDelete;if(id!==undefined){d.diary=d.diary.filter(x=>x.id!==id);save()}});
+document.getElementById('leisureList').addEventListener('click',function(e){const i=e.target.dataset.leisureDelete;if(i!==undefined){d.leisure.splice(Number(i),1);save()}});
+ensureData();window.render();
 })();
 </script></body></html></html>
