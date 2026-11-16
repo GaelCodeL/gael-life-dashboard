@@ -111,7 +111,112 @@ body{background:#f3f6f5;color:#293c38;padding:15px;font-size:14px}
 #diaryEntries .item{padding:14px;line-height:1.5}.small-note{font-size:11px;line-height:1.45;margin-top:11px}
 .fab{background:#528f83;color:#fff;box-shadow:0 6px 20px #396e6833}
 @media(max-width:720px){body{padding:10px}.nav{display:flex;overflow-x:auto;white-space:nowrap}.nav button{flex:0 0 auto}.nowpanel{grid-template-columns:1fr}.module-grid,.training-grid,.habit-grid,.library-grid,.menu-grid{grid-template-columns:1fr}.research-bar{flex-direction:column}.training-status,.wellbeing-banner{align-items:flex-start;flex-direction:column}}
-.tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.tabs button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:10px 9px;min-width:0}.tabs button small{font-size:10px;font-weight:500;color:inherit;opacity:.75}.tabs button em{font-size:8px;font-style:normal;letter-spacing:1px;color:#4b8c7d}.tabs button.today{border-color:#a9ccc0;background:#f1f8f4}.tabs button.active{background:#dcefea;border-color:#c3dfd6}.event{grid-template-columns:130px 4px minmax(0,1fr) auto;gap:12px;padding:13px 14px;border-radius:13px}.event .time{font-variant-numeric:tabular-nums;color:#42655c;font-size:12px}.event .et{font-size:13px}.event .ed{font-size:11px;line-height:1.45;margin-top:3px}.event .actions{display:flex;gap:5px}.event .actions .btn{padding:7px 9px}@media(max-width:720px){.tabs{grid-template-columns:repeat(4,minmax(0,1fr))}.event{grid-template-columns:82px 4px minmax(0,1fr);gap:8px}.event .actions{grid-column:3}.tabs button{padding:9px 7px}}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div id="authMessage" class="mutedbox">Tus datos se guardarán de forma privada en tu cuenta.</div></div></div><div class="wrap">
+.tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.tabs button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:10px 9px;min-width:0}.tabs button small{font-size:10px;font-weight:500;color:inherit;opacity:.75}.tabs button em{font-size:8px;font-style:normal;letter-spacing:1px;color:#4b8c7d}.tabs button.today{border-color:#a9ccc0;background:#f1f8f4}.tabs button.active{background:#dcefea;border-color:#c3dfd6}.event{grid-template-columns:130px 4px minmax(0,1fr) auto;gap:12px;padding:13px 14px;border-radius:13px}.event .time{font-variant-numeric:tabular-nums;color:#42655c;font-size:12px}.event .et{font-size:13px}.event .ed{font-size:11px;line-height:1.45;margin-top:3px}.event .actions{display:flex;gap:5px}.event .actions .btn{padding:7px 9px}@media(max-width:720px){.tabs{grid-template-columns:repeat(4,minmax(0,1fr))}.event{grid-template-columns:82px 4px minmax(0,1fr);gap:8px}.event .actions{grid-column:3}.tabs button{padding:9px 7px}}
+/* DEEP SPACE THEME · original dark identity, refined */
+:root{
+ color-scheme:dark;
+ --bg:#080d18;--p:#111b2d;--line:#263a56;--muted:#9babc2;--txt:#eef4ff;
+ --cyan:#5bd8ec;--violet:#a58cff;--pink:#f18ab4;--orange:#f3b66f;--lime:#a9dc83;
+ --surface:#101b2d;--surface2:#142239;--surface3:#0c1627;--edge:#2a405e;
+ --ink:#edf3ff;--sub:#a8b8ce;--glow:0 18px 55px #0005;
+}
+html{background:var(--bg);scroll-behavior:smooth}
+body{
+ background:
+  radial-gradient(ellipse at 8% -8%,#1b3150 0,transparent 34%),
+  radial-gradient(ellipse at 96% 8%,#30234c 0,transparent 26%),
+  linear-gradient(180deg,#080d18,#0a1020 55%,#080d18)!important;
+ color:var(--ink)!important;
+}
+.wrap{max-width:1220px}
+.topbar{margin:7px 0 17px}
+.brandline .logo{background:linear-gradient(140deg,#5bd8ec,#a58cff)!important;color:#07111e!important;box-shadow:0 0 28px #5bd8ec2b!important}
+.topbar h1{color:#f1f5ff;letter-spacing:.3px}
+.topmeta .pill,.tag{background:#1a2a42!important;color:#b9d8e7!important;border:1px solid #314968}
+.nav{
+ background:#0c1627ed!important;border:1px solid #263c59!important;
+ box-shadow:0 12px 38px #0005!important;backdrop-filter:blur(18px);
+ border-radius:17px!important;
+}
+.nav button,.tabs button,.btn{
+ background:#111d31!important;color:#c6d4e8!important;
+ border:1px solid #2b405d!important;border-radius:11px!important;
+ box-shadow:inset 0 1px #ffffff08;
+}
+.nav button:hover,.btn:hover,.tabs button:hover{border-color:#587396!important;color:#f3f7ff!important}
+.nav .active,.tabs .active,.btn.primary,.primary{
+ background:linear-gradient(115deg,#4fd3e8,#9c86f4)!important;
+ color:#06111f!important;border:0!important;box-shadow:0 7px 25px #6b91ed2b;
+}
+.hero,.card,.smartpanel,.now-side,.nowmain,.training-card,.habit-card,.library-card,.menu-day,.module-card{
+ background:linear-gradient(150deg,#14233a,#0e192b)!important;
+ color:#edf3ff!important;border:1px solid #2b405e!important;
+ box-shadow:0 12px 35px #0003,inset 0 1px #ffffff08!important;
+}
+.hero{background:linear-gradient(120deg,#182d49,#131d34 58%,#272044)!important;border-color:#3a5274!important}
+.hero h2,.page-intro h2{color:#f1f5ff!important}
+.hero .muted,.muted,.page-intro p{color:#9eafc7!important}
+.stat,.smartmetric,.item,.event,.check,.training-status,.wellbeing-banner{
+ background:#0c1729!important;color:#eaf1fc!important;border:1px solid #263a56!important;
+}
+.stat small,.smartmetric small,.mutedbox,.small-note{color:#9babc2!important}
+.nowpanel{grid-template-columns:1.2fr .8fr;gap:13px;margin:14px 0}
+.nowmain{
+ background:linear-gradient(125deg,#18334f,#14223a 62%,#292248)!important;
+ border-color:#3c5879!important;padding:clamp(19px,2.5vw,28px)!important;
+}
+.now-title{color:#f4f7ff!important;font-weight:900;letter-spacing:-1.3px}
+.now-desc{color:#b5c4da!important}
+.now-side{background:linear-gradient(145deg,#111d31,#0c1627)!important}
+.now-kicker,.eyebrow{color:#8fcddd!important;letter-spacing:1.5px}
+.now-next{color:#f1f5ff!important}
+.now-progress{background:#293d59!important}.now-progress i{background:linear-gradient(90deg,#5bd8ec,#a58cff)!important}
+.actionbtn{background:#16243a!important;color:#d6e2f3!important;border:1px solid #344c6d!important}
+.actionbtn.primary{background:linear-gradient(115deg,#4fd3e8,#9c86f4)!important;color:#06111f!important}
+.field{
+ background:#0a1425!important;color:#edf4ff!important;border:1px solid #344b6b!important;
+ border-radius:11px!important;caret-color:#5bd8ec;
+}
+.field::placeholder{color:#778ba8!important}
+.field:focus{outline:2px solid #5bd8ec66;border-color:#62cde0!important}
+input,textarea,select{color-scheme:dark}
+#subNav:not([hidden]){background:#0d192b!important;border:1px solid #243a56!important}
+#subNav button{color:#aebed2!important}
+#subNav button:hover{background:#1b2d46!important;color:#fff!important}
+.page-intro h2{letter-spacing:-1px}
+.module-grid{gap:12px}
+.module-card{
+ min-height:126px!important;padding:18px!important;gap:8px!important;
+ transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.module-card:hover{transform:translateY(-3px);border-color:#52769a!important;box-shadow:0 16px 38px #0005!important}
+.module-card span{color:#66d8e8!important;font-size:24px}
+.module-card small{color:#96a9c2!important}
+.training-status{background:linear-gradient(120deg,#2a241f,#1d1b22)!important;border-color:#65503a!important;color:#f0d2a7!important}
+.training-status span{color:#cdbda8!important}
+.wellbeing-banner{background:linear-gradient(120deg,#1d2b38,#25213b)!important;border-color:#344c68!important}
+.wellbeing-quote{color:#e6efff!important}
+.habit-card input,.check input,#shoppingList input{accent-color:#62d5df}
+.library-card a{color:#79dce8!important}
+.meal-line,.prep-list span{color:#adbed2!important}
+.meal-line b{color:#eaf2ff!important}
+.prep-list div{border-left-color:#4a9b9b!important}
+#shoppingList .item{background:#0c1729!important}
+#diaryEntries .item{background:#0c1729!important}
+.event .time{color:#9cd8e4!important}
+.event .et{color:#eef4ff!important}
+.event .ed{color:#9babc2!important}
+.emptyhint{border-color:#38506e!important;color:#a8b7cb!important}
+.mutedbox{background:#16243a!important;border:1px solid #2b405e;color:#b9c9dc!important}
+.modal-backdrop{background:#020713d9!important}
+.modal{background:linear-gradient(145deg,#17263e,#0b1424)!important;color:#eff5ff!important;border:1px solid #405a7d!important;box-shadow:0 28px 90px #000b!important}
+.modal-close{background:#101e32!important;color:#f3f6ff!important;border-color:#344b69!important}
+.fab{background:linear-gradient(135deg,#5bd8ec,#a58cff)!important;color:#07111e!important;box-shadow:0 12px 35px #0008,0 0 28px #66cde833!important}
+#cloudStatus{color:#9fdc9d!important}
+#authGate{background:#050a13f5!important}
+#authGate .authbox{background:linear-gradient(150deg,#17263e,#0d1729)!important;border-color:#384e70!important;color:#f1f5ff!important}
+@media(max-width:720px){.nowpanel{grid-template-columns:1fr}.module-grid,.training-grid,.habit-grid,.library-grid,.menu-grid{grid-template-columns:1fr}.nav{overflow-x:auto;white-space:nowrap}.nav button{flex:0 0 auto}.now-actions{gap:7px}.module-card{min-height:104px!important}}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div id="authMessage" class="mutedbox">Tus datos se guardarán de forma privada en tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL / LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">PERSONAL COMMAND CENTER</div></div></div><div class="topmeta"><span class="pill"><span class="pulse"></span> SISTEMA ACTIVO</span><span class="tag" id="liveDate">Cargando fecha…</span></div></div>
 <section class="hero"><div><span class="pill">TU VIDA, EN UNA SOLA VISTA</span><h2 id="greetingTitle">Tu espacio.<br><span style="color:var(--cyan)">Tu ritmo.</span></h2><p class="muted" id="greetingText">Tu panel se adapta al día, muestra lo siguiente en tu agenda y te ayuda a mantener el rumbo sin tener que organizarlo todo manualmente.</p></div><div class="stats"><div class="stat"><small>AHORA MISMO</small><b id="liveClock">--:--</b><small id="todayLabel">Tu día</small></div><div class="stat"><small>PRÓXIMO BLOQUE</small><b id="nextBlock">Calculando…</b><small id="nextBlockTime">Agenda de hoy</small></div><div class="stat"><small>OBJETIVO DE SUEÑO</small><b>22:45</b><small>Descanso prioritario</small></div><div class="stat"><small>ENFOQUE</small><b style="color:var(--lime)" id="focusLabel">Un paso cada vez</b><small id="focusSub">Organización inteligente</small></div></div></section>
 <nav class="nav" id="nav"><button class="active" data-p="inicio">⌂ Hoy</button><button data-p="organizar">▦ Organizar</button><button data-p="entreno">↗ Entreno</button><button data-p="bienestar">♡ Bienestar</button><button data-p="diario">✎ Diario & ocio</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button></div></div>
