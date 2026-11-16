@@ -1,0 +1,9 @@
+GAEL LIFE OS v2 — ACTUALIZAR GITHUB PAGES
+1. Descomprime el ZIP.
+2. En tu repositorio gaelcodel/gael-life-dashboard abre index.html y pulsa el lápiz Edit.
+3. Sustituye todo el contenido por el nuevo index.html y pulsa Commit changes.
+4. Repite con manifest.webmanifest y sw.js. Sustituye también los tres archivos dentro de icons.
+5. Espera a que Pages publique los cambios. En iPhone cierra la app web y vuelve a abrirla; si conserva la versión antigua, borra los datos del sitio/cache de Safari y carga de nuevo.
+
+FUNCIONES: navegación por secciones; agenda semanal con añadir/editar/eliminar bloques; tareas con altas y bajas y checks; registro de sesiones de estudio; registro de evolución de molestias; edición de comidas; tareas domésticas editables y checks.
+Los datos se guardan en el almacenamiento local del navegador/dispositivo y no se sincronizan entre dispositivos.
