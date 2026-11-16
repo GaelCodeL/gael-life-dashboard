@@ -329,6 +329,20 @@ body{padding:12px 12px calc(22px + env(safe-area-inset-bottom));font-size:14px}
  .focus-title{font-size:22px}
  #nav button{font-size:8px}
 }
+
+/* Dynamic emphasis for the live assistant */
+.today-focus{border-left:3px solid #5bd8ec;transition:border-color .2s,background .2s}
+.today-focus[data-state="done"]{border-left-color:#a9dc83;background:linear-gradient(125deg,#1a3440,#122238 68%,#1e2940)}
+.today-focus[data-state="upcoming"]{border-left-color:#a58cff}
+.today-focus[data-state="free"]{border-left-color:#6f829d}
+.focus-label{display:inline-flex;align-items:center;gap:7px;padding:5px 8px;border-radius:30px;background:#ffffff0c;border:1px solid #ffffff13}
+.focus-next{background:#08142655;border-radius:12px;padding:11px 12px;margin-top:13px;border-top:1px solid #ffffff10}
+.focus-actions .done-action{background:linear-gradient(110deg,#b5e68d,#6fbf9e)!important;color:#0b211b!important;border:0!important;font-weight:900}
+.priority-list .item:nth-child(1){border-left:3px solid #5bd8ec}
+.priority-list .item:nth-child(2){border-left:3px solid #a58cff}
+.priority-list .item:nth-child(3){border-left:3px solid #f0b56f}
+.home-shortcuts button:active,.module-card:active{transform:scale(.98)}
+@media(max-width:720px){.today-focus{border-radius:16px}.focus-next{background:#08142688}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div id="authMessage" class="mutedbox">Tus datos se guardarán de forma privada en tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -518,7 +532,8 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   $('nowProgress').style.width=current?Math.max(0,Math.min(100,Math.round((minute-current.start)/(current.end-current.start)*100)))+'%':'0%';
   var pending=d.tasks.filter(function(t){return !t.done&&(t.day==='Hoy'||t.day===dayName||t.day==='Esta semana')});
   var conflict=entries.find(function(x){return x.appointment&&x.start!==null&&x.end!==null&&entries.some(function(y){return !y.appointment&&y!==x&&y.start!==null&&y.end!==null&&x.start<y.end&&y.start<x.end})});
-  $('nowAdvice').textContent=conflict?'⚠ '+conflict.event[1]+' coincide con otro bloque de tu agenda. Revisa el horario.':(pending.length?pending.length+' tareas pendientes. Prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.');
+  var collision=conflict&&entries.find(function(y){return !y.appointment&&y!==conflict&&y.start!==null&&y.end!==null&&conflict.start<y.end&&y.start<conflict.end});
+  $('nowAdvice').textContent=conflict?'⚠ '+conflict.event[1]+' se solapa con '+collision.event[1]+'. Revisa qué bloque quieres mover.':(pending.length?pending.length+' tareas pendientes. Prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.');
   var doneButton=$('nowDone');
   doneButton.hidden=!target;
   doneButton.textContent=current?'✓ Ya he terminado':'✓ Ya lo he hecho';
@@ -600,7 +615,7 @@ window.editLifeAppointment=function(id){
  const start=prompt('Hora de inicio',item.start);if(start===null)return;
  const end=prompt('Hora de fin (provisional si aún no la sabes)',item.end);if(end===null)return;
  const description=prompt('Detalles',item.description||'');if(description===null)return;
- if(!/^([01]?\\d|2[0-3]):[0-5]\\d$/.test(start)||!/^([01]?\\d|2[0-3]):[0-5]\\d$/.test(end)){alert('Introduce las horas en formato HH:MM.');return}
+ if(!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)){alert('Introduce las horas en formato HH:MM.');return}
  item.start=start;item.end=end;item.description=description;save();if(window.refreshNow)window.refreshNow();
 };
 window.getLifeAgendaForDay=function(name){
