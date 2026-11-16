@@ -587,6 +587,8 @@ function ensureData(){
  d.weekMenu.forEach(function(x){x.breakfast=x.breakfast||'Tortitas habituales';x.snack=x.snack||'Yogur y fruta / bocadillo pequeño según hambre'});
  d.agenda=d.agenda||{};
  DAY.forEach(function(day){var events=d.agenda[day];if(!Array.isArray(events))return;
+  if(day==='Miércoles'){events=events.filter(function(e){return e[1]!=='Fisioterapia / recuperación'});d.agenda[day]=events;}
+  if(day==='Viernes'){events.forEach(function(e){if(e[1]==='Sistemas / fisioterapia'){e[1]='Estudio · Sistemas';e[2]='Bloque de estudio previsto. La cita privada de Simancas de esta semana está en su bloque específico.';e[3]='Estudios'}})}
   if(!events.some(function(e){return e[1]==='Paseo flexible'})){
    var personal=events.find(function(e){return e[0]==='20:45–21:45'&&e[1]==='Tiempo personal'});
    if(personal)personal[0]='21:05–21:45';
