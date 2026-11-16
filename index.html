@@ -1134,6 +1134,14 @@ select.field option{background:#101d30;color:#f1f6ff}
  .page.active,.module-card{animation:none!important}
  #nav button,.module-card,.btn,.actionbtn,.event,.card,.home-shortcuts button{transition:none!important}
 }
+
+/* Final mobile fit: reclaim safe-area space and keep the greeting close */
+@media(max-width:720px){
+ body{padding-bottom:calc(74px + env(safe-area-inset-bottom))!important}
+ #nav{padding:5px 4px!important;bottom:calc(6px + env(safe-area-inset-bottom))!important}
+ #nav button{min-height:45px!important}
+ #greetingTitle span{display:block;font-size:.62em;line-height:1.02;margin-top:3px;letter-spacing:0;font-weight:650}
+}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
