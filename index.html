@@ -516,8 +516,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   var entries=rawEvents.map(function(e){
     var raw=String(e[0]),times=raw.match(/\d{1,2}:\d{2}/g)||[];
     var key=e[4]||raw+'|'+String(e[1]),record=doneToday[key];
-    var start=times.length?mins(times[0]):null,end=times.length>1?mins(times[1]):null;
-    return {event:e,start:start,end:end,first:times[0]||'',key:key,done:!!record,doneAt:typeof record==='string'?Date.parse(record):null,appointment:String(e[4]||'').indexOf('appointment:')===0,flexible:/en adelante/i.test(raw)};
+    return {event:e,start:times.length?mins(times[0]):null,end:times.length>1?mins(times[1]):null,first:times[0]||'',key:key,done:!!record,doneAt:typeof record==='string'?Date.parse(record):null,appointment:String(e[4]||'').indexOf('appointment:')===0,flexible:/en adelante/i.test(raw)};
   });
   entries.forEach(function(x){
     if(x.end===null&&x.flexible&&x.start!==null){
@@ -564,9 +563,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   $('nowNextTime').textContent=next?'Empieza a las '+next.first:(current?'Después de las '+(String(current.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1]:'Por hoy, agenda cerrada');
   $('nowProgress').style.width=current?Math.max(0,Math.min(100,Math.round((minute-current.start)/(current.end-current.start)*100)))+'%':'0%';
   var pending=d.tasks.filter(function(t){return !t.done&&(t.day==='Hoy'||t.day===dayName||t.day==='Esta semana')});
-  var conflict=entries.find(function(x){return x.appointment&&!x.done&&x.start!==null&&x.end!==null&&entries.some(function(y){return !y.appointment&&!y.done&&overlaps(x,y)})});
-  var collision=conflict&&entries.find(function(y){return !y.appointment&&!y.done&&overlaps(conflict,y)});
-  $('nowAdvice').textContent=conflict?'⚠ '+conflict.event[1]+' se solapa con '+collision.event[1]+'. Revisa qué bloque quieres mover.':(pending.length?pending.length+' tareas pendientes. Prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.');
+  $('nowAdvice').textContent=pending.length?pending.length+' tareas abiertas. Primera prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.';
   var doneButton=$('nowDone');
   doneButton.hidden=!target;
   doneButton.textContent=currentItem?'✓ Ya lo he hecho':'✓ Ya lo he hecho';
