@@ -277,7 +277,8 @@ function ensureData(){
    events.push(['20:45–21:05','Paseo flexible','10–20 min si te encaja. Puedes moverlo a otra franja; no es una obligación.','Personal']);
   }
   var prep=events.find(function(e){return e[0]==='21:45–22:15'&&(e[1]==='Preparar mañana'||e[1]==='Preparar mañana y táper')});
-  if(prep){prep[1]='Preparar mañana y táper';prep[2]='Dejar lista una comida completa para mañana: proteína, hidrato y verdura; además de ropa, mochila y agenda.'}
+  if(prep){prep[1]='Preparar mañana y táper';prep[2]='Dejar lista una comida completa para mañana: proteína, hidrato y verdura; además de ropa, mochila y agenda.';if(day==='Miércoles')prep[2]='Preparar la comida del jueves y revisar qué frescos o proteínas faltan para la reposición.';if(day==='Jueves')prep[2]='Dejar montado el táper del viernes y hacer una compra breve de reposición si falta algo.'}
+  events.sort(function(a,b){function start(e){var m=String(e[0]||'').match(/(\\d{1,2}):(\\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}return start(a)-start(b)});
  });
  d.shopping=d.shopping||[];d.trainingLogs=d.trainingLogs||[];d.trainingTemplates=d.trainingTemplates||[
  {name:'Torso A',day:'Lunes',focus:'Pecho, espalda, hombro y brazos',plan:'Plantilla por completar con tu rutina habitual y la validación de fisioterapia.'},
