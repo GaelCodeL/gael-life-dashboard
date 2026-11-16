@@ -922,6 +922,103 @@ select.field option{background:#101d30;color:#f1f6ff}
 @media(max-width:760px){.training-plan-fields{grid-template-columns:1fr 1fr}.training-day-fields{grid-template-columns:1fr 1fr}.training-day-focus{grid-column:1/-1}.training-day-fields>.btn{grid-column:1/-1}.training-exercise-description{grid-template-columns:1fr}.training-media-fields{grid-template-columns:1fr 1fr}.training-photo-upload{grid-column:1/-1;min-height:35px}.training-session-fields{grid-template-columns:90px 1fr}.training-session-note,.training-session-fields>.btn{grid-column:1/-1}.training-catalog-filters{grid-template-columns:1fr}.training-catalog-grid{grid-template-columns:1fr}}
 @media(max-width:420px){.training-toolbar-main{align-items:stretch}.training-plan-picker{min-width:100%}.training-toolbar-actions{display:grid;grid-template-columns:1.15fr .8fr .8fr}.training-toolbar-actions .btn{padding:8px 5px;font-size:9px}.training-plan-fields,.training-day-fields{grid-template-columns:1fr}.training-day-focus,.training-plan-description,.training-day-fields>.btn{grid-column:auto}.training-section-heading{align-items:flex-start}.training-section-heading>.btn{flex:0 0 auto;padding:8px 9px;font-size:9px}.training-day-tab{min-width:102px;padding:9px}.training-set-headings,.training-set-row{grid-template-columns:20px minmax(45px,1fr) minmax(45px,1fr) minmax(40px,.8fr) 35px 20px;gap:4px}.training-set-row .field{font-size:10px;height:30px}.training-set-number{width:19px;height:19px;font-size:9px}.training-set-remove{width:20px}.training-exercise-head{padding:10px 9px}.training-exercise-head>.btn{padding:6px 7px;font-size:8px}.training-exercise-description,.training-media{padding-left:10px;padding-right:10px}.training-sets{padding:10px}.training-catalog-item{grid-template-columns:25px minmax(0,1fr) auto;gap:6px;padding:9px}.training-catalog-item .catalog-add{font-size:8px;padding:6px}.training-history-entry summary{gap:6px}}
 
+
+/* iPHONE FIX · touch-first training editor */
+@media(max-width:600px){
+ #entreno{min-width:0;width:100%;overflow:hidden}
+ #entreno .training-workspace,#entreno .card,#entreno .training-toolbar,
+ #entreno .training-editor,#entreno .training-catalog,#entreno .training-history-card{min-width:0;max-width:100%}
+ #entreno .page-intro h2{font-size:clamp(23px,7vw,29px)!important;line-height:1.08}
+ #entreno .page-intro p{font-size:12px;line-height:1.5}
+ #entreno .training-toolbar,#entreno .training-editor,#entreno .training-catalog,#entreno .training-history-card{padding:13px!important;border-radius:15px!important}
+ #entreno .training-toolbar-main{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-items:stretch}
+ #entreno .training-plan-picker{width:100%;min-width:0}
+ #entreno .training-toolbar-actions{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:6px;width:100%}
+ #entreno .training-toolbar-actions .btn{min-width:0;white-space:normal;line-height:1.2;padding:9px 5px;font-size:10px}
+ #entreno .training-plan-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+ #entreno .training-plan-fields label{min-width:0}
+ #entreno .training-plan-fields .field,
+ #entreno .training-plan-picker .field{width:100%;min-width:0;height:42px;font-size:16px!important}
+ #entreno .training-save-row{align-items:flex-start}
+ #entreno .training-save-status{font-size:9px;line-height:1.35;min-width:0;flex:1}
+ #entreno .training-save-row .btn{white-space:nowrap;padding:8px 9px}
+ #entreno .training-section-heading{align-items:flex-start;gap:8px}
+ #entreno .training-section-heading>div{min-width:0}
+ #entreno .training-section-heading h3{font-size:15px}
+ #entreno .training-section-heading p{font-size:10px;line-height:1.4}
+ #entreno .training-section-heading>.btn{flex:0 0 auto;white-space:nowrap}
+ #entreno .training-day-tabs{margin:0 -2px;padding:3px 2px 10px;max-width:100%;overscroll-behavior-x:contain}
+ #entreno .training-day-tab{min-width:100px;max-width:125px;padding:9px}
+ #entreno .training-day-fields{grid-template-columns:minmax(0,1fr);gap:8px;padding:10px}
+ #entreno .training-day-fields .field{height:42px;font-size:16px!important;min-width:0;width:100%}
+ #entreno .training-day-focus,#entreno .training-plan-description{grid-column:auto}
+ #entreno .training-day-fields>.btn{grid-column:auto;width:100%;min-height:39px}
+ #entreno .training-exercise-card{min-width:0;border-radius:13px}
+ #entreno .training-exercise-head{min-width:0;gap:7px;padding:10px 9px}
+ #entreno .training-exercise-number{width:28px;height:28px;flex:0 0 28px}
+ #entreno .training-exercise-title{min-width:0}
+ #entreno .training-exercise-title .field{width:100%;min-width:0;height:40px;font-size:16px!important;padding:7px 8px}
+ #entreno .training-exercise-title span{font-size:8px;line-height:1.3}
+ #entreno .training-exercise-head>.btn{flex:0 0 auto;padding:7px 8px;font-size:9px}
+ #entreno .training-exercise-description{grid-template-columns:minmax(0,1fr);gap:9px;padding:10px}
+ #entreno .training-exercise-description textarea{width:100%;min-width:0;min-height:64px;height:64px;font-size:16px!important;line-height:1.4}
+ #entreno .training-sets{padding:10px 9px}
+ #entreno .training-sets-heading{align-items:center}
+ #entreno .training-sets-heading small{font-size:9px;line-height:1.35;max-width:220px}
+ #entreno .training-set-headings{display:none!important}
+ #entreno .training-set-row{
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 39px 20px;
+  gap:5px;align-items:end;padding:9px 2px;
+ }
+ #entreno .training-set-number{align-self:center;margin-bottom:3px;width:21px;height:21px}
+ #entreno .training-set-row label{display:grid;min-width:0;gap:4px}
+ #entreno .training-set-row label small{display:block!important;font-size:8px;line-height:1.1;text-align:center;color:#9fc5df;letter-spacing:.4px;text-transform:uppercase}
+ #entreno .training-set-row .field{width:100%;min-width:0;height:39px;padding:5px 2px;font-size:16px!important;text-align:center}
+ #entreno .training-set-done{justify-items:center;align-self:end}
+ #entreno .training-set-done small{font-size:7px!important;letter-spacing:0}
+ #entreno .training-set-done input{width:19px;height:19px;margin:7px 0 9px}
+ #entreno .training-set-remove{align-self:center;width:20px;height:28px;margin-bottom:3px;font-size:20px}
+ #entreno .training-media{padding:10px}
+ #entreno .training-media-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+ #entreno .training-photo-upload{grid-column:auto;width:100%;min-height:40px}
+ #entreno .training-media-url{width:100%;min-width:0}
+ #entreno .training-media-url .field{width:100%;min-width:0;height:42px;font-size:16px!important}
+ #entreno .training-photo-preview{align-items:flex-start;flex-wrap:wrap}
+ #entreno .training-photo-preview img{width:112px;height:84px}
+ #entreno .training-video-preview{width:100%;max-height:210px}
+ #entreno .training-session-register{padding:11px;border-radius:12px}
+ #entreno .training-session-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+ #entreno .training-session-fields label,#entreno .training-session-note{grid-column:auto;min-width:0}
+ #entreno .training-session-fields .field{width:100%;height:42px;font-size:16px!important;min-width:0}
+ #entreno .training-session-fields>.btn{grid-column:auto;width:100%;height:43px;white-space:normal}
+ #entreno .training-catalog-filters{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+ #entreno .training-catalog-filters .field{height:42px;width:100%;min-width:0;font-size:16px!important}
+ #entreno .training-catalog-grid{grid-template-columns:minmax(0,1fr);gap:7px}
+ #entreno .training-catalog-item{grid-template-columns:27px minmax(0,1fr) auto;min-width:0;gap:7px;padding:9px}
+ #entreno .training-catalog-copy{min-width:0}
+ #entreno .training-catalog-copy>b{font-size:12px;line-height:1.3}
+ #entreno .training-catalog-copy>p{font-size:10px;line-height:1.4}
+ #entreno .training-catalog-item .catalog-add{align-self:center;padding:8px;font-size:9px}
+ #entreno .training-history-entry{min-width:0;padding:9px}
+ #entreno .training-history-entry summary{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 8px}
+ #entreno .training-history-entry summary:before{grid-row:1/3}
+ #entreno .training-history-date{grid-column:2}
+ #entreno .training-history-entry summary>b{grid-column:2;overflow-wrap:anywhere}
+ #entreno .training-history-meta{grid-column:2}
+ #entreno .training-history-exercise small{overflow-wrap:anywhere}
+}
+@media(max-width:370px){
+ #entreno .training-set-row{grid-template-columns:19px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 34px 17px;gap:3px}
+ #entreno .training-set-row label small{font-size:7px}
+ #entreno .training-set-row .field{font-size:15px!important}
+ #entreno .training-set-number{width:18px;height:18px}
+ #entreno .training-set-done input{width:17px;height:17px}
+ #entreno .training-exercise-head>.btn{padding:6px;font-size:8px}
+ #entreno .training-catalog-item{grid-template-columns:23px minmax(0,1fr) auto}
+ #entreno .training-catalog-item .catalog-add{padding:7px 6px;font-size:8px}
+}
+
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
