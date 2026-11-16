@@ -801,6 +801,125 @@ select.field option{background:#101d30;color:#f1f6ff}
  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+
+/* TRAINING STUDIO · reusable plans, exercise library and real session logs */
+.training-workspace{display:grid;gap:13px}
+.training-toolbar,.training-editor,.training-catalog,.training-history-card{background:linear-gradient(145deg,#14243b,#0c182a)!important;border:1px solid #385474!important;box-shadow:0 14px 38px #0004,inset 0 1px #ffffff0b!important}
+.training-toolbar{border-top:3px solid #5bd8ec!important}
+.training-toolbar-main{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.training-plan-picker{display:grid;gap:6px;min-width:min(260px,100%);flex:1}
+.training-plan-picker>span,.training-plan-fields label>span,.training-day-fields label>span,.training-session-fields label>span{font-size:9px;letter-spacing:1.1px;font-weight:900;color:#92cce6;text-transform:uppercase}
+.training-toolbar-actions{display:flex;gap:6px;flex-wrap:wrap}
+.training-toolbar-actions .btn{font-size:10px}
+.training-plan-fields{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:9px;margin-top:13px}
+.training-plan-fields label,.training-day-fields label,.training-session-fields label{display:grid;gap:6px;min-width:0}
+.training-save-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid #ffffff15}
+.training-save-status{font-size:10px;color:#9bb4cc}
+.training-save-row .btn{font-size:10px}
+.danger-soft{background:linear-gradient(130deg,#3a2630,#202033)!important;border-color:#79505c!important;color:#ffc2c6!important}
+.danger-soft:disabled{opacity:.35;cursor:not-allowed}
+.training-section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.training-section-heading h3{margin:4px 0 3px;color:#f4f8ff}
+.training-section-heading p{font-size:11px;margin:0;line-height:1.45}
+.training-section-heading .eyebrow{color:#a9a0fa}
+.training-section-heading.compact{margin-bottom:9px}
+.training-day-tabs{display:flex;gap:7px;overflow-x:auto;padding:3px 1px 10px;scrollbar-width:thin}
+.training-day-tab{flex:0 0 auto;min-width:116px;display:grid;gap:4px;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid #344b6a;background:linear-gradient(145deg,#14273f,#0d192b);color:#dcecff;cursor:pointer}
+.training-day-tab span{font-size:8px;font-weight:900;letter-spacing:1px;color:#80dff0;text-transform:uppercase}
+.training-day-tab b{font-size:12px;color:#f3f7ff}
+.training-day-tab small{font-size:9px;color:#9cb0c9}
+.training-day-tab.active{border-color:#a99aff;background:linear-gradient(135deg,#34305a,#17334a);box-shadow:0 0 20px #9783ff2c,inset 0 1px #fff2}
+.training-day-tab.active span{color:#f2ceff}
+.training-day-fields{display:grid;grid-template-columns:1.1fr .8fr 1.5fr auto;gap:8px;align-items:end;padding:12px;border:1px solid #314967;border-radius:13px;background:#0b1729}
+.training-day-editor{margin-bottom:13px}
+.training-day-fields .btn{font-size:10px;min-height:39px}
+.training-exercise-list{display:grid;gap:11px}
+.training-empty-exercises{min-height:130px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;text-align:center;padding:18px;border:1px dashed #496889;border-radius:14px;background:radial-gradient(ellipse at 50% 0%,#3bbfe51b,transparent 65%),#0c192b}
+.training-empty-exercises>span{font-size:25px;color:#73e2f1}
+.training-empty-exercises b{color:#edf7ff;font-size:13px}
+.training-empty-exercises small{max-width:380px;color:#9eb4cc;line-height:1.45}
+.training-exercise-card{overflow:hidden;border:1px solid #385574;border-left:3px solid #65d7ef;border-radius:15px;background:linear-gradient(145deg,#132941,#0b1729);box-shadow:0 8px 22px #0003}
+.training-exercise-card:nth-child(even){border-left-color:#b6a2ff}
+.training-exercise-head{display:flex;align-items:center;gap:10px;padding:12px 13px 10px;background:linear-gradient(105deg,#1b3450,#14233a)}
+.training-exercise-number{display:grid;place-items:center;width:31px;height:31px;flex:0 0 31px;border-radius:10px;background:linear-gradient(140deg,#9eeeff,#56c8ed);color:#071522;font-size:11px;font-weight:950;box-shadow:0 0 16px #59c9ee30}
+.training-exercise-card:nth-child(even) .training-exercise-number{background:linear-gradient(140deg,#d4caff,#9c8bf3)}
+.training-exercise-title{display:grid;gap:4px;flex:1;min-width:0}
+.training-exercise-title .field{height:34px;font-size:13px;font-weight:850;background:#0b1b2d!important;border-color:#456584!important}
+.training-exercise-title span{font-size:9px;color:#91aec9}
+.training-exercise-head>.btn{font-size:9px;padding:7px 9px}
+.training-exercise-description{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:11px 13px 3px}
+.training-exercise-description label{display:grid;gap:5px;min-width:0}
+.training-exercise-description label>span,.training-media-fields label>span{font-size:9px;text-transform:uppercase;letter-spacing:.85px;color:#9dc8e2;font-weight:850}
+.training-exercise-description textarea{min-height:56px;height:56px;resize:vertical;font-size:10px;line-height:1.4;color:#d4e1ef}
+.training-sets{padding:12px 13px}
+.training-sets-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.training-sets-heading>div{display:grid;gap:3px}
+.training-sets-heading b{font-size:12px;color:#eff8ff}
+.training-sets-heading small{font-size:9px;color:#91a8c1}
+.training-sets-heading .btn{font-size:9px;padding:7px 10px}
+.training-set-headings,.training-set-row{display:grid;grid-template-columns:28px minmax(58px,1fr) minmax(58px,1fr) minmax(48px,.8fr) 48px 25px;gap:6px;align-items:center}
+.training-set-headings{padding:0 5px 6px;color:#8ca8c2;font-size:8px;text-align:center;text-transform:uppercase;letter-spacing:.5px}
+.training-set-row{padding:5px;border-top:1px solid #ffffff0d}
+.training-set-number{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#1c3450;color:#9cdcf0;font-size:10px;font-weight:900}
+.training-set-row label{display:grid;gap:3px}
+.training-set-row label small{display:none}
+.training-set-row .field{height:32px;padding:5px 4px;text-align:center;font-size:11px;font-weight:750;font-variant-numeric:tabular-nums}
+.training-set-done{justify-items:center}
+.training-set-done input{width:17px;height:17px;accent-color:#88e6bd}
+.training-set-remove{width:23px;height:25px;border:0;background:transparent;color:#d58b93;font-size:18px;cursor:pointer}
+.training-media{border-top:1px solid #ffffff12;padding:11px 13px 13px}
+.training-media-label{font-size:8px;font-weight:950;letter-spacing:1.2px;color:#f3c477;margin-bottom:8px}
+.training-media-fields{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:end}
+.training-photo-upload{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:37px;padding:0 12px;border:1px solid #57728e;border-radius:10px;background:#1a3048;color:#d8efff;font-size:10px;font-weight:850;cursor:pointer;white-space:nowrap}
+.training-photo-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.training-media-url{display:grid;gap:5px;min-width:0}
+.training-media-url .field{height:36px;font-size:10px}
+.training-media-url>span{font-size:8px!important}
+.training-photo-preview{display:flex;align-items:center;gap:10px;margin-top:10px}
+.training-photo-preview img{width:92px;height:70px;object-fit:cover;border-radius:9px;border:1px solid #52718e;background:#091321}
+.training-photo-preview .btn{font-size:9px}
+.training-video-link{display:inline-flex;margin-top:8px;padding:7px 10px;border-radius:8px;background:#302747;border:1px solid #65528e;color:#e0d4ff;font-size:10px;font-weight:800;text-decoration:none}
+.training-session-register{margin-top:14px;padding:14px;border:1px solid #806747;border-radius:14px;background:linear-gradient(120deg,#302b29,#18253a 70%,#272443)}
+.training-session-register .eyebrow{color:#ffcf79}
+.training-session-fields{display:grid;grid-template-columns:100px 1fr auto;align-items:end;gap:9px}
+.training-session-fields .field{height:38px}
+.training-session-fields .btn{height:38px;font-size:10px;white-space:nowrap}
+.training-catalog{border-top:3px solid #ffc36b!important}
+.training-catalog .training-section-heading .eyebrow{color:#ffd071}
+.training-catalog-count{flex:0 0 auto;padding:6px 9px;border:1px solid #886f45;border-radius:20px;background:#3b3021;color:#ffdc99;font-size:9px;font-weight:900;white-space:nowrap}
+.training-catalog-filters{display:grid;grid-template-columns:1.5fr 1fr;gap:8px;margin-bottom:10px}
+.training-catalog-filters .field{height:39px}
+.training-catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.training-catalog-item{display:grid;grid-template-columns:29px minmax(0,1fr) auto;align-items:start;gap:8px;padding:10px;border:1px solid #304966;border-radius:12px;background:linear-gradient(145deg,#152943,#0d1a2c)}
+.training-catalog-item:nth-child(3n){border-color:#5a4f80}
+.training-catalog-icon{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#1e4157;color:#84e9f1;font-size:17px;font-weight:850}
+.training-catalog-item:nth-child(3n) .training-catalog-icon{background:#302b52;color:#c5b7ff}
+.training-catalog-copy{display:grid;gap:3px;min-width:0}
+.training-catalog-copy>span{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#ffd17e;font-weight:900}
+.training-catalog-copy>b{font-size:11px;line-height:1.3;color:#eff6ff}
+.training-catalog-copy>small{font-size:9px;color:#8eaac4}
+.training-catalog-copy>p{font-size:9px;color:#b6c8dc;line-height:1.4;margin:3px 0 0}
+.training-catalog-item .catalog-add{align-self:center;font-size:9px;padding:7px 9px;white-space:nowrap}
+.training-catalog-footnote{margin:11px 0 0;font-size:9px;line-height:1.5;color:#8ea4bc}
+.training-history-card{border-top:3px solid #8de6c1!important}
+.training-history-card .eyebrow{color:#8de6c1}
+.training-history-list{display:grid;gap:7px}
+.training-history-entry{padding:10px 12px;border:1px solid #314b68;border-radius:11px;background:#0d1b2d}
+.training-history-entry summary{display:flex;align-items:center;gap:9px;flex-wrap:wrap;cursor:pointer;list-style:none}
+.training-history-entry summary::-webkit-details-marker{display:none}
+.training-history-entry summary:before{content:"＋";color:#89e4c0;font-size:13px;font-weight:900}
+.training-history-entry[open] summary:before{content:"−"}
+.training-history-date{font-size:9px;color:#8dddf0}
+.training-history-entry summary>b{font-size:11px;color:#f2f7ff;flex:1}
+.training-history-meta{font-size:9px;color:#ffcf82}
+.training-history-entry>p{font-size:10px;line-height:1.5;color:#b9cce0;margin:9px 0}
+.training-history-exercise{display:grid;gap:3px;padding:7px 0;border-top:1px solid #ffffff11}
+.training-history-exercise b{font-size:10px;color:#dcecff}
+.training-history-exercise small{font-size:9px;line-height:1.5;color:#9cb2ca}
+.training-history-entry .history-delete{margin-top:8px;font-size:9px}
+@media(max-width:760px){.training-plan-fields{grid-template-columns:1fr 1fr}.training-day-fields{grid-template-columns:1fr 1fr}.training-day-focus{grid-column:1/-1}.training-day-fields>.btn{grid-column:1/-1}.training-exercise-description{grid-template-columns:1fr}.training-media-fields{grid-template-columns:1fr 1fr}.training-photo-upload{grid-column:1/-1;min-height:35px}.training-session-fields{grid-template-columns:90px 1fr}.training-session-note,.training-session-fields>.btn{grid-column:1/-1}.training-catalog-grid{grid-template-columns:1fr}}
+@media(max-width:420px){.training-toolbar-main{align-items:stretch}.training-plan-picker{min-width:100%}.training-toolbar-actions{display:grid;grid-template-columns:1.15fr .8fr .8fr}.training-toolbar-actions .btn{padding:8px 5px;font-size:9px}.training-plan-fields,.training-day-fields{grid-template-columns:1fr}.training-day-focus,.training-plan-description,.training-day-fields>.btn{grid-column:auto}.training-section-heading{align-items:flex-start}.training-section-heading>.btn{flex:0 0 auto;padding:8px 9px;font-size:9px}.training-day-tab{min-width:102px;padding:9px}.training-set-headings,.training-set-row{grid-template-columns:20px minmax(45px,1fr) minmax(45px,1fr) minmax(40px,.8fr) 35px 20px;gap:4px}.training-set-row .field{font-size:10px;height:30px}.training-set-number{width:19px;height:19px;font-size:9px}.training-set-remove{width:20px}.training-exercise-head{padding:10px 9px}.training-exercise-head>.btn{padding:6px 7px;font-size:8px}.training-exercise-description,.training-media{padding-left:10px;padding-right:10px}.training-sets{padding:10px}.training-catalog-item{grid-template-columns:25px minmax(0,1fr) auto;gap:6px;padding:9px}.training-catalog-item .catalog-add{font-size:8px;padding:6px}.training-history-entry summary{gap:6px}}
+
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -843,7 +962,32 @@ select.field option{background:#101d30;color:#f1f6ff}
 <section id="hogar" class="page"><div class="cols"><div class="card"><h3>Rutina del hogar</h3><div id="chores" class="stack"></div></div><div class="card"><h3>Añadir tarea doméstica</h3><form id="choreForm" class="stack"><input class="field" name="name" placeholder="Tarea" required><input class="field" name="day" placeholder="Día" required><input class="field" name="duration" placeholder="Duración"><button class="btn primary">Añadir tarea</button></form><div class="mutedbox">Mascotas: alimentación, agua, limpieza y cuidados diarios.</div></div></div></section>
 
 <section id="organizar" class="page"><div class="page-intro"><div class="eyebrow">ORGANIZACIÓN</div><h2>Tu semana, en orden.</h2><p class="muted">Todo lo práctico en un solo sitio. Abre solo el módulo que necesitas.</p></div><div class="module-grid"><button class="module-card" onclick="go('agenda')"><span>▦</span><b>Agenda</b><small>Horario flexible y compromisos</small></button><button class="module-card" onclick="go('tareas')"><span>✓</span><b>Tareas</b><small>Prioridades y pendientes</small></button><button class="module-card" onclick="go('comidas')"><span>⌂</span><b>Menú y compra</b><small>Comidas completas y reposición</small></button><button class="module-card" onclick="go('estudios')"><span>▤</span><b>Estudios</b><small>Formación y sesiones</small></button><button class="module-card" onclick="go('hogar')"><span>◇</span><b>Hogar</b><small>Rutinas domésticas</small></button></div><div class="card"><h3>Una planificación que se adapta</h3><p class="muted">Los compromisos tienen hora. Las tareas y los paseos son flexibles. La preparación de comida se reparte durante la semana para no depender solo del domingo.</p></div></section>
-<section id="entreno" class="page"><div class="page-intro"><div class="eyebrow">FUERZA · CONSTANCIA · RECUPERACIÓN</div><h2>Cuatro sesiones listas para reutilizar.</h2><p class="muted">La estructura que sueles utilizar, preparada para volver cuando tu fisioterapeuta confirme qué cargas y movimientos puedes hacer.</p></div><div class="training-status"><b>Plantillas de entrenamiento</b><span>Este espacio permite organizar sesiones reutilizables. Adapta ejercicios y cargas a tu situación y a las recomendaciones profesionales que correspondan.</span></div><div id="trainingCards" class="training-grid"></div><div class="cols"><div class="card"><h3>Registrar entrenamiento</h3><form id="trainingLogForm" class="stack"><select class="field" name="template" id="trainingTemplate"></select><input class="field" name="minutes" type="number" min="1" placeholder="Duración (minutos)" required><input class="field" name="note" placeholder="Sensaciones / indicaciones de fisio"><button class="btn primary">Guardar sesión realizada</button></form></div><div class="card"><h3>Historial</h3><div id="trainingHistory" class="stack"></div></div></div></section>
+<section id="entreno" class="page">
+ <div class="page-intro training-intro"><div class="eyebrow">FUERZA · REGISTRO · PROGRESO</div><h2>Tu centro de entrenamiento.</h2><p class="muted">Crea varios planes, organiza tus días y registra cada serie con sus repeticiones, kilos y RIR. Tus plantillas y tus sesiones reales quedan separadas.</p></div>
+ <div id="trainingWorkspace" class="training-workspace">
+  <div class="training-toolbar card">
+   <div class="training-toolbar-main"><label class="training-plan-picker"><span>PLAN ACTIVO</span><select id="trainingPlanSelect" class="field"></select></label><div class="training-toolbar-actions"><button class="btn primary" id="trainingAddPlanBtn" type="button">＋ Nuevo plan</button><button class="btn" id="trainingDuplicatePlanBtn" type="button">Duplicar</button><button class="btn danger-soft" id="trainingDeletePlanBtn" type="button">Eliminar</button></div></div>
+   <div class="training-plan-fields">
+    <label><span>Nombre del plan</span><input id="trainingPlanName" class="field" maxlength="70" placeholder="Ej. Hipertrofia · 4 días"></label>
+    <label><span>Objetivo / fase</span><select id="trainingPlanGoal" class="field"><option>Hipertrofia</option><option>Fuerza</option><option>Mantenimiento</option><option>Déficit calórico</option><option>Recuperación / baja carga</option><option>Condición física</option><option>Movilidad</option><option>Personalizado</option></select></label>
+    <label class="training-plan-description"><span>Descripción del plan</span><input id="trainingPlanDescription" class="field" maxlength="180" placeholder="Notas, contexto o criterios de esta planificación"></label>
+   </div>
+   <div class="training-save-row"><span id="trainingSaveStatus" class="training-save-status">Los cambios se guardan automáticamente.</span><button class="btn" id="trainingSavePlanBtn" type="button">Guardar plan ✓</button></div>
+  </div>
+  <div class="training-editor card">
+   <div class="training-section-heading"><div><div class="eyebrow">ESTRUCTURA DEL PLAN</div><h3>Sesiones y días</h3><p class="muted">Selecciona un día para editarlo. Cada plan puede tener los días que necesites.</p></div><button class="btn primary" id="trainingAddDayBtn" type="button">＋ Añadir día</button></div>
+   <div id="trainingDayTabs" class="training-day-tabs"></div><div id="trainingDayEditor" class="training-day-editor"></div><div id="trainingExerciseList" class="training-exercise-list"></div>
+   <div class="training-session-register"><div class="training-section-heading compact"><div><div class="eyebrow">ENTRENAMIENTO REALIZADO</div><h3>Registrar esta sesión</h3><p class="muted">Guarda una copia de los ejercicios y las marcas actuales en tu historial.</p></div></div>
+    <div class="training-session-fields"><label><span>Duración (min)</span><input id="trainingSessionMinutes" class="field" type="number" min="1" max="600" value="60"></label><label class="training-session-note"><span>Sensaciones generales de hoy</span><input id="trainingSessionNote" class="field" maxlength="220" placeholder="Energía, molestias, rendimiento…"></label><button class="btn primary" id="trainingLogSessionBtn" type="button">Guardar sesión realizada</button></div>
+   </div>
+  </div>
+  <div class="training-catalog card"><div class="training-section-heading"><div><div class="eyebrow">BIBLIOTECA DE MOVIMIENTOS</div><h3>Añadir ejercicios</h3><p class="muted">Busca una opción y pulsa «Añadir». Se incorporará al día seleccionado con tres series editables.</p></div><span class="training-catalog-count" id="trainingCatalogCount">0 ejercicios</span></div>
+   <div class="training-catalog-filters"><input id="trainingSearch" class="field" type="search" placeholder="Buscar ejercicio, músculo o material…"><select id="trainingCategory" class="field"><option value="">Todos los grupos</option></select></div><div id="trainingCatalog" class="training-catalog-grid"></div>
+   <p class="training-catalog-footnote">Las indicaciones son recordatorios técnicos breves, no una prescripción individual. Ajusta los movimientos y las cargas a tu situación y a las recomendaciones profesionales que tengas.</p>
+  </div>
+  <div class="card training-history-card"><div class="training-section-heading"><div><div class="eyebrow">PROGRESO REGISTRADO</div><h3>Historial de entrenamientos</h3><p class="muted">Cada sesión guarda una copia de los ejercicios, series y sensaciones de ese día.</p></div><span class="training-catalog-count" id="trainingHistoryCount">0 sesiones</span></div><div id="trainingHistory" class="training-history-list"></div></div>
+ </div>
+</section>
 <section id="bienestar" class="page"><div class="page-intro"><div class="eyebrow">CUIDARTE TAMBIÉN ES AVANZAR</div><h2>Hábitos amables, no obligaciones.</h2><p class="muted">Pequeños apoyos para tu descanso, movimiento, alimentación y salud mental. Los días difíciles también cuentan.</p></div><div class="wellbeing-banner"><div><div class="eyebrow">UN RECORDATORIO PARA HOY</div><div class="wellbeing-quote" id="kindReminder">No tienes que resolverlo todo hoy. Solo dar el siguiente paso posible.</div></div><button class="btn" id="newReminder" type="button">Otro recordatorio</button></div><div class="card"><div class="row"><div><h3>Hábitos de hoy</h3><p class="muted">Registra sin convertirlo en una competición.</p></div><span class="pill" id="habitProgress">0 / 0</span></div><div id="habitCards" class="habit-grid"></div></div><div class="card"><div class="row"><div><h3>Biblioteca de hábitos fiables</h3><p class="muted">Selección inicial basada en fuentes sanitarias y guías de organismos oficiales.</p></div><span class="tag">Fuentes enlazadas</span></div><div class="research-bar"><input class="field" id="habitSearch" placeholder="Buscar: caminar, sueño, estrés, alimentación…"><button class="btn" id="searchEvidence" type="button">Buscar estudios</button></div><div id="habitLibrary" class="library-grid"></div><p class="small-note muted">La búsqueda abre resultados de PubMed para que puedas revisar autores, diseño y conclusiones. No se presentan titulares virales como evidencia.</p></div><div class="card"><h3>Seguimiento de salud</h3><p class="muted">Dolor, síntomas y recuperación.</p><button class="btn primary" onclick="go('salud')">Abrir registro de salud</button></div></section>
 <section id="diario" class="page"><div class="page-intro"><div class="eyebrow">TU ESPACIO PERSONAL</div><h2>También hay vida fuera de la lista de tareas.</h2><p class="muted">Un diario privado para ordenar pensamientos y un rincón de ocio para guardar planes que te ilusionen.</p></div><div class="cols"><div class="card"><h3>Escribir una entrada</h3><form id="diaryForm" class="stack"><label class="muted">¿Cómo te encuentras?<select class="field" name="mood"><option value="5">Muy bien</option><option value="4">Bien</option><option value="3" selected>Normal</option><option value="2">Bajo de ánimo</option><option value="1">Día difícil</option></select></label><textarea class="field" name="entry" rows="5" placeholder="Escribe para ti. No hace falta que quede bonito."></textarea><input class="field" name="good" placeholder="Algo que agradeces o reconoces (opcional)"><button class="btn primary">Guardar entrada</button></form></div><div class="card"><h3>Planes e ideas de ocio</h3><p class="muted">Cosas que quieres probar, sitios que visitar y momentos que te apetece reservar.</p><form id="leisureForm" class="stack"><input class="field" name="idea" placeholder="Una idea que te apetezca…" required><select class="field" name="type"><option>Plan pendiente</option><option>Ocio en casa</option><option>Naturaleza</option><option>Cultura / tecnología</option><option>Conocer gente</option></select><button class="btn">Guardar idea</button></form><div id="leisureList" class="stack"></div></div></div><div class="card"><h3>Mis entradas</h3><div id="diaryEntries" class="stack"></div></div></section>
 <div class="mutedbox row"><span id="cloudStatus">Conectando con la nube…</span><button class="btn" id="logoutBtn" type="button">Cerrar sesión</button></div><p class="muted" style="text-align:center;font-size:10px">GAEL · LIFE OS · sincronización en la nube</p></div>
@@ -1193,6 +1337,28 @@ function ensureData(){
  {name:'Torso B',day:'Jueves',focus:'Segundo estímulo de tren superior',plan:'Plantilla por completar con tu rutina habitual y la validación de fisioterapia.'},
  {name:'Pierna B',day:'Viernes',focus:'Segundo trabajo de tren inferior',plan:'Plantilla de ejemplo por completar y adaptar.'}
  ];
+ d.trainingLogs=d.trainingLogs||[];
+ if(!Array.isArray(d.trainingPlans)||!d.trainingPlans.length){
+  d.trainingPlans=[{id:'plan-hypertrophy-default',name:'Hipertrofia · 4 días',goal:'Hipertrofia',description:'Plantilla inicial editable. Añade ejercicios y ajusta series, repeticiones, cargas y RIR.',days:d.trainingTemplates.map(function(item,index){return {id:'day-'+index+'-'+Date.now(),name:item.name,weekday:item.day,focus:item.focus||'',exercises:[]}})}];
+ }
+ d.trainingPlans.forEach(function(plan){
+  plan.id=plan.id||('plan-'+Date.now()+'-'+Math.random().toString(36).slice(2,7));
+  plan.name=plan.name||'Plan de entrenamiento';plan.goal=plan.goal||'Personalizado';plan.description=plan.description||'';
+  plan.days=Array.isArray(plan.days)?plan.days:[];
+  plan.days.forEach(function(session,index){
+   session.id=session.id||('day-'+Date.now()+'-'+index);session.name=session.name||('Día '+(index+1));session.weekday=session.weekday||'';session.focus=session.focus||'';
+   session.exercises=Array.isArray(session.exercises)?session.exercises:[];
+   session.exercises.forEach(function(ex){
+    ex.id=ex.id||('exercise-'+Date.now()+'-'+Math.random().toString(36).slice(2,7));ex.name=ex.name||'Ejercicio';ex.category=ex.category||'General';ex.equipment=ex.equipment||'';
+    ex.howTo=ex.howTo||'';ex.sensations=ex.sensations||'';ex.photoUrl=ex.photoUrl||'';ex.photoData=ex.photoData||'';ex.videoUrl=ex.videoUrl||'';
+    ex.sets=Array.isArray(ex.sets)?ex.sets:[];
+    ex.sets.forEach(function(set){set.reps=set.reps===undefined?'10':String(set.reps);set.kg=set.kg===undefined?'':String(set.kg);set.rir=set.rir===undefined?'2':String(set.rir);set.done=!!set.done});
+   });
+  });
+ });
+ d.activeTrainingPlanId=d.activeTrainingPlanId||d.trainingPlans[0].id;
+ if(!d.trainingPlans.some(function(plan){return plan.id===d.activeTrainingPlanId}))d.activeTrainingPlanId=d.trainingPlans[0].id;
+ if(!d.activeTrainingDayId){var activePlan=d.trainingPlans.find(function(plan){return plan.id===d.activeTrainingPlanId})||d.trainingPlans[0];d.activeTrainingDayId=activePlan.days[0]?activePlan.days[0].id:'';}
  d.habitLogs=d.habitLogs||{};d.diary=d.diary||[];d.leisure=d.leisure||[];
  d.completedBlocks=d.completedBlocks||{};
  d.appointments=d.appointments||[];
@@ -1348,8 +1514,8 @@ document.getElementById('habitCards').addEventListener('change',function(e){cons
 document.getElementById('newReminder').onclick=function(){const node=document.getElementById('kindReminder'),current=reminders.indexOf(node.textContent);node.textContent=reminders[(current+1+reminders.length)%reminders.length]};
 document.getElementById('habitSearch').addEventListener('input',renderLibrary);
 document.getElementById('searchEvidence').onclick=function(){const q=document.getElementById('habitSearch').value.trim()||'healthy lifestyle physical activity sleep mental health';window.open('https://pubmed.ncbi.nlm.nih.gov/?term='+encodeURIComponent(q),'_blank','noopener')};
-document.getElementById('trainingCards').addEventListener('click',function(e){const i=e.target.dataset.trainingEdit;if(i===undefined)return;const item=d.trainingTemplates[Number(i)],value=prompt('Editar la plantilla '+item.name+'. Añade aquí la estructura que quieras reutilizar:',item.plan);if(value!==null){item.plan=value;save()}});
-document.getElementById('trainingLogForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target),item=d.trainingTemplates[Number(f.get('template'))];d.trainingLogs.unshift({name:item.name,minutes:Number(f.get('minutes')),note:f.get('note'),date:new Date().toLocaleDateString('es-ES')});e.target.reset();save()});
+
+
 document.getElementById('diaryForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target);d.diary.unshift({id:Date.now().toString(),date:new Date().toLocaleDateString('es-ES'),mood:f.get('mood'),entry:f.get('entry'),good:f.get('good')});e.target.reset();save()});
 document.getElementById('leisureForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target);d.leisure.unshift({idea:f.get('idea'),type:f.get('type')});e.target.reset();save()});
 document.getElementById('diaryEntries').addEventListener('click',function(e){const id=e.target.dataset.diaryDelete;if(id!==undefined){d.diary=d.diary.filter(x=>x.id!==id);save()}});
