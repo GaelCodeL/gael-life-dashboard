@@ -695,7 +695,7 @@ function renderToday(){
 }
 document.getElementById('priorities').addEventListener('change',function(e){const i=e.target.dataset.homeDone;if(i!==undefined){d.tasks[Number(i)].done=e.target.checked;save()}});
 function renderNew(){renderToday();renderMenu();renderShopping();renderHabits();renderTraining();renderDiary()}
-window.render=function(){ensureData();baseRender();renderNew()};
+window.render=function(){ensureData();baseRender();renderNew();if(window.refreshNow)window.refreshNow()};
 window.go=function(p){
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
  const page=document.getElementById(p);if(page)page.classList.add('active');
