@@ -509,37 +509,56 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  function mins(s){var m=String(s||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
  function updateNow(){
   var now=new Date(),dayName=getTodayName(),minute=now.getHours()*60+now.getMinutes();
-  var dateKey=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+  var dateKey=localDateKey(now);
   d.completedBlocks=d.completedBlocks||{};
   var doneToday=d.completedBlocks[dateKey]||{};
-  var extra=(window.getLifeAppointmentsForDay?window.getLifeAppointmentsForDay(dayName):[]);
-  var rawEvents=window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):[...(d.agenda[dayName]||[]),...extra];
+  var rawEvents=window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):(d.agenda[dayName]||[]).slice();
   var entries=rawEvents.map(function(e){
     var raw=String(e[0]),times=raw.match(/\d{1,2}:\d{2}/g)||[];
-    var key=e[4]||raw+'|'+String(e[1]);
-    return {event:e,start:times.length?mins(times[0]):null,end:times.length>1?mins(times[1]):null,first:times[0]||'',key:key,done:!!doneToday[key],appointment:String(e[4]||'').indexOf('appointment:')===0};
+    var key=e[4]||raw+'|'+String(e[1]),record=doneToday[key];
+    var start=times.length?mins(times[0]):null,end=times.length>1?mins(times[1]):null;
+    return {event:e,start:start,end:end,first:times[0]||'',key:key,done:!!record,doneAt:typeof record==='string'?Date.parse(record):null,appointment:String(e[4]||'').indexOf('appointment:')===0,flexible:/en adelante/i.test(raw)};
+  });
+  entries.forEach(function(x){
+    if(x.end===null&&x.flexible&&x.start!==null){
+      var nextStart=entries.filter(function(y){return y!==x&&y.start!==null&&y.start>x.start}).map(function(y){return y.start}).sort(function(a,b){return a-b})[0];
+      if(nextStart!==undefined)x.end=nextStart;
+    }
   });
   function overlaps(a,b){return a!==b&&a.start!==null&&a.end!==null&&b.start!==null&&b.end!==null&&a.start<b.end&&b.start<a.end}
-  var usableEntries=entries.filter(function(x){return x.appointment||!entries.some(function(y){return y.appointment&&overlaps(x,y)})});
-  var activeItems=usableEntries.filter(function(x){return !x.done&&x.start!==null&&x.end!==null&&x.start<=minute&&minute<x.end});
-  activeItems.sort(function(a,b){return Number(b.appointment)-Number(a.appointment)});
-  var current=activeItems[0]||null;
-  var next=usableEntries.filter(function(x){return !x.done&&x.start!==null&&x.start>minute}).sort(function(a,b){return a.start-b.start})[0]||null;
-  var mostRecentDone=usableEntries.filter(function(x){return x.done&&x.start!==null&&x.start<=minute}).sort(function(a,b){return b.start-a.start})[0]||null;
-  var target=current||next;
-  var panel=document.getElementById('nowPanel');if(panel)panel.dataset.state=current?'active':mostRecentDone?'done':next?'upcoming':'free';
+  var usable=entries.filter(function(x){return x.appointment||!entries.some(function(y){return y.appointment&&overlaps(x,y)})});
+  var current=usable.filter(function(x){return !x.done&&x.start!==null&&x.end!==null&&x.start<=minute&&minute<x.end})
+    .sort(function(a,b){return Number(b.appointment)-Number(a.appointment)})[0]||null;
+  var punctual=usable.filter(function(x){return !x.done&&!x.appointment&&x.start!==null&&x.end===null&&minute>=x.start&&minute<x.start+30})
+    .sort(function(a,b){return b.start-a.start})[0]||null;
+  var overdue=usable.filter(function(x){return !x.done&&!x.appointment&&x.start!==null&&x.end!==null&&minute>=x.end&&minute<x.end+60&&!['Trabajo','Estudios'].includes(x.event[3])})
+    .sort(function(a,b){return b.end-a.end})[0]||null;
+  var next=usable.filter(function(x){return !x.done&&x.start!==null&&x.start>minute})
+    .sort(function(a,b){return a.start-b.start})[0]||null;
+  var recentDone=usable.filter(function(x){return x.done&&x.doneAt&&now.getTime()-x.doneAt>=0&&now.getTime()-x.doneAt<45*60000})
+    .sort(function(a,b){return b.doneAt-a.doneAt})[0]||null;
+  var currentItem=current||punctual||overdue||null;
+  var target=currentItem||(!recentDone?next:null);
+  var panel=document.getElementById('nowPanel');
+  if(panel)panel.dataset.state=current?'active':punctual?'due':overdue?'overdue':recentDone?'done':next?'upcoming':'free';
   if(current){
     $('nowTitle').textContent='Ahora toca: '+current.event[1];
     $('nowDesc').textContent=current.event[2]+' · Hasta las '+(String(current.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1];
-  }else if(mostRecentDone){
-    $('nowTitle').textContent='Hecho: '+mostRecentDone.event[1];
-    $('nowDesc').textContent='Ya has completado este bloque. No volverá a aparecer como pendiente hoy.'+(next?' Después: '+next.event[1]+' a las '+next.first+'.':'');
+  }else if(punctual){
+    $('nowTitle').textContent='Es el momento: '+punctual.event[1];
+    $('nowDesc').textContent=punctual.event[2]+' · Recordatorio de las '+punctual.first+'.';
+  }else if(overdue){
+    $('nowTitle').textContent='Te queda pendiente: '+overdue.event[1];
+    $('nowDesc').textContent='Este bloque terminó a las '+(String(overdue.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1]+'. Márcalo como hecho si ya lo has completado.';
+  }else if(recentDone){
+    $('nowTitle').textContent='¡Perfecto! Un bloque menos.';
+    $('nowDesc').textContent='Has marcado «'+recentDone.event[1]+'» como hecho. Lo retiramos de tus pendientes de hoy.'+(next?' Lo siguiente será '+next.event[1]+' a las '+next.first+'.':'');
   }else if(next){
     $('nowTitle').textContent='Lo siguiente: '+next.event[1];
     $('nowDesc').textContent='Empieza a las '+next.first+'. Hasta entonces tienes margen; no hace falta adelantarte.';
   }else{
     $('nowTitle').textContent='Agenda despejada';
-    $('nowDesc').textContent='Has terminado los bloques previstos para hoy. Elige descansar o hacer algo por gusto.';
+    $('nowDesc').textContent='No tienes más bloques pendientes. Puedes descansar o elegir algo por gusto.';
   }
   $('nowNext').textContent=next?next.event[1]:'Sin más bloques pendientes';
   $('nowNextTime').textContent=next?'Empieza a las '+next.first:(current?'Después de las '+(String(current.event[0]).match(/\d{1,2}:\d{2}/g)||[])[1]:'Por hoy, agenda cerrada');
@@ -550,25 +569,22 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   $('nowAdvice').textContent=conflict?'⚠ '+conflict.event[1]+' se solapa con '+collision.event[1]+'. Revisa qué bloque quieres mover.':(pending.length?pending.length+' tareas pendientes. Prioridad: '+pending[0].text:'Sin tareas prioritarias pendientes.');
   var doneButton=$('nowDone');
   doneButton.hidden=!target;
-  doneButton.textContent=current?'✓ Ya he terminado':'✓ Ya lo he hecho';
+  doneButton.textContent=currentItem?'✓ Ya lo he hecho':'✓ Ya lo he hecho';
   doneButton.onclick=function(){
     if(!target)return;
     d.completedBlocks[dateKey]=d.completedBlocks[dateKey]||{};
-    d.completedBlocks[dateKey][target.key]=true;
+    d.completedBlocks[dateKey][target.key]=new Date().toISOString();
     save();
-    updateNow();
   };
-  $('nowStart').textContent=current?'Ver actividad':next?'Ver lo siguiente':'Añadir tarea';
+  $('nowStart').textContent=currentItem?'Ver actividad':next?'Ver lo siguiente':'Añadir tarea';
   $('nowStart').onclick=function(){
-    var item=current||next;
-    if(item){show(item.appointment?'Cita programada':'Actividad', '<p class="now-desc">'+esc(item.event[1])+' · '+esc(item.event[2])+'</p><p class="muted">Horario: '+esc(item.event[0])+'</p>')}
+    var item=currentItem||next;
+    if(item){show(item.appointment?'Cita programada':'Actividad','<p class="now-desc">'+esc(item.event[1])+' · '+esc(item.event[2])+'</p><p class="muted">Horario: '+esc(item.event[0])+'</p>')}
     else $('globalFab').click();
   };
   $('nowDetails').onclick=function(){go('agenda')};
   $('nowSnooze').hidden=true;
-}
-window.refreshNow=updateNow;
- updateNow();setInterval(updateNow,30000);
+} updateNow();setInterval(updateNow,30000);
 })();
 </script>
 <script>
@@ -639,7 +655,7 @@ window.toggleLifeBlock=function(dayName,index){
  const item=entries[index];if(!item)return;
  const date=weekDateForDay(dayName),key=item[4]||String(item[0])+'|'+String(item[1]);
  d.completedBlocks=d.completedBlocks||{};d.completedBlocks[date]=d.completedBlocks[date]||{};
- if(d.completedBlocks[date][key])delete d.completedBlocks[date][key];else d.completedBlocks[date][key]=true;
+ if(d.completedBlocks[date][key])delete d.completedBlocks[date][key];else d.completedBlocks[date][key]=new Date().toISOString();
  save();if(window.refreshNow)window.refreshNow();
 };
 window.editLifeAppointment=function(id){
