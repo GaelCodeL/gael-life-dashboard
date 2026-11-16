@@ -388,7 +388,7 @@ function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove(
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function col(c){return ({Trabajo:'#7ca8ff',Estudios:'#a78bfa',Salud:'#ff83b7',Comida:'#ffb86b',Hogar:'#b6ed72',Personal:'#54d8ee',Descanso:'#7ca8ff',Rutina:'#7ca8ff'})[c]||'#54d8ee'}
-function renderAgenda(){const today=getTodayName();document.getElementById('daytabs').innerHTML=days.map(x=>{const count=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(x):(d.agenda[x]||[])).length;return '<button class="'+(x===day?'active ':'')+(x===today?'today':'')+'" data-day="'+x+'"><b>'+x.slice(0,3)+'</b><small>'+count+' bloques</small>'+(x===today?'<em>HOY</em>':'')+'</button>'}).join('');document.getElementById('daytabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{day=b.dataset.day;renderAgenda()});const events=window.getLifeAgendaForDay?window.getLifeAgendaForDay(day):(d.agenda[day]||[]).slice();events.sort((a,b)=>{const start=x=>{const m=String(x[0]).match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999};return start(a)-start(b)});document.getElementById('events').innerHTML=events.map((e,i)=>{const isAppointment=String(e[4]||'').indexOf('appointment:')===0;const actions=isAppointment?'<span class="tag">CITA</span>':'<button class="btn" onclick="editEvent('+i+')">Editar</button> <button class="btn" onclick="delEvent('+i+')">×</button>';return '<div class="event"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+'</div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+actions+'</div></div>'}).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>'}
+function renderAgenda(){const today=getTodayName();document.getElementById('daytabs').innerHTML=days.map(x=>{const count=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(x):(d.agenda[x]||[])).length;return '<button class="'+(x===day?'active ':'')+(x===today?'today':'')+'" data-day="'+x+'"><b>'+x.slice(0,3)+'</b><small>'+count+' bloques</small>'+(x===today?'<em>HOY</em>':'')+'</button>'}).join('');document.getElementById('daytabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{day=b.dataset.day;renderAgenda()});const events=window.getLifeAgendaForDay?window.getLifeAgendaForDay(day):(d.agenda[day]||[]).slice();events.sort((a,b)=>{const start=x=>{const m=String(x[0]).match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999};return start(a)-start(b)});document.getElementById('events').innerHTML=events.map((e,i)=>{const isAppointment=String(e[4]||'').indexOf('appointment:')===0;const appointmentId=isAppointment?String(e[4]).replace('appointment:',''):'';const actions=isAppointment?'<button class="btn" onclick="editLifeAppointment(\''+appointmentId+'\')">Ajustar</button> <span class="tag">CITA</span>':'<button class="btn" onclick="editEvent('+i+')">Editar</button> <button class="btn" onclick="delEvent('+i+')">×</button>';return '<div class="event"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+'</div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+actions+'</div></div>'}).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>'}
 function editEvent(i){let e=d.agenda[day][i];let a=prompt('Horario',e[0]);if(a===null)return;let b=prompt('Actividad',e[1]);if(b===null)return;let c=prompt('Descripción',e[2]);if(c===null)return;e[0]=a;e[1]=b;e[2]=c;save()}
 function delEvent(i){if(confirm('¿Eliminar este bloque?')){d.agenda[day].splice(i,1);save()}}
 function resetAgenda(){if(confirm('¿Restaurar horarios iniciales?')){d.agenda=JSON.parse(JSON.stringify(defaults));save()}}
@@ -595,6 +595,14 @@ window.getLifeAppointmentsForDay=function(name){
   return (a.days||[]).includes(name)&&!(a.skipDates||[]).includes(date);
  }).map(function(a){return [a.start+'–'+a.end,a.title,a.description,a.category,'appointment:'+a.id]});
 };
+window.editLifeAppointment=function(id){
+ const item=(d.appointments||[]).find(function(x){return x.id===id});if(!item)return;
+ const start=prompt('Hora de inicio',item.start);if(start===null)return;
+ const end=prompt('Hora de fin (provisional si aún no la sabes)',item.end);if(end===null)return;
+ const description=prompt('Detalles',item.description||'');if(description===null)return;
+ if(!/^([01]?\\d|2[0-3]):[0-5]\\d$/.test(start)||!/^([01]?\\d|2[0-3]):[0-5]\\d$/.test(end)){alert('Introduce las horas en formato HH:MM.');return}
+ item.start=start;item.end=end;item.description=description;save();if(window.refreshNow)window.refreshNow();
+};
 window.getLifeAgendaForDay=function(name){
  let base=(d.agenda[name]||[]).slice();
  const date=weekDateForDay(name);
@@ -695,6 +703,6 @@ document.getElementById('diaryForm').addEventListener('submit',function(e){e.pre
 document.getElementById('leisureForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target);d.leisure.unshift({idea:f.get('idea'),type:f.get('type')});e.target.reset();save()});
 document.getElementById('diaryEntries').addEventListener('click',function(e){const id=e.target.dataset.diaryDelete;if(id!==undefined){d.diary=d.diary.filter(x=>x.id!==id);save()}});
 document.getElementById('leisureList').addEventListener('click',function(e){const i=e.target.dataset.leisureDelete;if(i!==undefined){d.leisure.splice(Number(i),1);save()}});
-ensureData();window.render();
+ensureData();window.render();if(window.refreshNow)window.refreshNow();
 })();
 </script></body></html></html>
