@@ -615,6 +615,7 @@ function weekDateForDay(name){
  const now=new Date(),dow=now.getDay()||7,monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-dow+1);
  monday.setDate(monday.getDate()+DAY.indexOf(name));return localDateKey(monday);
 }
+window.weekDateForDay=weekDateForDay;
 window.getLifeAppointmentsForDay=function(name){
  const date=weekDateForDay(name);
  return (d.appointments||[]).filter(function(a){
