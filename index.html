@@ -1034,6 +1034,106 @@ select.field option{background:#101d30;color:#f1f6ff}
 .event.completed-event .et{text-decoration:none!important;color:#e9fff4!important}
 .event .agenda-state{line-height:1.25}
 @media(max-width:720px){.agenda-legend{gap:6px;padding:9px}.agenda-legend span{font-size:8px;padding:4px 6px}.agenda-legend small{font-size:9px}.agenda-state{margin-left:4px;font-size:7px;padding:3px 5px}.event .et{line-height:1.6}}
+
+/* MOBILE UX PASS · compact, readable and gently animated */
+.page{min-height:0}
+.page.active{animation:lifePageEnter .24s cubic-bezier(.2,.75,.25,1) both}
+@keyframes lifePageEnter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+#subNav:not([hidden]){
+ margin:3px 0 8px!important;padding:4px!important;gap:3px;
+ overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
+ scrollbar-width:none;scrollbar-gutter:stable;
+}
+#subNav::-webkit-scrollbar{display:none}
+#subNav button{
+ min-height:34px;padding:7px 9px!important;border-radius:9px!important;
+ font-size:11px!important;line-height:1.15;transition:background .18s,color .18s,transform .18s;
+}
+#subNav button.active{
+ background:linear-gradient(110deg,#1c405b,#292848)!important;
+ color:#a9efff!important;box-shadow:inset 0 0 0 1px #5acde477,0 3px 12px #48bfe51a;
+}
+.page-intro{padding:0 1px 8px!important;margin:0!important}
+.page-intro .eyebrow{padding:4px 8px!important;font-size:8px!important;letter-spacing:1.2px!important}
+.page-intro h2{margin:8px 0 4px!important;font-size:clamp(23px,5.7vw,29px)!important;line-height:1.08!important;letter-spacing:-.85px!important}
+.page-intro p{margin:0!important;max-width:650px;font-size:12px!important;line-height:1.42!important}
+.module-grid{gap:8px!important}
+.module-card{
+ display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;
+ grid-template-rows:auto auto!important;align-content:center;align-items:center;
+ justify-items:start!important;column-gap:9px!important;row-gap:3px!important;
+ min-height:78px!important;padding:10px 12px!important;border-radius:15px!important;
+ text-align:left!important;overflow:hidden;position:relative;
+ transition:transform .18s ease,border-color .2s ease,box-shadow .2s ease,filter .2s ease!important;
+ animation:lifeTileEnter .32s cubic-bezier(.2,.75,.25,1) both;
+}
+.module-card:nth-child(1){animation-delay:.02s}
+.module-card:nth-child(2){animation-delay:.06s}
+.module-card:nth-child(3){animation-delay:.10s}
+.module-card:nth-child(4){animation-delay:.14s}
+.module-card:nth-child(5){animation-delay:.18s}
+@keyframes lifeTileEnter{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.module-card span{
+ grid-column:1!important;grid-row:1 / span 2!important;
+ display:grid;place-items:center;width:32px;height:38px;
+ font-size:25px!important;line-height:1;color:var(--module-accent,#75e5f2)!important;
+ text-shadow:0 0 16px var(--module-glow,#56cfff55)!important;
+}
+.module-card b{grid-column:2!important;grid-row:1!important;font-size:14px!important;line-height:1.2!important;align-self:end}
+.module-card small{grid-column:2!important;grid-row:2!important;font-size:10.5px!important;line-height:1.25!important;opacity:.85}
+#organizar>.card:last-child{margin-top:9px!important;padding:13px 14px!important}
+#organizar>.card:last-child h3{font-size:15px!important;margin:0 0 5px!important}
+#organizar>.card:last-child p{font-size:11px!important;line-height:1.4!important;margin:0!important}
+.home-greeting{margin:0 1px 10px!important;gap:9px!important;min-height:44px}
+.home-greeting-copy{min-width:0}
+.home-date{font-size:9px!important;letter-spacing:1px!important;line-height:1.2}
+.home-greeting h2{font-size:clamp(20px,5.4vw,25px)!important;line-height:1.08!important;margin:3px 0 0!important;letter-spacing:-.7px!important}
+.home-status-tools{gap:6px!important}
+.home-clock{font-size:15px!important;padding:6px 8px!important}
+.sleep-countdown{padding:6px 8px!important;min-width:92px}
+.sleep-countdown-label{font-size:7px!important}
+.sleep-countdown strong{font-size:11px!important}
+#nav button{transition:transform .18s ease,background .18s ease,box-shadow .18s ease!important}
+#nav button:before{font-size:19px!important;line-height:20px!important;transition:transform .18s ease}
+#nav button.active:before{transform:translateY(-1px) scale(1.07)}
+#nav button:active,.module-card:active,.btn:active,.actionbtn:active{transform:scale(.975)}
+.btn,.actionbtn,.text-action{transition:transform .16s ease,filter .16s ease,box-shadow .18s ease}
+.event,.card,.training-card,.habit-card,.library-card,.menu-day{transition:border-color .18s ease,box-shadow .2s ease,transform .18s ease}
+.home-section{margin-top:13px!important}
+.home-section .section-line{margin-bottom:7px!important}
+.home-section .section-line h3{font-size:13px!important}
+.home-shortcuts{gap:7px!important;margin-top:12px!important}
+.home-shortcuts button{min-height:50px!important;font-size:10px!important;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.home-shortcuts button span{font-size:19px!important}
+@media(max-width:720px){
+ body{padding-top:7px!important}
+ .topbar{margin:0 0 7px!important;min-height:34px!important}
+ .topbar .brandline .logo{width:34px!important;height:34px!important}
+ .topbar h1{font-size:14px!important}
+ #subNav button{font-size:10px!important;padding:7px 8px!important}
+ .module-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .module-card{min-height:74px!important;padding:9px 10px!important;grid-template-columns:31px minmax(0,1fr)!important;column-gap:7px!important}
+ .module-card span{width:29px;height:36px;font-size:24px!important}
+ .module-card b{font-size:13px!important}
+ .module-card small{font-size:9.5px!important}
+ .page-intro h2{font-size:clamp(22px,6vw,27px)!important}
+ .page-intro p{font-size:11.5px!important}
+ #organizar>.card:last-child{padding:12px!important}
+ .home-greeting{margin:0 1px 9px!important}
+ .today-focus{margin-bottom:10px}
+}
+@media(max-width:380px){
+ .module-grid{gap:7px!important}
+ .module-card{min-height:70px!important;grid-template-columns:27px minmax(0,1fr)!important;padding:8px!important;column-gap:6px!important}
+ .module-card span{width:26px;font-size:22px!important}
+ .module-card b{font-size:12px!important}
+ .module-card small{font-size:9px!important}
+ .home-greeting h2{font-size:19px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .page.active,.module-card{animation:none!important}
+ #nav button,.module-card,.btn,.actionbtn,.event,.card,.home-shortcuts button{transition:none!important}
+}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -1858,6 +1958,7 @@ window.go=function(p){
  const sub=document.getElementById('subNav');sub.hidden=!(org||well);
  document.getElementById('organizeSubNav').hidden=!org;document.getElementById('wellbeingSubNav').hidden=!well;
  const top=org?'organizar':well?'bienestar':p;
+ document.querySelectorAll('#subNav button').forEach(function(button){var target=(button.getAttribute('onclick')||'').match(/go\('([^']+)'\)/);button.classList.toggle('active',!!target&&target[1]===p)});
  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===top));
  window.scrollTo({top:0,behavior:'smooth'});
 };
