@@ -574,6 +574,32 @@ function ensureData(){
  {name:'Pierna B',day:'Viernes',focus:'Segundo trabajo de tren inferior',plan:'Plantilla por completar. Adaptar cargas y material con fisioterapia.'}
  ];
  d.habitLogs=d.habitLogs||{};d.diary=d.diary||[];d.leisure=d.leisure||[];
+ d.completedBlocks=d.completedBlocks||{};
+ d.appointments=d.appointments||[];
+ if(!d.appointments.some(function(x){return x.id==='physio-usual'})){
+  d.appointments.push({id:'physio-usual',days:['Martes','Jueves'],skipDates:['2026-11-19'],start:'19:10',end:'20:10',title:'Fisioterapia',description:'Cita habitual de fisioterapia. Bloque provisional de una hora; puedes ajustar el final si la sesión dura más.',category:'Salud'});
+ }
+ if(!d.appointments.some(function(x){return x.id==='physio-simancas-2026-11-20'})){
+  d.appointments.push({id:'physio-simancas-2026-11-20',date:'2026-11-20',start:'18:00',end:'21:30',title:'Fisioterapia privada · Simancas',description:'Cita a las 19:15. Bloque reservado desde las 18:00 para el desplazamiento de más de una hora, la sesión y la vuelta. Final provisional para proteger la tarde; edítalo si necesitas otro margen.',category:'Salud'});
+ }
+}
+function localDateKey(date){return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-')}
+function weekDateForDay(name){
+ const now=new Date(),dow=now.getDay()||7,monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-dow+1);
+ monday.setDate(monday.getDate()+DAY.indexOf(name));return localDateKey(monday);
+}
+window.getLifeAppointmentsForDay=function(name){
+ const date=weekDateForDay(name);
+ return (d.appointments||[]).filter(function(a){
+  if(a.date)return a.date===date;
+  return (a.days||[]).includes(name)&&!(a.skipDates||[]).includes(date);
+ }).map(function(a){return [a.start+'–'+a.end,a.title,a.description,a.category,'appointment:'+a.id]});
+};
+window.getLifeAgendaForDay=function(name){
+ let base=(d.agenda[name]||[]).slice();
+ const date=weekDateForDay(name);
+ if(date==='2026-11-20')base=base.filter(function(e){return e[1]!=='Compra / recados'});
+ return base.concat(window.getLifeAppointmentsForDay(name));
 }
 const baseRender=window.render;
 function dateKey(){return new Date().toLocaleDateString('sv-SE')}
