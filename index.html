@@ -2290,7 +2290,7 @@ window.refreshHumanPlanControls=function(){
 function calendarDateISO(date){return localDateKey(date)}
 window.showTodayInCalendar=function(){window.selectAgendaCalendarDate(calendarDateISO(new Date()))};
 function calendarDayName(date){return DAY[(date.getDay()+6)%7]}
-function window.dateFromISO(iso){return new Date(iso+'T12:00:00')}
+window.dateFromISO=function(iso){return new Date(iso+'T12:00:00')}
 window.selectAgendaCalendarDate=function(iso){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso))return;
  window.agendaCalendarSelectedISO=iso;
