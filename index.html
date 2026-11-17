@@ -1647,6 +1647,7 @@ function openAgendaEditor(mode,details){
  if(!modal||!form)return;
  form.reset();
  form.elements.mode.value=mode;
+ form.elements.end.required=mode==='appointment';
  form.elements.day.value=details.dayName||day;
  form.elements.index.value=details.index===undefined?'':String(details.index);
  form.elements.appointmentId.value=details.id||'';
@@ -2705,15 +2706,17 @@ agendaEditorForm.addEventListener('submit',function(e){
  }else{
   const id=String(f.get('appointmentId')),item=(d.appointments||[]).find(function(x){return x.id===id});
   if(!item){closeAgendaEditor();return}
+  if(!end){alert('Las citas necesitan una hora de inicio y de fin.');return}
   item.title=title;item.start=start;item.end=end;item.description=description;item.category=category;
   if(item.date){
    const date=String(f.get('date')||'');
    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){alert('Selecciona una fecha válida.');return}
-   item.date=date;
+   item.date=date;window.agendaCalendarSelectedISO=date;const selectedDate=dateFromISO(date);window.agendaCalendarVisibleMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);day=calendarDayName(selectedDate);
   }else{
    const days=Array.from(agendaEditorForm.querySelectorAll('[name="days"]:checked')).map(function(input){return input.value});
    if(!days.length){alert('Selecciona al menos un día de repetición.');return}
    item.days=days;
+   if(!days.includes(day)){day=days[0];window.agendaCalendarSelectedISO=weekDateForDay(day)}
   }
  }
  closeAgendaEditor();save();if(window.refreshNow)window.refreshNow();
