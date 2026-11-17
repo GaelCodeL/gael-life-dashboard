@@ -1285,6 +1285,74 @@ body:has(#inicio.active) #globalFab{display:none!important}
 @media(prefers-reduced-motion:reduce){
  .shopping-store-chevron,#globalFab{transition:none!important}
 }
+
+/* Agenda planner + monthly calendar */
+.calendar-card{padding:14px!important;margin-bottom:10px}
+.calendar-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.calendar-topline h3{margin:4px 0!important;font-size:18px!important}
+.calendar-topline p{font-size:11px;line-height:1.4;margin:0!important;max-width:560px}
+.calendar-topline .eyebrow{font-size:8px;letter-spacing:1.4px;color:#83dff0;font-weight:900}
+.calendar-month-nav{display:flex;gap:5px;flex:0 0 auto}
+.calendar-month-nav .btn{width:34px;min-width:34px;height:34px;padding:0;font-size:20px}
+.calendar-month-label{text-align:center;text-transform:capitalize;font-weight:900;font-size:14px;color:#edf5ff;margin:12px 0 8px}
+.calendar-weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.calendar-weekdays span{text-align:center;color:#8ea8c4;font-size:9px;font-weight:900;padding:4px 0}
+.calendar-day{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;height:39px;padding:3px;border:1px solid transparent;border-radius:10px;background:#0c192b;color:#d6e6f6;font-size:11px;font-weight:750;transition:background .16s,border-color .16s,transform .16s}
+.calendar-day.outside-month{opacity:.34}
+.calendar-day.today{border-color:#5fcbe2;color:#a9efff}
+.calendar-day.selected{background:linear-gradient(135deg,#a9efff,#56c9f1 58%,#aa98ff);color:#071624;border-color:#d3f8ff;box-shadow:0 4px 15px #56c9f044}
+.calendar-day i{display:block;width:4px;height:4px;border-radius:50%;background:#82e0bd}
+.calendar-day.selected i{background:#142f43}
+.calendar-selection{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;margin-top:11px;padding:10px 11px;border-radius:11px;background:#0b182a;border:1px solid #2e4867}
+.calendar-selection>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.calendar-selection>div:first-child b{text-transform:capitalize;font-size:11px;color:#edf7ff}
+.calendar-selection>div:first-child small{font-size:9px;color:#8fa9c5}
+.calendar-preview-list{display:grid;gap:4px}
+.calendar-preview-list span{display:flex;align-items:baseline;gap:8px;min-width:0;font-size:10px}
+.calendar-preview-list time{flex:0 0 88px;color:#8fe1f0;font-size:9px;font-weight:800}
+.calendar-preview-list b{font-size:10px;color:#dce9f8;font-weight:650}
+.calendar-preview-list>small{font-size:9px;color:#96abc4}
+.calendar-add-details{margin-top:10px;border-top:1px solid #243c57;padding-top:9px}
+.calendar-add-details summary{list-style:none;cursor:pointer;color:#91e4f1;font-size:11px;font-weight:850;padding:3px 1px}
+.calendar-add-details summary::-webkit-details-marker{display:none}
+.calendar-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+.calendar-form label{display:grid;gap:4px;color:#a9bfd8;font-size:9px;font-weight:800}
+.calendar-form .field{width:100%;min-width:0;height:39px;font-size:13px!important}
+.calendar-time-pair{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.calendar-full{grid-column:1/-1}
+.human-plan-panel{margin:10px 0 12px;padding:12px 13px;border:1px solid #385575;border-radius:14px;background:linear-gradient(145deg,#172b43,#101b30)}
+.human-plan-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer}
+.human-plan-panel>summary::-webkit-details-marker{display:none}
+.human-plan-panel>summary>span:first-child{display:grid;gap:3px}
+.human-plan-panel>summary b{font-size:13px;color:#eef7ff}
+.human-plan-panel>summary small{font-size:9px;color:#9db4cf;line-height:1.3}
+.plan-chevron{font-size:18px;color:#8ce6f2;transition:transform .18s}
+.human-plan-panel[open] .plan-chevron{transform:rotate(180deg)}
+.human-plan-content{padding-top:10px}
+.human-plan-content>p{font-size:10px;line-height:1.45;color:#b3c5db;margin:0 0 9px}
+.human-plan-days{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.human-plan-days>div{display:grid;gap:3px;padding:8px 9px;border:1px solid #2c4563;background:#0d1a2c;border-radius:10px}
+.human-plan-days b{font-size:10px;color:#9de6f1}
+.human-plan-days span{font-size:9px;line-height:1.35;color:#a9bdd5}
+.human-plan-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.human-plan-actions .btn{font-size:10px;min-height:35px}
+.agenda-week-card{margin-top:10px}
+#daytabs button{min-width:0}
+@media(max-width:520px){
+ .calendar-card{padding:11px!important}
+ .calendar-topline h3{font-size:16px!important}
+ .calendar-topline p{font-size:10px}
+ .calendar-day{height:36px;border-radius:8px;font-size:10px}
+ .calendar-form{grid-template-columns:1fr 1fr;gap:7px}
+ .calendar-form .field{font-size:16px!important}
+ .calendar-preview-list time{flex-basis:74px}
+ .human-plan-days{grid-template-columns:1fr 1fr}
+ .human-plan-actions{display:grid;grid-template-columns:1fr}
+ .human-plan-actions .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .calendar-day,.plan-chevron{transition:none!important}
+}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -2037,7 +2105,7 @@ window.getLifeAgendaForDay=function(name){
  const hasClinicPhysio=appointments.some(function(a){return /fisio|fisioterapia/i.test(String(a[1]||''))});
  function isProtected(e){
   var title=String(e[1]||'').toLowerCase(),category=String(e[3]||'').toLowerCase();
-  return /ducha|preparar mañana|preparar el día siguiente|cena|dormir|acostarse|vuelta a casa|regreso a casa/.test(title)||
+  return /ducha|preparar mañana|preparar el día siguiente|cena|dormir|acostarse|vuelta a casa|regreso a casa|desplazamiento a casa|ejercicios de fisioterapia en casa/.test(title)||
    (category==='comida'&&/comida|cena|desayuno|merienda/.test(title));
  }
  const protectedItems=base.filter(isProtected).sort(function(a,b){
@@ -2093,7 +2161,8 @@ window.isAutoCompleteRoutine=function(item){
  return wake||morningPreparation||routinePreparation||sleep;
 };
 window.autoCompleteLifeRoutines=function(){
- const now=new Date();let changed=false;
+ const now=new Date(),previousCalendarDate=window.agendaCalendarSelectedISO;let changed=false;
+ window.agendaCalendarSelectedISO=localDateKey(now);
  d.completedBlocks=d.completedBlocks||{};d.skippedBlocks=d.skippedBlocks||{};d.autoCompletedBlocks=d.autoCompletedBlocks||{};d.manualAgendaPending=d.manualAgendaPending||{};
  DAY.forEach(function(dayName){
   const dateKey=weekDateForDay(dayName),match=dateKey.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -2120,6 +2189,7 @@ window.autoCompleteLifeRoutines=function(){
    if(now>=end){doneMap[key]=end.toISOString();autoMap[key]=true;changed=true}
   });
  });
+ window.agendaCalendarSelectedISO=previousCalendarDate;
  return changed;
 };
 const baseRender=window.render;
