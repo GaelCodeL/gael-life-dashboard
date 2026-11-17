@@ -1589,8 +1589,10 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom))!important}
  .launch-tile b{font-size:11px}.launch-tile small{font-size:9px}
  .quick-sheet-grid{gap:7px}.quick-sheet-grid button{min-height:53px;padding:8px}.quick-sheet-grid button b{font-size:10px}
 }
+/* Back navigation */
+.back-to-hub{display:inline-flex;align-items:center;gap:5px;padding:8px 12px;border:1px solid #314966;border-radius:12px;background:#101e32;color:#c9d8eb;font-size:11px;font-weight:800;cursor:pointer}.back-to-hub span{font-size:20px;line-height:12px;color:#6bddec}.back-to-hub[hidden]{display:none!important}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
-<div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
+<div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div><button class="back-to-hub" id="backToHub" type="button" hidden><span>‹</span> Volver</button></div>
 
 <nav class="nav" id="nav" aria-label="Navegación principal"><button class="active" data-p="inicio">Hoy</button><button data-p="organizar">Organizar</button><button data-p="entreno">Entreno</button><button data-p="bienestar">Bienestar</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button><button onclick="go('diario')">Diario</button></div></div>
 <section id="inicio" class="page active">
@@ -2941,6 +2943,7 @@ window.render=function(){ensureData();const autoChanged=window.autoCompleteLifeR
 window.go=function(p){
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
  const page=document.getElementById(p);if(page)page.classList.add('active');
+ const back=document.getElementById('backToHub');if(back)back.hidden=(p==='inicio');
  const org=['organizar','agenda','tareas','comidas','estudios','hogar'].includes(p),well=['bienestar','salud','diario'].includes(p);
  const sub=document.getElementById('subNav');sub.hidden=true;
  document.getElementById('organizeSubNav').hidden=!org;document.getElementById('wellbeingSubNav').hidden=!well;
@@ -2954,6 +2957,8 @@ window.go=function(p){
 };
 document.querySelectorAll('#nav button').forEach(b=>{b.onclick=null;b.addEventListener('click',()=>window.go(b.dataset.p))});
 document.querySelectorAll('#mobileDock [data-dock]').forEach(b=>b.addEventListener('click',()=>window.go(b.dataset.dock)));
+const backParents={agenda:'organizar',tareas:'organizar',comidas:'organizar',estudios:'organizar',hogar:'organizar',salud:'bienestar',diario:'bienestar',entreno:'inicio',organizar:'inicio',bienestar:'inicio',estadisticas:'inicio',perfil:'inicio'};
+document.getElementById('backToHub').addEventListener('click',()=>window.go(backParents[document.querySelector('.page.active')?.id]||'inicio'));
 const quickSheet=document.getElementById('quickSheet');
 function closeQuickSheet(){quickSheet.classList.remove('open');quickSheet.setAttribute('aria-hidden','true')}
 document.getElementById('dockAdd').addEventListener('click',()=>{quickSheet.classList.add('open');quickSheet.setAttribute('aria-hidden','false')});
