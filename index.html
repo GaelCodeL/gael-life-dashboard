@@ -1142,12 +1142,45 @@ select.field option{background:#101d30;color:#f1f6ff}
  #nav button{min-height:45px!important}
  #greetingTitle span{display:block;font-size:.62em;line-height:1.02;margin-top:3px;letter-spacing:0;font-weight:650}
 }
+
+/* Agenda outcomes · explicit and reversible */
+.event .actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.event .actions .btn{min-height:30px;padding:6px 9px;font-size:10px;white-space:nowrap}
+.event.skipped-event{opacity:.9!important;border:1px solid #a76561!important;background:linear-gradient(120deg,#35232a,#172034)!important}
+.event.skipped-event .et{color:#f5d5d1!important}
+.agenda-state.state-skipped{color:#ffc1b6;background:#48272a;border:1px solid #9b5551}
+.event .skipped-toggle{color:#ffd0c8!important;background:#40272c!important;border-color:#8a4e55!important}
+.event .reopen-toggle{color:#d7e8ff!important;background:#1e3049!important;border-color:#55718f!important}
+.event .delete-event{min-width:30px;color:#aebed1!important}
+.agenda-state{transition:background .2s,color .2s,transform .2s}
+.agenda-state.state-done{animation:agendaDoneIn .25s ease both}
+@keyframes agendaDoneIn{from{transform:scale(.88);opacity:.5}to{transform:scale(1);opacity:1}}
+.greeting-message{display:grid;gap:3px;min-width:0}
+.greeting-main{display:block;font-size:clamp(25px,6vw,32px);font-weight:900;letter-spacing:-1.05px;line-height:1.02;color:#f3f8ff;text-shadow:0 0 22px #67d8f04a}
+.greeting-sub{display:block;font-size:12px;font-weight:650;letter-spacing:.15px;color:#8fdff0;line-height:1.25}
+.home-greeting{align-items:center}
+.planning-note{margin-top:9px;padding:12px 14px;border:1px solid #304968;border-radius:15px;background:linear-gradient(145deg,#14243b,#0c182a);box-shadow:0 9px 25px #0003}
+.planning-note summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer;color:#edf5ff;font-size:13px;font-weight:800}
+.planning-note summary::-webkit-details-marker{display:none}
+.planning-note summary:after{content:'＋';color:#8de6f4;font-size:18px;line-height:1}
+.planning-note[open] summary:after{content:'−'}
+.planning-note summary small{color:#90a9c5;font-size:9px;font-weight:700}
+.planning-note p{margin:9px 0 1px;color:#afc2d9;font-size:11px;line-height:1.45}
+@media(max-width:720px){
+ .greeting-main{font-size:clamp(26px,7vw,31px)!important}
+ .greeting-sub{font-size:11px!important}
+ .home-greeting{margin-bottom:8px!important}
+ .event .actions{gap:5px}
+ .event .actions .btn{font-size:9px;min-height:31px;padding:6px 8px}
+ .planning-note{padding:10px 12px}
+}
+@media(prefers-reduced-motion:reduce){.agenda-state.state-done{animation:none}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
 <nav class="nav" id="nav"><button class="active" data-p="inicio">Hoy</button><button data-p="organizar">Organizar</button><button data-p="entreno">Entreno</button><button data-p="bienestar">Bienestar</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button><button onclick="go('diario')">Diario</button></div></div>
 <section id="inicio" class="page active">
- <div class="home-greeting"><div class="home-greeting-copy"><span class="home-date" id="liveDate">Cargando fecha…</span><h2 id="greetingTitle">Vamos paso a paso.</h2></div><div class="home-status-tools"><div class="sleep-countdown" id="sleepCountdown" title="Tiempo que falta para tu hora prevista de dormir"><span class="sleep-countdown-label">🌙 DORMIR EN</span><strong id="sleepCountdownValue">-- h -- min</strong></div><div class="home-clock" id="liveClock">--:--</div></div></div>
+ <div class="home-greeting"><div class="home-greeting-copy"><span class="home-date" id="liveDate">Cargando fecha…</span><div class="greeting-message"><strong id="greetingMain">Buenos días</strong><span class="greeting-sub" id="greetingSub">Vamos paso a paso.</span></div></div><div class="home-status-tools"><div class="sleep-countdown" id="sleepCountdown" title="Tiempo que falta para tu hora prevista de dormir"><span class="sleep-countdown-label">🌙 DORMIR EN</span><strong id="sleepCountdownValue">-- h -- min</strong></div><div class="home-clock" id="liveClock">--:--</div></div></div>
  <section class="today-focus" id="nowPanel">
   <div class="focus-label"><span class="pulse"></span><span id="focusModeLabel">AHORA MISMO</span></div>
   <h1 class="focus-title" id="nowTitle">Calculando tu siguiente paso…</h1>
@@ -1183,7 +1216,7 @@ select.field option{background:#101d30;color:#f1f6ff}
 <section id="comidas" class="page"><div class="page-intro"><div class="eyebrow">ALIMENTACIÓN Y LOGÍSTICA</div><h2>Come bien sin improvisarlo todo.</h2><p class="muted">Comidas completas, preparaciones base, proteína y verdura. Menú editable y compra flexible.</p></div><div class="card"><div class="row"><div><h3>Menú semanal</h3><p class="muted">Propuesta inicial para adaptar a tus gustos y cantidades.</p></div><span class="tag">Editable</span></div><div id="menuGrid" class="menu-grid"></div></div><div class="cols"><div class="card"><div class="row"><div><h3>Lista de la compra</h3><span class="pill" id="shoppingCount">0 pendientes</span></div><button class="btn" id="menuShopBtn" type="button">Crear lista desde menú</button></div><form id="shoppingForm" class="stack"><input class="field" name="item" placeholder="Producto que falta…" required><select class="field" name="category"><option>Frescos</option><option>Proteína</option><option>Despensa</option><option>Hogar</option><option>Otros</option></select><button class="btn primary">Añadir producto</button></form><div id="shoppingList" class="stack"></div></div><div class="card"><h3>Preparación repartida durante la semana</h3><div class="prep-list"><div><b>Domingo · 17:00–18:00</b><span>Preparar bases (arroz, pasta o patata), 2–3 raciones de proteína y verduras para lunes–miércoles.</span></div><div><b>Miércoles · al terminar el día</b><span>Revisar nevera y preparar la comida del jueves. Añadir a la compra lo que falte.</span></div><div><b>Jueves · al terminar el día</b><span>Dejar listo el táper del viernes y hacer reposición de frescos si hace falta.</span></div><div><b>Cada noche · después de cenar</b><span>Dejar montada la comida del día siguiente: proteína + hidrato + verdura. No solo una base de arroz.</span></div></div><p class="small-note muted">La planificación es flexible. Refrigera pronto las raciones y congela lo que no vayas a consumir dentro de un plazo seguro.</p></div></div><div class="legacy-meals" hidden><div id="meals"></div><select id="mealId"></select><form id="mealForm"><input name="time"><input name="food"></form></div></section>
 <section id="hogar" class="page"><div class="cols"><div class="card"><h3>Rutina del hogar</h3><div id="chores" class="stack"></div></div><div class="card"><h3>Añadir tarea doméstica</h3><form id="choreForm" class="stack"><input class="field" name="name" placeholder="Tarea" required><input class="field" name="day" placeholder="Día" required><input class="field" name="duration" placeholder="Duración"><button class="btn primary">Añadir tarea</button></form><div class="mutedbox">Mascotas: alimentación, agua, limpieza y cuidados diarios.</div></div></div></section>
 
-<section id="organizar" class="page"><div class="page-intro"><div class="eyebrow">ORGANIZACIÓN</div><h2>Tu semana, en orden.</h2><p class="muted">Todo lo práctico en un solo sitio. Abre solo el módulo que necesitas.</p></div><div class="module-grid"><button class="module-card" onclick="go('agenda')"><span>▦</span><b>Agenda</b><small>Horario flexible y compromisos</small></button><button class="module-card" onclick="go('tareas')"><span>✓</span><b>Tareas</b><small>Prioridades y pendientes</small></button><button class="module-card" onclick="go('comidas')"><span>⌂</span><b>Menú y compra</b><small>Comidas completas y reposición</small></button><button class="module-card" onclick="go('estudios')"><span>▤</span><b>Estudios</b><small>Formación y sesiones</small></button><button class="module-card" onclick="go('hogar')"><span>◇</span><b>Hogar</b><small>Rutinas domésticas</small></button></div><div class="card"><h3>Una planificación que se adapta</h3><p class="muted">Los compromisos tienen hora. Las tareas y los paseos son flexibles. La preparación de comida se reparte durante la semana para no depender solo del domingo.</p></div></section>
+<section id="organizar" class="page"><div class="page-intro"><div class="eyebrow">ORGANIZACIÓN</div><h2>Tu semana, en orden.</h2><p class="muted">Todo lo práctico en un solo sitio. Abre solo el módulo que necesitas.</p></div><div class="module-grid"><button class="module-card" onclick="go('agenda')"><span>▦</span><b>Agenda</b><small>Horario flexible y compromisos</small></button><button class="module-card" onclick="go('tareas')"><span>✓</span><b>Tareas</b><small>Prioridades y pendientes</small></button><button class="module-card" onclick="go('comidas')"><span>⌂</span><b>Menú y compra</b><small>Comidas completas y reposición</small></button><button class="module-card" onclick="go('estudios')"><span>▤</span><b>Estudios</b><small>Formación y sesiones</small></button><button class="module-card" onclick="go('hogar')"><span>◇</span><b>Hogar</b><small>Rutinas domésticas</small></button></div><details class="planning-note"><summary><span>Una planificación que se adapta</span><small>Ver criterio</small></summary><p>Los compromisos tienen hora. Las tareas y los paseos son flexibles. La preparación de comida se reparte durante la semana para no depender solo del domingo.</p></details></section>
 <section id="entreno" class="page">
  <div class="page-intro training-intro"><div class="eyebrow">FUERZA · REGISTRO · PROGRESO</div><h2>Tu centro de entrenamiento.</h2><p class="muted">Crea varios planes, organiza tus días y registra cada serie con sus repeticiones, kilos y RIR. Tus plantillas y tus sesiones reales quedan separadas.</p></div>
  <div id="trainingWorkspace" class="training-workspace">
@@ -1255,8 +1288,9 @@ function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove(
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function col(c){return ({Trabajo:'#7ca8ff',Estudios:'#a78bfa',Salud:'#ff83b7',Comida:'#ffb86b',Hogar:'#b6ed72',Personal:'#54d8ee',Descanso:'#7ca8ff',Rutina:'#7ca8ff'})[c]||'#54d8ee'}
-function agendaStatus(event,dateKey,done){
- if(done)return {label:'HECHA',cls:'state-done'};
+function agendaStatus(event,dateKey,done,skipped,autoDone){
+ if(skipped)return {label:'NO REALIZADA',cls:'state-skipped'};
+ if(done)return {label:autoDone?'HECHA · AUTO':'HECHA',cls:'state-done'};
  var match=String(dateKey||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
  var times=String(event[0]||'').match(/(\d{1,2}):(\d{2})/g)||[];
  if(!match||!times.length)return {label:'SIN HORARIO',cls:'state-unknown'};
@@ -1284,16 +1318,18 @@ function renderAgenda(){
   const start=x=>{const m=String(x[0]).match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999};
   return start(a)-start(b);
  });
- const doneMap=(d.completedBlocks||{})[selectedDate]||{};
+ const doneMap=(d.completedBlocks||{})[selectedDate]||{},skippedMap=(d.skippedBlocks||{})[selectedDate]||{},autoMap=(d.autoCompletedBlocks||{})[selectedDate]||{};
  document.getElementById('events').innerHTML=events.map((e,i)=>{
   const isAppointment=String(e[4]||'').indexOf('appointment:')===0;
   const appointmentId=isAppointment?String(e[4]).replace('appointment:',''):'';
-  const key=e[4]||String(e[0])+'|'+String(e[1]),done=!!doneMap[key];
-  const status=agendaStatus(e,selectedDate,done);
+  const key=e[4]||String(e[0])+'|'+String(e[1]),done=!!doneMap[key],skipped=!!skippedMap[key],autoDone=!!autoMap[key];
+  const status=agendaStatus(e,selectedDate,done,skipped,autoDone);
   const baseIndex=e._baseIndex===undefined?i:e._baseIndex;
-  const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(\''+appointmentId+'\')">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn" onclick="delEvent('+baseIndex+')">×</button>';
-  const mark='<button class="btn done-toggle" onclick="toggleLifeBlock(\''+day+'\','+i+')">'+(done?'↶ Deshacer':'✓ Marcar hecha')+'</button>';
-  return '<div class="event '+(done?'completed-event ':'')+status.cls+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+controls+mark+'</div></div>';
+  const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(&quot;'+appointmentId+'&quot;)">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn delete-event" title="Eliminar actividad" aria-label="Eliminar actividad" onclick="delEvent('+baseIndex+')">×</button>';
+  let outcome='';
+  if(done||skipped)outcome='<button class="btn reopen-toggle" onclick="toggleLifeBlock(&quot;'+day+'&quot;,'+i+')">↶ Reabrir</button>';
+  else outcome='<button class="btn done-toggle" onclick="toggleLifeBlock(&quot;'+day+'&quot;,'+i+')">✓ Hecha</button><button class="btn skipped-toggle" onclick="toggleLifeSkipBlock(&quot;'+day+'&quot;,'+i+')">× No realizada</button>';
+  return '<div class="event '+(done?'completed-event ':skipped?'skipped-event ':'')+status.cls+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+controls+outcome+'</div></div>';
  }).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>';
 }
 function editEvent(i){let e=d.agenda[day][i];let a=prompt('Horario',e[0]);if(a===null)return;let b=prompt('Actividad',e[1]);if(b===null)return;let c=prompt('Descripción',e[2]);if(c===null)return;e[0]=a;e[1]=b;e[2]=c;save()}
@@ -1359,7 +1395,7 @@ function refreshSmartHome(){
  const dateText=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(now);
  const clock=new Intl.DateTimeFormat('es-ES',{hour:'2-digit',minute:'2-digit'}).format(now);
  const hour=now.getHours(),greet=hour<12?'Buenos días':hour<19?'Buenas tardes':'Buenas noches';
- const title=document.getElementById('greetingTitle');if(title)title.innerHTML=greet+'.<br><span style="color:var(--cyan)">Vamos paso a paso.</span>';
+ const title=document.getElementById('greetingMain');if(title)title.textContent=greet;const subtitle=document.getElementById('greetingSub');if(subtitle)subtitle.textContent='Vamos paso a paso.';
  const date=document.getElementById('liveDate');if(date)date.textContent=dateText;
  const live=document.getElementById('liveClock');if(live)live.textContent=clock;
  updateSleepCountdown(now);
@@ -1384,7 +1420,7 @@ function refreshSmartHome(){
 document.getElementById('quickTaskForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target),text=String(f.get('text')||'').trim();if(!text)return;d.tasks.unshift({text,area:'Personal',day:'Hoy',done:false});e.target.reset();save();refreshSmartHome();});
 
 function render(){renderAgenda();renderTasks();renderStudy();renderHealth();renderMeals();renderChores();renderHome();refreshSmartHome()}
-render();setInterval(refreshSmartHome,30000);setInterval(renderAgenda,30000);document.addEventListener("visibilitychange",function(){if(!document.hidden)renderAgenda()});window.addEventListener("focus",renderAgenda);
+render();setInterval(refreshSmartHome,30000);setInterval(function(){if(window.autoCompleteLifeRoutines&&window.autoCompleteLifeRoutines())save();else renderAgenda()},30000);document.addEventListener("visibilitychange",function(){if(!document.hidden){if(window.autoCompleteLifeRoutines&&window.autoCompleteLifeRoutines())save();else renderAgenda()}});window.addEventListener("focus",function(){if(window.autoCompleteLifeRoutines&&window.autoCompleteLifeRoutines())save();else renderAgenda()});
 if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
 <script>
@@ -1490,12 +1526,12 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   var now=new Date(),dayName=getTodayName(),minute=now.getHours()*60+now.getMinutes();
   var dateKey=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
   d.completedBlocks=d.completedBlocks||{};
-  var doneToday=d.completedBlocks[dateKey]||{};
+  var doneToday=d.completedBlocks[dateKey]||{},skippedToday=(d.skippedBlocks||{})[dateKey]||{};
   var rawEvents=window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):(d.agenda[dayName]||[]).slice();
   var entries=rawEvents.map(function(e){
     var raw=String(e[0]),times=raw.match(/\d{1,2}:\d{2}/g)||[];
-    var key=e[4]||raw+'|'+String(e[1]),record=doneToday[key];
-    return {event:e,start:times.length?mins(times[0]):null,end:times.length>1?mins(times[1]):null,first:times[0]||'',key:key,done:!!record,doneAt:typeof record==='string'?Date.parse(record):null,appointment:String(e[4]||'').indexOf('appointment:')===0,flexible:/en adelante/i.test(raw)};
+    var key=e[4]||raw+'|'+String(e[1]),record=doneToday[key],skipped=skippedToday[key];
+    return {event:e,start:times.length?mins(times[0]):null,end:times.length>1?mins(times[1]):null,first:times[0]||'',key:key,done:!!record||!!skipped,skipped:!!skipped,doneAt:typeof record==='string'?Date.parse(record):null,appointment:String(e[4]||'').indexOf('appointment:')===0,flexible:/en adelante/i.test(raw)};
   });
   entries.forEach(function(x){
     if(x.end===null&&x.flexible&&x.start!==null){
@@ -1513,7 +1549,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
     .sort(function(a,b){return b.end-a.end})[0]||null;
   var next=usable.filter(function(x){return !x.done&&x.start!==null&&x.start>minute})
     .sort(function(a,b){return a.start-b.start})[0]||null;
-  var recentDone=usable.filter(function(x){return x.done&&x.doneAt&&now.getTime()-x.doneAt>=0&&now.getTime()-x.doneAt<45*60000})
+  var recentDone=usable.filter(function(x){return x.done&&!x.skipped&&x.doneAt&&now.getTime()-x.doneAt>=0&&now.getTime()-x.doneAt<45*60000})
     .sort(function(a,b){return b.doneAt-a.doneAt})[0]||null;
   var currentItem=current||punctual||overdue||null;
   var target=currentItem||(!recentDone?next:null);
@@ -1622,7 +1658,7 @@ function ensureData(){
  if(!d.trainingPlans.some(function(plan){return plan.id===d.activeTrainingPlanId}))d.activeTrainingPlanId=d.trainingPlans[0].id;
  if(!d.activeTrainingDayId){var activePlan=d.trainingPlans.find(function(plan){return plan.id===d.activeTrainingPlanId})||d.trainingPlans[0];d.activeTrainingDayId=activePlan.days[0]?activePlan.days[0].id:'';}
  d.habitLogs=d.habitLogs||{};d.diary=d.diary||[];d.leisure=d.leisure||[];
- d.completedBlocks=d.completedBlocks||{};
+ d.completedBlocks=d.completedBlocks||{};d.skippedBlocks=d.skippedBlocks||{};d.autoCompletedBlocks=d.autoCompletedBlocks||{};d.manualAgendaPending=d.manualAgendaPending||{};
  d.appointments=d.appointments||[];
 }
 function localDateKey(date){return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-')}
@@ -1638,15 +1674,42 @@ window.getLifeAppointmentsForDay=function(name){
   return (a.days||[]).includes(name)&&!(a.skipDates||[]).includes(date);
  }).map(function(a){return [a.start+'–'+a.end,a.title,a.description,a.category,'appointment:'+a.id]});
 };
-window.toggleLifeBlock=function(dayName,index){
+function lifeAgendaItemAt(dayName,index){
  const entries=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):(d.agenda[dayName]||[]).slice()).sort(function(a,b){
   function start(e){var m=String(e[0]||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
   return start(a)-start(b);
  });
- const item=entries[index];if(!item)return;
- const date=weekDateForDay(dayName),key=item[4]||String(item[0])+'|'+String(item[1]);
+ return entries[index]||null;
+}
+function lifeAgendaKey(item){return item[4]||String(item[0])+'|'+String(item[1])}
+window.toggleLifeBlock=function(dayName,index){
+ const item=lifeAgendaItemAt(dayName,index);if(!item)return;
+ const date=weekDateForDay(dayName),key=lifeAgendaKey(item);
  d.completedBlocks=d.completedBlocks||{};d.completedBlocks[date]=d.completedBlocks[date]||{};
- if(d.completedBlocks[date][key])delete d.completedBlocks[date][key];else d.completedBlocks[date][key]=new Date().toISOString();
+ d.skippedBlocks=d.skippedBlocks||{};d.skippedBlocks[date]=d.skippedBlocks[date]||{};
+ d.autoCompletedBlocks=d.autoCompletedBlocks||{};d.autoCompletedBlocks[date]=d.autoCompletedBlocks[date]||{};
+ d.manualAgendaPending=d.manualAgendaPending||{};d.manualAgendaPending[date]=d.manualAgendaPending[date]||{};
+ if(d.completedBlocks[date][key]){
+  delete d.completedBlocks[date][key];delete d.autoCompletedBlocks[date][key];
+  if(window.isAutoCompleteRoutine&&window.isAutoCompleteRoutine(item))d.manualAgendaPending[date][key]=true;
+ }else{
+  d.completedBlocks[date][key]=new Date().toISOString();
+  delete d.skippedBlocks[date][key];delete d.manualAgendaPending[date][key];delete d.autoCompletedBlocks[date][key];
+ }
+ save();if(window.refreshNow)window.refreshNow();
+};
+window.toggleLifeSkipBlock=function(dayName,index){
+ const item=lifeAgendaItemAt(dayName,index);if(!item)return;
+ const date=weekDateForDay(dayName),key=lifeAgendaKey(item);
+ d.skippedBlocks=d.skippedBlocks||{};d.skippedBlocks[date]=d.skippedBlocks[date]||{};
+ d.completedBlocks=d.completedBlocks||{};d.completedBlocks[date]=d.completedBlocks[date]||{};
+ d.autoCompletedBlocks=d.autoCompletedBlocks||{};d.autoCompletedBlocks[date]=d.autoCompletedBlocks[date]||{};
+ d.manualAgendaPending=d.manualAgendaPending||{};d.manualAgendaPending[date]=d.manualAgendaPending[date]||{};
+ if(d.skippedBlocks[date][key])delete d.skippedBlocks[date][key];
+ else{
+  d.skippedBlocks[date][key]=new Date().toISOString();
+  delete d.completedBlocks[date][key];delete d.autoCompletedBlocks[date][key];delete d.manualAgendaPending[date][key];
+ }
  save();if(window.refreshNow)window.refreshNow();
 };
 window.editLifeAppointment=function(id){
@@ -1688,6 +1751,42 @@ window.getLifeAgendaForDay=function(name){
  });
  return result.concat(appointments);
 }
+window.isAutoCompleteRoutine=function(item){
+ const title=String(item[1]||'').toLowerCase(),category=String(item[3]||'').toLowerCase();
+ const wake=/despert|levant|rutina de mañana|aseo matutino/.test(title);
+ const sleep=/dormir|acost|hora de dormir|descanso nocturno/.test(title)||(category==='descanso'&&/^descanso$/.test(title));
+ return wake||sleep;
+};
+window.autoCompleteLifeRoutines=function(){
+ const now=new Date();let changed=false;
+ d.completedBlocks=d.completedBlocks||{};d.skippedBlocks=d.skippedBlocks||{};d.autoCompletedBlocks=d.autoCompletedBlocks||{};d.manualAgendaPending=d.manualAgendaPending||{};
+ DAY.forEach(function(dayName){
+  const dateKey=weekDateForDay(dayName),match=dateKey.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!match)return;
+  const dateBase=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]),0,0,0,0);
+  const doneMap=d.completedBlocks[dateKey]||(d.completedBlocks[dateKey]={});
+  const skipMap=d.skippedBlocks[dateKey]||(d.skippedBlocks[dateKey]={});
+  const autoMap=d.autoCompletedBlocks[dateKey]||(d.autoCompletedBlocks[dateKey]={});
+  const pendingMap=d.manualAgendaPending[dateKey]||(d.manualAgendaPending[dateKey]={});
+  const events=window.getLifeAgendaForDay(dayName)||[];
+  events.forEach(function(item){
+   if(!window.isAutoCompleteRoutine(item))return;
+   const key=lifeAgendaKey(item);
+   if(doneMap[key]||skipMap[key]||pendingMap[key])return;
+   const times=String(item[0]||'').match(/(\d{1,2}):(\d{2})/g)||[];
+   if(!times.length)return;
+   function toDate(value){const m=value.match(/(\d{1,2}):(\d{2})/);return new Date(dateBase.getFullYear(),dateBase.getMonth(),dateBase.getDate(),Number(m[1]),Number(m[2]),0,0)}
+   const start=toDate(times[0]);let end;
+   if(times.length>1){end=toDate(times[1]);if(end<=start)end.setDate(end.getDate()+1)}
+   else{
+    const title=String(item[1]||'').toLowerCase();
+    end=new Date(start.getTime()+(/dormir|acost|hora de dormir|descanso/.test(title)?8*60:20)*60000);
+   }
+   if(now>=end){doneMap[key]=end.toISOString();autoMap[key]=true;changed=true}
+  });
+ });
+ return changed;
+};
 const baseRender=window.render;
 function dateKey(){return new Date().toLocaleDateString('sv-SE')}
 function renderMenu(){
@@ -1958,7 +2057,7 @@ function renderToday(){
 }
 document.getElementById('priorities').addEventListener('change',function(e){const i=e.target.dataset.homeDone;if(i!==undefined){d.tasks[Number(i)].done=e.target.checked;save()}});
 function renderNew(){renderToday();renderMenu();renderShopping();renderHabits();renderTraining();renderDiary()}
-window.render=function(){ensureData();baseRender();renderNew();if(window.refreshNow)window.refreshNow()};
+window.render=function(){ensureData();const autoChanged=window.autoCompleteLifeRoutines();if(autoChanged){localStorage.setItem(window.__lifeGuestMode?'gael-life-os-demo-v1':K,JSON.stringify(d));if(!window.__lifeGuestMode&&typeof cloudSave==='function')cloudSave()}baseRender();renderNew();if(window.refreshNow)window.refreshNow()};
 window.go=function(p){
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
  const page=document.getElementById(p);if(page)page.classList.add('active');
