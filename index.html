@@ -1462,6 +1462,51 @@ body.agenda-editor-open{overflow:hidden}
 .agenda-flexible-toggle input{accent-color:#63dceb;width:16px;height:16px}
 
 #agendaEditorForm [hidden]{display:none!important}
+
+.calendar-category-legend{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px 9px!important;padding:10px 11px!important;margin:9px 0 11px!important;border:1px solid #2c4865;border-radius:12px;background:#0b182a}
+.calendar-category-legend span{display:inline-flex;align-items:center;gap:5px;color:#bed0e4!important;font-size:9px!important;font-weight:750;white-space:nowrap}
+.calendar-category-legend .legend-type{width:9px!important;height:9px!important;border-radius:3px!important;background:var(--legend-color)}
+.legend-important{font-style:normal;color:#ffd16f;font-size:13px;line-height:8px}
+.calendar-month-summary{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 11px}
+.month-summary-chip{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #405773;border-radius:9px;background:#0d1b2d;color:#d8e7f7;font-size:9px;font-weight:750;white-space:nowrap}
+.month-summary-chip i{display:block;width:6px;height:6px;border-radius:50%;background:var(--chip-color)}
+.month-summary-chip b{color:var(--chip-color);font-size:11px}
+.month-summary-important{--chip-color:#ffd16f;border-color:#8a6b36}
+.month-summary-important i{width:auto;height:auto;background:none;color:#ffd16f;font-size:11px}
+.calendar-day{height:56px!important;padding:5px 3px!important;justify-content:space-between!important;gap:2px!important}
+.calendar-day-top{display:flex;align-items:center;justify-content:center;gap:3px;width:100%;position:relative}
+.calendar-day-number{font-size:12px!important}
+.calendar-important-star{position:absolute;right:0;top:-3px;color:#ffd16f;font-size:10px;line-height:1;text-shadow:0 0 7px #ffd16f99}
+.calendar-day-markers{display:flex;align-items:center;justify-content:center;gap:2px;width:100%;height:7px;overflow:hidden}
+.calendar-type-marker{display:block;flex:0 0 8px;width:8px;height:5px;border-radius:3px;background:var(--marker-color)}
+.calendar-more-markers{font-size:6px!important;color:#b7c8dd;line-height:1;margin-left:1px}
+.calendar-day-count{font-size:7px!important;margin-top:0!important;line-height:1!important;white-space:nowrap}
+.calendar-day-empty-mark{display:block;width:3px;height:3px;border-radius:50%;background:#354c67}
+.calendar-day.has-important{box-shadow:inset 0 0 0 1px #9c793c,0 0 9px #ffce6730!important}
+.calendar-day.selected .calendar-important-star{color:#293149;text-shadow:none}
+.calendar-preview-list{display:grid;gap:5px}
+.calendar-preview-event{display:grid!important;grid-template-columns:64px 16px minmax(0,1fr) auto 14px;align-items:center;gap:6px!important;padding:7px 8px!important;border:1px solid #2a405e;border-left:3px solid var(--event-color);border-radius:9px;background:#0a1729}
+.calendar-preview-event time{font-size:9px!important;color:#9bddea!important;flex-basis:auto!important}
+.calendar-preview-event>i{font-style:normal;color:var(--event-color);font-size:11px;text-align:center}
+.calendar-preview-event b{min-width:0;font-size:10px!important;color:#e6f1ff!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.calendar-preview-event>small{font-size:8px!important;color:var(--event-color)!important;white-space:nowrap}
+.calendar-preview-important{color:#ffd16f;font-size:11px;line-height:1}
+.agenda-important-toggle{display:flex!important;align-items:center;gap:8px!important;padding:9px 10px;border:1px solid #755c31;border-radius:10px;background:#382d1a;color:#ffe0a0!important;font-size:10px!important}
+.agenda-important-toggle input{accent-color:#ffd16f;width:16px;height:16px}
+.agenda-important-event{border-color:#8c713d!important}
+.agenda-important-star{display:inline-block;margin-right:4px;color:#ffd16f;text-shadow:0 0 8px #ffd16f88;font-size:12px}
+.agenda-category-label{display:inline-flex;margin-top:4px;padding:2px 6px;border-radius:20px;border:1px solid #344c66;color:var(--event-color)!important;background:#0b182a;font-size:8px!important;font-weight:800}
+@media(max-width:520px){
+ .calendar-category-legend{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 6px;padding:9px!important}
+ .calendar-category-legend span{font-size:8px!important}
+ .calendar-day{height:53px!important;padding:4px 2px!important}
+ .calendar-type-marker{flex-basis:7px;width:7px;height:5px}
+ .calendar-day-count{font-size:6px!important}
+ .month-summary-chip{padding:5px 6px;font-size:8px;gap:4px}
+ .calendar-preview-event{grid-template-columns:54px 14px minmax(0,1fr) auto 12px;padding:6px!important;gap:4px!important}
+ .calendar-preview-event>small{font-size:7px!important}
+}
+@media(prefers-reduced-motion:reduce){.calendar-day.selected{transform:none}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -1495,7 +1540,19 @@ body.agenda-editor-open{overflow:hidden}
  <div class="card calendar-card">
   <div class="calendar-topline"><div><div class="eyebrow">AGENDA CONECTADA</div><h3>Calendario</h3><p class="muted">Elige una fecha para ver su agenda. Las actividades que añadas aquí aparecerán también en la agenda semanal y se sincronizarán con tus otros dispositivos.</p></div><div class="calendar-month-nav"><button class="btn calendar-today-btn" type="button" onclick="selectAgendaCalendarDate(calendarDateISO(new Date()))">Hoy</button><button class="btn" type="button" onclick="changeAgendaCalendarMonth(-1)" aria-label="Mes anterior">‹</button><button class="btn" type="button" onclick="changeAgendaCalendarMonth(1)" aria-label="Mes siguiente">›</button></div></div>
   <div id="calendarMonthLabel" class="calendar-month-label"></div>
-  <div class="calendar-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div class="calendar-legend"><span><i class="legend-today"></i>Hoy</span><span><i class="legend-busy"></i>Con actividad</span><span><i class="legend-selected"></i>Seleccionado</span></div>
+  <div id="calendarMonthSummary" class="calendar-month-summary"></div>
+  <div class="calendar-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div class="calendar-legend calendar-category-legend">
+  <span><i class="legend-type" style="--legend-color:#ff79a8"></i>Médico</span>
+  <span><i class="legend-type" style="--legend-color:#b69aff"></i>Examen</span>
+  <span><i class="legend-type" style="--legend-color:#ffc36b"></i>Pago</span>
+  <span><i class="legend-type" style="--legend-color:#68d9ff"></i>Ocio</span>
+  <span><i class="legend-type" style="--legend-color:#81e3a4"></i>Entreno</span>
+  <span><i class="legend-type" style="--legend-color:#7aa7ff"></i>Trabajo</span>
+  <span><i class="legend-type" style="--legend-color:#b58cff"></i>Estudios</span>
+  <span><i class="legend-important">★</i>Importante</span>
+  <span><i class="legend-today"></i>Hoy</span>
+  <span><i class="legend-selected"></i>Seleccionado</span>
+ </div>
   <div id="calendarGrid" class="calendar-grid"></div>
   <div id="calendarSelection" class="calendar-selection"></div>
   <details class="calendar-add-details"><summary>＋ Añadir actividad futura</summary>
@@ -1503,8 +1560,9 @@ body.agenda-editor-open{overflow:hidden}
     <label>Fecha<input class="field" type="date" name="date" required></label>
     <div class="calendar-time-pair"><label>Desde<input class="field" type="time" name="start" value="18:00" required></label><label>Hasta<input class="field" type="time" name="end" value="19:00" required></label></div>
     <label class="calendar-full">Actividad<input class="field" name="title" placeholder="Cita, recado, evento…" required></label>
-    <label>Categoría<select class="field" name="category"><option>Personal</option><option>Trabajo</option><option>Estudios</option><option>Salud</option><option>Comida</option><option>Hogar</option><option>Descanso</option></select></label>
+    <label>Categoría<select class="field" name="category"><option>Personal</option><option>Trabajo</option><option>Estudios</option><option>Examen</option><option>Cita médica</option><option>Pago</option><option>Ocio</option><option>Entrenamiento</option><option>Salud</option><option>Comida</option><option>Hogar</option><option>Descanso</option></select></label>
     <label class="calendar-full">Detalles opcionales<input class="field" name="description" placeholder="Lugar, preparación o notas"></label>
+    <label class="agenda-important-toggle calendar-full"><input type="checkbox" name="important"><span>★ Marcar como importante</span></label>
     <button class="btn primary calendar-full" type="submit">Guardar en calendario y agenda</button>
    </form>
   </details>
@@ -1518,7 +1576,7 @@ body.agenda-editor-open{overflow:hidden}
   </div>
  </details>
  <div class="card agenda-week-card"><div class="row"><h3>Agenda del día seleccionado</h3><button class="btn" onclick="resetAgenda()">Restaurar horarios</button></div><div id="daytabs" class="tabs"></div><div class="agenda-legend"><span class="state-pending">Por empezar</span><span class="state-active">En curso</span><span class="state-unconfirmed">Sin confirmar</span><span class="state-done">Hecha</span><small>El estado horario cambia solo. Para contarla como hecha, márcala tú.</small></div><div id="events" class="timeline"></div></div>
- <div class="card"><h3>Añadir bloque recurrente al día seleccionado</h3><p class="muted">Este bloque se repite cada semana. Para una cita puntual utiliza el calendario.</p><form id="eventForm" class="form"><input class="field" name="time" placeholder="Hora, ej. 19:15–20:15" required><input class="field" name="title" placeholder="Actividad" required><input class="field full" name="desc" placeholder="Descripción"><select class="field" name="cat"><option>Estudios</option><option>Trabajo</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option><option>Rutina</option></select><button class="btn primary full">Añadir bloque semanal</button></form></div>
+ <div class="card"><h3>Añadir bloque recurrente al día seleccionado</h3><p class="muted">Este bloque se repite cada semana. Para una cita puntual utiliza el calendario.</p><form id="eventForm" class="form"><input class="field" name="time" placeholder="Hora, ej. 19:15–20:15" required><input class="field" name="title" placeholder="Actividad" required><input class="field full" name="desc" placeholder="Descripción"><select class="field" name="cat"><option>Trabajo</option><option>Estudios</option><option>Examen</option><option>Cita médica</option><option>Pago</option><option>Ocio</option><option>Entrenamiento</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option><option>Rutina</option><option>Otros</option></select><label class="agenda-important-toggle full"><input type="checkbox" name="important"><span>★ Marcar como importante</span></label><button class="btn primary full">Añadir bloque semanal</button></form></div>
 </section><section id="tareas" class="page"><div class="cols"><div class="card"><div class="row"><h3>Mis tareas</h3><span class="pill" id="taskCount"></span></div><div class="bar"><i id="taskBar"></i></div><div id="taskList" class="stack"></div></div><div class="card"><h3>Nueva tarea</h3><form id="taskForm" class="stack"><input class="field" name="text" placeholder="¿Qué tienes que hacer?" required><select class="field" name="area"><option>Personal</option><option>Estudios</option><option>Trabajo</option><option>Hogar</option><option>Salud</option><option>Compra</option></select><select class="field" name="day"><option>Hoy</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select><button class="btn primary">Añadir tarea</button></form></div></div></section>
 <section id="estudios" class="page"><div class="cols"><div class="card"><h3>Asignaturas y ruta</h3><div id="subjects" class="stack"></div><div class="mutedbox">Ruta: 16–22 nov revisar plataforma y fechas · finales de nov dividir temarios · diciembre avanzar contenidos · 1–15 enero completar · 16–31 enero repasar y hacer simulacros · febrero exámenes.</div><h3 style="margin-top:15px">Historial de sesiones</h3><div id="sessions" class="stack"></div></div><div class="card"><h3>Registrar sesión</h3><form id="studyForm" class="stack"><select class="field" name="subject"><option>Programación de dispositivos móviles</option><option>Sistemas</option></select><input class="field" name="minutes" type="number" min="1" placeholder="Minutos" required><input class="field" name="note" placeholder="Qué has avanzado"><button class="btn primary">Guardar sesión</button></form><div class="mutedbox">Bloques previstos: lunes y jueves Programación 19:15–20:15; martes Sistemas 19:15–20:15; viernes Sistemas 16:15–17:45; sábado práctica 10:30–12:30.</div></div></div></section>
 <section id="salud" class="page"><div class="page-intro"><div class="eyebrow">RECUPERACIÓN Y SEGUIMIENTO</div><h2>Seguimiento de epicondilitis</h2><p class="muted">Aquí registramos la evolución de la epicondilitis: nivel de dolor percibido (escala de 0 a 10), síntomas o cambios que anotes y fecha de cada registro. Es un seguimiento personal, no sustituye la valoración médica o de fisioterapia.</p></div><div class="cols"><div class="card"><h3>Registrar evolución de la epicondilitis</h3><p class="muted">Anota cómo está el dolor hoy y cualquier cambio que hayas observado.</p><form id="healthForm" class="stack"><label class="muted">Dolor asociado a la epicondilitis: <b id="painVal">3</b>/10<input class="field" type="range" min="0" max="10" value="3" name="pain" oninput="painVal.textContent=this.value"><small class="muted">0 = sin dolor · 10 = máximo dolor percibido</small></label><input class="field" name="note" placeholder="Síntomas, molestias o cambios observados"><button class="btn primary">Guardar registro de hoy</button></form></div><div class="card"><h3>Historial de epicondilitis</h3><p class="muted">Evolución del dolor y observaciones guardadas.</p><div id="healthList" class="stack"></div><div class="mutedbox">Registra lo que notes sin forzar movimientos dolorosos. Sigue las indicaciones de los profesionales que llevan tu recuperación.</div></div></div></section>
@@ -1597,7 +1655,27 @@ function save(){localStorage.setItem(window.__lifeGuestMode?GUEST_K:K,JSON.strin
 function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===p));scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function col(c){return ({Trabajo:'#7ca8ff',Estudios:'#a78bfa',Salud:'#ff83b7',Comida:'#ffb86b',Hogar:'#b6ed72',Personal:'#54d8ee',Descanso:'#7ca8ff',Rutina:'#7ca8ff'})[c]||'#54d8ee'}
+function calendarTypeMeta(category){
+ const map={
+  'Cita médica':{key:'medical',label:'Médico',icon:'✚',color:'#ff79a8'},
+  'Examen':{key:'exam',label:'Examen',icon:'◆',color:'#b69aff'},
+  'Pago':{key:'payment',label:'Pago',icon:'€',color:'#ffc36b'},
+  'Ocio':{key:'leisure',label:'Ocio',icon:'♡',color:'#68d9ff'},
+  'Entrenamiento':{key:'training',label:'Entreno',icon:'↗',color:'#81e3a4'},
+  'Trabajo':{key:'work',label:'Trabajo',icon:'▣',color:'#7aa7ff'},
+  'Estudios':{key:'study',label:'Estudios',icon:'▤',color:'#b58cff'},
+  'Salud':{key:'health',label:'Salud',icon:'✚',color:'#ff9abb'},
+  'Comida':{key:'food',label:'Comida',icon:'◉',color:'#ffb86b'},
+  'Hogar':{key:'home',label:'Hogar',icon:'⌂',color:'#b6ed72'},
+  'Personal':{key:'personal',label:'Personal',icon:'●',color:'#54d8ee'},
+  'Descanso':{key:'rest',label:'Descanso',icon:'☾',color:'#8ca5c5'},
+  'Rutina':{key:'routine',label:'Rutina',icon:'○',color:'#91a8c9'},
+  'Otros':{key:'other',label:'Otros',icon:'•',color:'#9baec4'}
+ };
+ return map[String(category||'Personal')]||{key:'other',label:String(category||'Otros'),icon:'•',color:'#9baec4'};
+}
+window.calendarTypeMeta=calendarTypeMeta;
+function col(c){return calendarTypeMeta(c).color}
 function agendaStatus(event,dateKey,done,skipped,autoDone){
  if(skipped)return {label:'NO REALIZADA',cls:'state-skipped'};
  if(done)return {label:autoDone?'HECHA · AUTO':'HECHA',cls:'state-done'};
@@ -1639,7 +1717,7 @@ function renderAgenda(){
   let outcome='';
   if(done||skipped)outcome='<button class="btn reopen-toggle" onclick="reopenLifeBlock(&quot;'+day+'&quot;,'+i+')">↶ Reabrir</button>';
   else outcome='<button class="btn done-toggle" onclick="toggleLifeBlock(&quot;'+day+'&quot;,'+i+')">✓ Hecha</button><button class="btn skipped-toggle" onclick="toggleLifeSkipBlock(&quot;'+day+'&quot;,'+i+')">× No realizada</button>';
-  return '<div class="event '+(done?'completed-event ':skipped?'skipped-event ':'')+status.cls+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+controls+outcome+'</div></div>';
+  return '<div class="event '+(done?'completed-event ':skipped?'skipped-event ':'')+status.cls+(e[5]?' agenda-important-event':'')+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+(e[5]?'<span class="agenda-important-star" title="Importante">★</span>':'')+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div><small class="agenda-category-label" style="--event-color:'+col(e[3])+'">'+esc(calendarTypeMeta(e[3]).label)+'</small></div><div class="actions">'+controls+outcome+'</div></div>';
  }).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>';
  if(window.renderAgendaCalendar)window.renderAgendaCalendar();if(window.refreshHumanPlanControls)window.refreshHumanPlanControls();
 }
@@ -1680,6 +1758,7 @@ function openAgendaEditor(mode,details){
  form.elements.start.value=start||'';
  form.elements.end.value=end||'';
  form.elements.description.value=description;
+ form.elements.important.checked=mode==='block'?!!item[5]:!!item.important;
  const categorySelect=form.elements.category;
  if(!Array.from(categorySelect.options).some(function(option){return option.value===category})){const customOption=document.createElement('option');customOption.value=category;customOption.textContent=category;categorySelect.add(customOption)}
  categorySelect.value=category;
@@ -1708,7 +1787,7 @@ function migrateAgendaCompletionKey(oldKey,newKey){
 
 function delEvent(i){if(confirm('¿Eliminar este bloque?')){d.agenda[day].splice(i,1);save()}}
 function resetAgenda(){if(confirm('¿Restaurar horarios iniciales?')){d.agenda=JSON.parse(JSON.stringify(defaults));save()}}
-document.getElementById('eventForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.agenda[day].push([f.get('time'),f.get('title'),f.get('desc'),f.get('cat')]);e.target.reset();save()};
+document.getElementById('eventForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.agenda[day].push([f.get('time'),f.get('title'),f.get('desc'),f.get('cat'),'block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7),f.get('important')==='on']);e.target.reset();save()};
 document.getElementById('taskForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.tasks.push({text:f.get('text'),area:f.get('area'),day:f.get('day'),done:false});e.target.reset();save()};
 function renderTasks(){let n=d.tasks.filter(x=>x.done).length;taskCount.textContent=n+' / '+d.tasks.length+' completadas';taskBar.style.width=(d.tasks.length?n/d.tasks.length*100:0)+'%';taskList.innerHTML=d.tasks.map((x,i)=>`<div class="item row"><label class="row"><input type="checkbox" ${x.done?'checked':''} onchange="d.tasks[${i}].done=this.checked;save()"><span><b>${esc(x.text)}</b><br><small>${esc(x.area)} · ${esc(x.day)}</small></span></label><button class="btn" onclick="d.tasks.splice(${i},1);save()">Eliminar</button></div>`).join('')||'<small>No hay tareas pendientes.</small>'}
 document.getElementById('studyForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.sessions.unshift({subject:f.get('subject'),minutes:+f.get('minutes'),note:f.get('note'),date:new Date().toLocaleDateString('es-ES')});e.target.reset();save()};
@@ -1892,8 +1971,9 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
    <label data-editor-day>Día de la semana<select class="field" name="weekday"><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select></label>
    <label data-editor-date hidden>Fecha<input class="field" type="date" name="date"></label>
    <fieldset class="agenda-editor-days editor-full" data-editor-days hidden><legend>Se repite estos días</legend><div class="agenda-editor-daychecks"><label><input type="checkbox" name="days" value="Lunes"> L</label><label><input type="checkbox" name="days" value="Martes"> M</label><label><input type="checkbox" name="days" value="Miércoles"> X</label><label><input type="checkbox" name="days" value="Jueves"> J</label><label><input type="checkbox" name="days" value="Viernes"> V</label><label><input type="checkbox" name="days" value="Sábado"> S</label><label><input type="checkbox" name="days" value="Domingo"> D</label></div></fieldset>
-   <label>Categoría<select class="field" name="category"><option>Trabajo</option><option>Estudios</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option><option>Rutina</option><option>Otros</option></select></label>
+   <label>Categoría<select class="field" name="category"><option>Trabajo</option><option>Estudios</option><option>Examen</option><option>Cita médica</option><option>Pago</option><option>Ocio</option><option>Entrenamiento</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option><option>Rutina</option><option>Otros</option></select></label>
    <label class="editor-full">Descripción / detalles<textarea class="field" name="description" rows="3" maxlength="500" placeholder="Qué necesitas hacer, qué llevar, lugar, preparativos…"></textarea></label>
+   <label class="agenda-important-toggle editor-full"><input type="checkbox" name="important"><span>★ Marcar como importante</span></label>
    <div class="agenda-editor-actions editor-full"><button type="button" class="btn" id="agendaEditorCancel">Cancelar</button><button type="submit" class="btn primary">Guardar cambios</button></div>
   </form>
  </div>
@@ -2169,25 +2249,37 @@ function renderAgendaCalendar(){
  const first=new Date(month.getFullYear(),month.getMonth(),1),offset=(first.getDay()+6)%7;
  const daysInMonth=new Date(month.getFullYear(),month.getMonth()+1,0).getDate(),total=Math.ceil((offset+daysInMonth)/7)*7,html=[];
  const today=calendarDateISO(new Date());
+ const monthCounts={};
  for(let i=0;i<total;i++){
   const date=new Date(month.getFullYear(),month.getMonth(),1-offset+i),iso=calendarDateISO(date),inMonth=date.getMonth()===month.getMonth(),dayName=calendarDayName(date);
-  const recurring=(d.agenda[dayName]||[]).length;
-  const appointments=(d.appointments||[]).filter(function(item){
+  const recurringItems=d.agenda[dayName]||[];
+  const dayAppointments=(d.appointments||[]).filter(function(item){
    if(item.date)return item.date===iso;
    return (item.days||[]).includes(dayName)&&!(item.skipDates||[]).includes(iso);
-  }).length;
-  const total=recurring+appointments,has=total>0,isSpecial=(d.appointments||[]).some(function(item){return item.date===iso});
+  });
+  const categories=Array.from(new Set(recurringItems.map(function(item){return item[3]||'Personal'}).concat(dayAppointments.map(function(item){return item.category||'Personal'}))));
+  const total=recurringItems.length+dayAppointments.length,has=total>0;
+  const isImportant=recurringItems.some(function(item){return !!item[5]})||dayAppointments.some(function(item){return !!item.important});
+  const markerHtml=categories.slice(0,4).map(function(category){
+   const meta=calendarTypeMeta(category);
+   if(inMonth)monthCounts[meta.key]=(monthCounts[meta.key]||0)+1;
+   return '<i class="calendar-type-marker" style="--marker-color:'+meta.color+'" title="'+esc(meta.label)+'"></i>';
+  }).join('')+(categories.length>4?'<small class="calendar-more-markers">+'+(categories.length-4)+'</small>':'');
+  if(inMonth)monthCounts.important=(monthCounts.important||0)+(isImportant?1:0);
   const weekend=date.getDay()===0||date.getDay()===6;
-  html.push('<button type="button" class="calendar-day '+(!inMonth?'outside-month ':'')+(iso===selected?'selected ':'')+(iso===today?'today ':'')+(weekend?'weekend ':'')+(has?'has-items ':'')+(isSpecial?'has-calendar-events':'')+'" title="'+iso+(total?' · '+total+' actividades':' · Sin bloques')+'" onclick="selectAgendaCalendarDate(\''+iso+'\')"><span class="calendar-day-number">'+date.getDate()+'</span>'+(total?'<small class="calendar-day-count">'+Math.min(total,99)+'</small>':'<small class="calendar-day-empty">·</small>')+(isSpecial?'<i></i>':'')+'</button>');
+  const specialClass=categories.some(function(c){return ['Cita médica','Examen','Pago','Ocio','Entrenamiento'].includes(c)});
+  html.push('<button type="button" class="calendar-day '+(!inMonth?'outside-month ':'')+(iso===selected?'selected ':'')+(iso===today?'today ':'')+(weekend?'weekend ':'')+(has?'has-items ':'')+(specialClass?'has-calendar-events ':'')+(isImportant?'has-important ':'')+'" title="'+iso+(total?' · '+total+' actividades':' · Sin bloques')+(isImportant?' · Contiene elementos importantes':'')+'" onclick="selectAgendaCalendarDate(\''+iso+'\')"><span class="calendar-day-top"><span class="calendar-day-number">'+date.getDate()+'</span>'+(isImportant?'<b class="calendar-important-star" aria-label="Importante">★</b>':'')+'</span><span class="calendar-day-markers">'+(markerHtml||'<i class="calendar-day-empty-mark"></i>')+'</span>'+(total?'<small class="calendar-day-count">'+total+' act.</small>':'')+'</button>');
  }
- grid.innerHTML=html.join('');
+  grid.innerHTML=html.join('');
+ const monthSummary=document.getElementById('calendarMonthSummary');
+ if(monthSummary){const summaryTypes=[['medical','Médico'],['exam','Exámenes'],['payment','Pagos'],['leisure','Ocio'],['training','Entrenos']];monthSummary.innerHTML=summaryTypes.filter(function(entry){return monthCounts[entry[0]]}).map(function(entry){const meta=({medical:calendarTypeMeta('Cita médica'),exam:calendarTypeMeta('Examen'),payment:calendarTypeMeta('Pago'),leisure:calendarTypeMeta('Ocio'),training:calendarTypeMeta('Entrenamiento')})[entry[0]];return '<span class="month-summary-chip" style="--chip-color:'+meta.color+'"><i></i><b>'+monthCounts[entry[0]]+'</b>'+entry[1]+'</span>'}).join('')+(monthCounts.important?'<span class="month-summary-chip month-summary-important"><i>★</i><b>'+monthCounts.important+'</b>Importantes</span>':'')||'<small>Este mes aún no tiene citas, exámenes ni eventos especiales.</small>'}
  const chosen=dateFromISO(selected),chosenName=calendarDayName(chosen);
  const events=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(chosenName):(d.agenda[chosenName]||[]).slice()).slice().sort(function(a,b){
   function mins(item){const m=String(item[0]||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
   return mins(a)-mins(b);
  });
  const formatted=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(chosen);
- summary.innerHTML='<div class="calendar-selected-heading"><span class="calendar-selected-icon">▦</span><div><b>'+formatted+'</b><small>'+events.length+' actividades programadas</small></div><span class="calendar-selected-chip">DÍA SELECCIONADO</span></div><div class="calendar-preview-list">'+events.slice(0,4).map(function(item){return '<span><time>'+esc(item[0])+'</time><b>'+esc(item[1])+'</b></span>'}).join('')+(events.length>4?'<small>+'+(events.length-4)+' más en la agenda</small>':'')+'</div>';
+ summary.innerHTML='<div class="calendar-selected-heading"><span class="calendar-selected-icon">▦</span><div><b>'+formatted+'</b><small>'+events.length+' actividades programadas · '+events.filter(function(item){return !!item[5]}).length+' importantes</small></div><span class="calendar-selected-chip">DÍA SELECCIONADO</span></div><div class="calendar-preview-list">'+events.slice(0,6).map(function(item){const meta=calendarTypeMeta(item[3]);return '<span class="calendar-preview-event" style="--event-color:'+meta.color+'"><time>'+esc(item[0])+'</time><i>'+esc(meta.icon)+'</i><b>'+esc(item[1])+'</b><small>'+esc(meta.label)+'</small>'+(item[5]?'<strong class="calendar-preview-important" title="Importante">★</strong>':'')+'</span>'}).join('')+(events.length>6?'<small>+'+(events.length-6)+' más en la agenda</small>':'')+'</div>';
  const dateInput=document.querySelector('#calendarForm [name="date"]');if(dateInput&&dateInput.value!==selected)dateInput.value=selected;
 }
 window.renderAgendaCalendar=renderAgendaCalendar;
@@ -2203,7 +2295,7 @@ window.getLifeAppointmentsForDay=function(name){
  return (d.appointments||[]).filter(function(a){
   if(a.date)return a.date===date;
   return (a.days||[]).includes(name)&&!(a.skipDates||[]).includes(date);
- }).map(function(a){return [a.start+'–'+a.end,a.title,a.description,a.category,'appointment:'+a.id]});
+ }).map(function(a){return [a.start+'–'+a.end,a.title,a.description,a.category,'appointment:'+a.id,!!a.important]});
 };
 function lifeAgendaItemAt(dayName,index){
  const entries=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):(d.agenda[dayName]||[]).slice()).sort(function(a,b){
@@ -2701,7 +2793,7 @@ agendaEditorForm.addEventListener('submit',function(e){
   const old=d.agenda[oldDay]&&d.agenda[oldDay][index];if(!old){closeAgendaEditor();return}
   const oldKey=old[4]||String(old[0])+'|'+String(old[1]);
   const time=end?start+'–'+end:(f.get('flexible')==='on'?start+' en adelante':start);
-  const updated=[time,title,description,category,old[4]||('block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7))];
+  const updated=[time,title,description,category,old[4]||('block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7)),f.get('important')==='on'];
   migrateAgendaCompletionKey(oldKey,updated[4]);
   if(newDay===oldDay)d.agenda[oldDay][index]=updated;
   else{d.agenda[oldDay].splice(index,1);d.agenda[newDay]=d.agenda[newDay]||[];d.agenda[newDay].push(updated);day=newDay;window.agendaCalendarSelectedISO=weekDateForDay(newDay)}
@@ -2709,7 +2801,7 @@ agendaEditorForm.addEventListener('submit',function(e){
   const id=String(f.get('appointmentId')),item=(d.appointments||[]).find(function(x){return x.id===id});
   if(!item){closeAgendaEditor();return}
   if(!end){alert('Las citas necesitan una hora de inicio y de fin.');return}
-  item.title=title;item.start=start;item.end=end;item.description=description;item.category=category;
+  item.title=title;item.start=start;item.end=end;item.description=description;item.category=category;item.important=f.get('important')==='on';
   if(item.date){
    const date=String(f.get('date')||'');
    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){alert('Selecciona una fecha válida.');return}
@@ -2728,7 +2820,7 @@ if(calendarForm)calendarForm.addEventListener('submit',function(e){
  e.preventDefault();const form=new FormData(calendarForm),date=String(form.get('date')||''),start=String(form.get('start')||''),end=String(form.get('end')||''),title=String(form.get('title')||'').trim();
  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)||end<=start||!title){alert('Comprueba la fecha, la actividad y el horario.');return}
  d.appointments=d.appointments||[];
- d.appointments.push({id:'calendar-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:date,start:start,end:end,title:title,description:String(form.get('description')||''),category:String(form.get('category')||'Personal'),source:'calendar'});
+ d.appointments.push({id:'calendar-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:date,start:start,end:end,title:title,description:String(form.get('description')||''),category:String(form.get('category')||'Personal'),important:form.get('important')==='on',source:'calendar'});
  window.agendaCalendarVisibleMonth=new Date(dateFromISO(date).getFullYear(),dateFromISO(date).getMonth(),1);
  window.agendaCalendarSelectedISO=date;day=calendarDayName(dateFromISO(date));calendarForm.reset();save();
 });
