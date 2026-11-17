@@ -1458,7 +1458,7 @@ function renderAgenda(){
   const key=e[4]||String(e[0])+'|'+String(e[1]),done=!!doneMap[key],skipped=!!skippedMap[key],autoDone=!!autoMap[key];
   const status=agendaStatus(e,selectedDate,done,skipped,autoDone);
   const baseIndex=e._baseIndex===undefined?i:e._baseIndex;
-  const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(&quot;'+appointmentId+'&quot;)">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn delete-event" title="Eliminar actividad" aria-label="Eliminar actividad" onclick="delEvent('+baseIndex+')">×</button>';
+  const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(&quot;'+appointmentId+'&quot;)">Ajustar</button><button class="btn delete-event" title="Eliminar cita" aria-label="Eliminar cita" onclick="deleteLifeAppointment(&quot;'+appointmentId+'&quot;)">×</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn delete-event" title="Eliminar actividad" aria-label="Eliminar actividad" onclick="delEvent('+baseIndex+')">×</button>'
   let outcome='';
   if(done||skipped)outcome='<button class="btn reopen-toggle" onclick="reopenLifeBlock(&quot;'+day+'&quot;,'+i+')">↶ Reabrir</button>';
   else outcome='<button class="btn done-toggle" onclick="toggleLifeBlock(&quot;'+day+'&quot;,'+i+')">✓ Hecha</button><button class="btn skipped-toggle" onclick="toggleLifeSkipBlock(&quot;'+day+'&quot;,'+i+')">× No realizada</button>';
@@ -1997,43 +1997,91 @@ window.toggleLifeSkipBlock=function(dayName,index){
 };
 window.editLifeAppointment=function(id){
  const item=(d.appointments||[]).find(function(x){return x.id===id});if(!item)return;
- const start=prompt('Hora de inicio',item.start);if(start===null)return;
- const end=prompt('Hora de fin (provisional si aún no la sabes)',item.end);if(end===null)return;
- const description=prompt('Detalles',item.description||'');if(description===null)return;
- if(!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)){alert('Introduce las horas en formato HH:MM.');return}
- item.start=start;item.end=end;item.description=description;save();if(window.refreshNow)window.refreshNow();
+ if(item.source==='calendar'){
+  const title=prompt('Nombre de la actividad',item.title);if(title===null)return;
+  const date=prompt('Fecha (AAAA-MM-DD)',item.date);if(date===null)return;
+  const start=prompt('Hora de inicio',item.start);if(start===null)return;
+  const end=prompt('Hora de fin',item.end);if(end===null)return;
+  const description=prompt('Detalles',item.description||'');if(description===null)return;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)||end<=start){alert('Comprueba la fecha y las horas. La hora final debe ser posterior a la inicial.');return}
+  item.title=title.trim()||item.title;item.date=date;item.start=start;item.end=end;item.description=description;
+ }else{
+  const start=prompt('Hora de inicio',item.start);if(start===null)return;
+  const end=prompt('Hora de fin (provisional si aún no la sabes)',item.end);if(end===null)return;
+  const description=prompt('Detalles',item.description||'');if(description===null)return;
+  if(!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)){alert('Introduce las horas en formato HH:MM.');return}
+  item.start=start;item.end=end;item.description=description;
+ }
+ save();if(window.refreshNow)window.refreshNow();
+};
+window.deleteLifeAppointment=function(id){
+ const item=(d.appointments||[]).find(function(x){return x.id===id});if(!item)return;
+ if(confirm('¿Eliminar «'+item.title+'» del calendario y de la agenda?')){
+  d.appointments=d.appointments.filter(function(x){return x.id!==id});
+  d.humanPlanGeneratedAppointmentIds=(d.humanPlanGeneratedAppointmentIds||[]).filter(function(x){return x!==id});
+  save();
+ }
 };
 window.getLifeAgendaForDay=function(name){
- let base=(d.agenda[name]||[]).map(function(e,i){var copy=e.slice();copy._baseIndex=i;return copy});
+ const base=(d.agenda[name]||[]).map(function(e,i){var copy=e.slice();copy._baseIndex=i;return copy});
  const appointments=window.getLifeAppointmentsForDay(name);
  function toMin(value){var m=String(value||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
  function toTime(value){return String(Math.floor(value/60)).padStart(2,'0')+':'+String(value%60).padStart(2,'0')}
+ const spans=appointments.map(function(a){
+  var times=String(a[0]||'').match(/\d{1,2}:\d{2}/g)||[];
+  if(times.length<2)return null;
+  var start=toMin(times[0]),end=toMin(times[1]);if(start===null||end===null)return null;
+  if(end<=start)end+=1440;
+  return {start:start,end:end,item:a};
+ }).filter(Boolean);
+ const hasClinicPhysio=appointments.some(function(a){return /fisio|fisioterapia/i.test(String(a[1]||''))});
+ function isProtected(e){
+  var title=String(e[1]||'').toLowerCase(),category=String(e[3]||'').toLowerCase();
+  return /ducha|preparar mañana|preparar el día siguiente|cena|dormir|acostarse|vuelta a casa|regreso a casa/.test(title)||
+   (category==='comida'&&/comida|cena|desayuno|merienda/.test(title));
+ }
+ const protectedItems=base.filter(isProtected).sort(function(a,b){
+  function getStart(e){var t=String(e[0]||'').match(/\d{1,2}:\d{2}/);return t?toMin(t[0]):0}
+  return getStart(a)-getStart(b);
+ });
+ let protectedCursor=-1;
+ const moved=new Map();
+ protectedItems.forEach(function(e){
+  var times=String(e[0]||'').match(/\d{1,2}:\d{2}/g)||[];if(!times.length)return;
+  var start=toMin(times[0]),end=times.length>1?toMin(times[1]):null;
+  var duration=end===null?0:Math.max(0,end-start),newStart=start;
+  var overlapping=spans.filter(function(ap){return end!==null&&ap.start<end&&ap.end>start});
+  if(overlapping.length)newStart=Math.max(newStart,Math.max.apply(null,overlapping.map(function(ap){return ap.end}))+10);
+  if(protectedCursor>=0&&newStart<protectedCursor)newStart=protectedCursor;
+  if(newStart!==start){
+   var copy=e.slice();copy[0]=end===null?toTime(newStart):toTime(newStart)+'–'+toTime(newStart+duration);copy._baseIndex=e._baseIndex;moved.set(e,copy);
+  }
+  protectedCursor=Math.max(protectedCursor,newStart+duration);
+ });
+ const adjusted=base.map(function(e){return moved.get(e)||e});
  const result=[];
- base.forEach(function(e){
+ adjusted.forEach(function(e){
+  if(hasClinicPhysio&&/ejercicios de fisioterapia en casa/i.test(String(e[1]||'')))return;
   var times=String(e[0]||'').match(/\d{1,2}:\d{2}/g)||[];
   if(times.length<2){result.push(e);return}
   var start=toMin(times[0]),end=toMin(times[1]);
   if(start===null||end===null||end<=start){result.push(e);return}
   var segments=[[start,end]];
-  appointments.forEach(function(a){
-   var apTimes=String(a[0]||'').match(/\d{1,2}:\d{2}/g)||[];
-   if(apTimes.length<2)return;
-   var apStart=toMin(apTimes[0]),apEnd=toMin(apTimes[1]);
-   if(apStart===null||apEnd===null)return;
+  spans.forEach(function(ap){
    segments=segments.reduce(function(out,segment){
-    var s=segment[0],t=segment[1];
-    if(t<=apStart||s>=apEnd){out.push(segment);return out}
-    if(s<apStart)out.push([s,apStart]);
-    if(t>apEnd)out.push([apEnd,t]);
+    var left=segment[0],right=segment[1];
+    if(right<=ap.start||left>=ap.end){out.push(segment);return out}
+    if(left<ap.start)out.push([left,ap.start]);
+    if(right>ap.end)out.push([ap.end,right]);
     return out;
    },[]);
   });
-  segments.filter(function(segment){return segment[1]-segment[0]>=20}).forEach(function(segment){
+  segments.filter(function(segment){return segment[1]-segment[0]>=15}).forEach(function(segment){
    var copy=e.slice();copy[0]=toTime(segment[0])+'–'+toTime(segment[1]);copy._baseIndex=e._baseIndex;result.push(copy);
   });
  });
  return result.concat(appointments);
-}
+};
 window.isAutoCompleteRoutine=function(item){
  const title=String(item[1]||'').toLowerCase(),category=String(item[3]||'').toLowerCase();
  const times=String(item[0]||'').match(/(\\d{1,2}):(\\d{2})/g)||[];
