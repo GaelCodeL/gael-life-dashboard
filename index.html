@@ -1639,6 +1639,7 @@ body.agenda-editor-open{overflow:hidden}
 window.dateFromISO=function(iso){return new Date(iso+'T12:00:00')}
 window.__lifeGuestMode=sessionStorage.getItem('gael-life-os-mode')==='guest';
 const K='gael-life-os-v2',GUEST_K='gael-life-os-demo-v1',days=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+window.calendarDayName=function(date){return days[(date.getDay()+6)%7]};
 window.agendaCalendarSelectedISO=new Date().toLocaleDateString('sv-SE');window.agendaCalendarVisibleMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);
 const defaults=Object.fromEntries(days.map(function(name){
  const blocks=[
@@ -1721,7 +1722,7 @@ function isCalendarHighlight(item){
  return important||['medical','exam','payment','leisure','training'].includes(key);
 }
 function calendarHighlightsForDate(iso){
- const date=window.dateFromISO(iso),name=calendarDayName(date);
+ const date=window.dateFromISO(iso),name=window.calendarDayName(date);
  const recurring=(d.agenda[name]||[]).map(function(item,index){
   return {title:item[1],description:item[2]||'',category:item[3]||'Personal',important:!!item[5],color:item[6]||'',id:item[4]||('weekly:'+name+':'+index),source:'weekly'};
  }).filter(isCalendarHighlight);
@@ -2289,14 +2290,14 @@ window.refreshHumanPlanControls=function(){
 };
 function calendarDateISO(date){return localDateKey(date)}
 window.showTodayInCalendar=function(){window.selectAgendaCalendarDate(calendarDateISO(new Date()))};
-function calendarDayName(date){return DAY[(date.getDay()+6)%7]}
+// calendarDayName is defined globally before the initial render.
 window.dateFromISO=function(iso){return new Date(iso+'T12:00:00')}
 window.selectAgendaCalendarDate=function(iso){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso))return;
  window.agendaCalendarSelectedISO=iso;
  const date=window.dateFromISO(iso);
  window.agendaCalendarVisibleMonth=new Date(date.getFullYear(),date.getMonth(),1);
- day=calendarDayName(date);renderAgenda();
+ day=window.calendarDayName(date);renderAgenda();
 };
 window.changeAgendaCalendarMonth=function(offset){
  const current=window.agendaCalendarVisibleMonth||new Date();
@@ -2336,7 +2337,7 @@ function renderAgendaCalendar(){
   }).join('')+(monthCounts.important?'<span class="month-summary-chip month-summary-important"><i>★</i><b>'+monthCounts.important+'</b>Prioridades</span>':'');
   monthSummary.innerHTML=items||'<small>Sin citas, exámenes, pagos, entrenos ni planes destacados este mes.</small>';
  }
- const chosen=window.dateFromISO(selected),chosenName=calendarDayName(chosen);
+ const chosen=window.dateFromISO(selected),chosenName=window.calendarDayName(chosen);
  const events=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(chosenName):(d.agenda[chosenName]||[]).slice()).slice().sort(function(a,b){
   function mins(item){const m=String(item[0]||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
   return mins(a)-mins(b);
@@ -2884,7 +2885,7 @@ agendaEditorForm.addEventListener('submit',function(e){
   if(item.date){
    const date=String(f.get('date')||'');
    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){alert('Selecciona una fecha válida.');return}
-   item.date=date;window.agendaCalendarSelectedISO=date;const selectedDate=window.dateFromISO(date);window.agendaCalendarVisibleMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);day=calendarDayName(selectedDate);
+   item.date=date;window.agendaCalendarSelectedISO=date;const selectedDate=window.dateFromISO(date);window.agendaCalendarVisibleMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);day=window.calendarDayName(selectedDate);
   }else{
    const days=Array.from(agendaEditorForm.querySelectorAll('[name="days"]:checked')).map(function(input){return input.value});
    if(!days.length){alert('Selecciona al menos un día de repetición.');return}
@@ -2910,7 +2911,7 @@ if(calendarForm)calendarForm.addEventListener('submit',function(e){
  d.appointments=d.appointments||[];
  d.appointments.push({id:'calendar-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:date,start:start,end:end,title:title,description:String(form.get('description')||''),category:String(form.get('category')||'Personal'),important:form.get('important')==='on',color:String(form.get('eventColor')||calendarTypeMeta(form.get('category'),title).color),source:'calendar'});
  window.agendaCalendarVisibleMonth=new Date(window.dateFromISO(date).getFullYear(),window.dateFromISO(date).getMonth(),1);
- window.agendaCalendarSelectedISO=date;day=calendarDayName(window.dateFromISO(date));calendarForm.reset();save();
+ window.agendaCalendarSelectedISO=date;day=window.calendarDayName(window.dateFromISO(date));calendarForm.reset();save();
 });
 const applyPlanButton=document.getElementById('applyHumanPlanBtn');
 if(applyPlanButton)applyPlanButton.addEventListener('click',function(){
