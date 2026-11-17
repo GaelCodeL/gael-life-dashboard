@@ -1514,6 +1514,19 @@ body.agenda-editor-open{overflow:hidden}
  background-color:var(--marker-color)!important;box-shadow:0 0 7px var(--marker-color)!important;
 }
 .calendar-day-markers .calendar-day-empty-mark{width:3px!important;height:3px!important;background:#354c67!important;box-shadow:none!important}
+
+.calendar-day-markers .calendar-type-marker{
+ display:block!important;width:9px!important;height:6px!important;flex:0 0 9px!important;
+ border-radius:3px!important;background:var(--marker-color)!important;
+ background-color:var(--marker-color)!important;box-shadow:0 0 7px var(--marker-color)!important;
+}
+.calendar-day-markers .calendar-day-empty-mark{width:3px!important;height:3px!important;background:#354c67!important;box-shadow:none!important}
+.agenda-color-field{display:flex!important;align-items:center;justify-content:space-between;gap:12px!important;padding:8px 10px;border:1px solid #36526f;border-radius:11px;background:#0c1a2b;color:#c4d8eb!important;font-size:10px!important;font-weight:800}
+.agenda-color-field .field-color{width:54px!important;height:34px!important;padding:3px!important;border:1px solid #5b7897!important;border-radius:9px!important;background:#091526!important;cursor:pointer}
+.agenda-star-toggle{min-width:30px!important;width:30px;height:30px;padding:0!important;border-radius:9px!important;color:#70849c!important;border-color:#344a64!important;background:#102036!important;font-size:15px!important}
+.agenda-star-toggle.is-important{color:#ffd16f!important;border-color:#a47d3d!important;background:#3a2e1b!important;box-shadow:0 0 13px #ffd16f26}
+.agenda-star-toggle:active{transform:scale(.92)}
+@media(max-width:520px){.agenda-color-field .field-color{width:50px!important;height:36px!important}.agenda-star-toggle{min-width:29px!important;width:29px;height:29px}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -1569,6 +1582,7 @@ body.agenda-editor-open{overflow:hidden}
     <label class="calendar-full">Actividad<input class="field" name="title" placeholder="Cita, recado, evento…" required></label>
     <label>Categoría<select class="field" name="category"><option>Personal</option><option>Trabajo</option><option>Estudios</option><option>Examen</option><option>Cita médica</option><option>Pago</option><option>Ocio</option><option>Entrenamiento</option><option>Salud</option><option>Comida</option><option>Hogar</option><option>Descanso</option></select></label>
     <label class="calendar-full">Detalles opcionales<input class="field" name="description" placeholder="Lugar, preparación o notas"></label>
+    <label class="calendar-full agenda-color-field"><span>Color del evento</span><input class="field-color" type="color" name="eventColor" value="#54d8ee"></label>
     <label class="agenda-important-toggle calendar-full"><input type="checkbox" name="important"><span>★ Marcar como importante</span></label>
     <button class="btn primary calendar-full" type="submit">Guardar en calendario y agenda</button>
    </form>
@@ -1583,7 +1597,7 @@ body.agenda-editor-open{overflow:hidden}
   </div>
  </details>
  <div class="card agenda-week-card"><div class="row"><h3>Agenda del día seleccionado</h3><button class="btn" onclick="resetAgenda()">Restaurar horarios</button></div><div id="daytabs" class="tabs"></div><div class="agenda-legend"><span class="state-pending">Por empezar</span><span class="state-active">En curso</span><span class="state-unconfirmed">Sin confirmar</span><span class="state-done">Hecha</span><small>El estado horario cambia solo. Para contarla como hecha, márcala tú.</small></div><div id="events" class="timeline"></div></div>
- <div class="card"><h3>Añadir bloque recurrente al día seleccionado</h3><p class="muted">Este bloque se repite cada semana. Para una cita puntual utiliza el calendario.</p><form id="eventForm" class="form"><input class="field" name="time" placeholder="Hora, ej. 19:15–20:15" required><input class="field" name="title" placeholder="Actividad" required><input class="field full" name="desc" placeholder="Descripción"><select class="field" name="cat"><option>Trabajo</option><option>Estudios</option><option>Examen</option><option>Cita médica</option><option>Pago</option><option>Ocio</option><option>Entrenamiento</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option><option>Rutina</option><option>Otros</option></select><label class="agenda-important-toggle full"><input type="checkbox" name="important"><span>★ Marcar como importante</span></label><button class="btn primary full">Añadir bloque semanal</button></form></div>
+ <div class="card"><h3>Añadir bloque recurrente al día seleccionado</h3><p class="muted">Este bloque se repite cada semana. Para una cita puntual utiliza el calendario.</p><form id="eventForm" class="form"><input class="field" name="time" placeholder="Hora, ej. 19:15–20:15" required><input class="field" name="title" placeholder="Actividad" required><input class="field full" name="desc" placeholder="Descripción"><select class="field" name="cat"><option>Trabajo</option><option>Estudios</option><option>Examen</option><option>Cita médica</option><option>Pago</option><option>Ocio</option><option>Entrenamiento</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option><option>Rutina</option><option>Otros</option></select><label class="agenda-color-field full"><span>Color del evento</span><input class="field-color" type="color" name="eventColor" value="#7aa7ff"></label><label class="agenda-important-toggle full"><input type="checkbox" name="important"><span>★ Marcar como importante</span></label><button class="btn primary full">Añadir bloque semanal</button></form></div>
 </section><section id="tareas" class="page"><div class="cols"><div class="card"><div class="row"><h3>Mis tareas</h3><span class="pill" id="taskCount"></span></div><div class="bar"><i id="taskBar"></i></div><div id="taskList" class="stack"></div></div><div class="card"><h3>Nueva tarea</h3><form id="taskForm" class="stack"><input class="field" name="text" placeholder="¿Qué tienes que hacer?" required><select class="field" name="area"><option>Personal</option><option>Estudios</option><option>Trabajo</option><option>Hogar</option><option>Salud</option><option>Compra</option></select><select class="field" name="day"><option>Hoy</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select><button class="btn primary">Añadir tarea</button></form></div></div></section>
 <section id="estudios" class="page"><div class="cols"><div class="card"><h3>Asignaturas y ruta</h3><div id="subjects" class="stack"></div><div class="mutedbox">Ruta: 16–22 nov revisar plataforma y fechas · finales de nov dividir temarios · diciembre avanzar contenidos · 1–15 enero completar · 16–31 enero repasar y hacer simulacros · febrero exámenes.</div><h3 style="margin-top:15px">Historial de sesiones</h3><div id="sessions" class="stack"></div></div><div class="card"><h3>Registrar sesión</h3><form id="studyForm" class="stack"><select class="field" name="subject"><option>Programación de dispositivos móviles</option><option>Sistemas</option></select><input class="field" name="minutes" type="number" min="1" placeholder="Minutos" required><input class="field" name="note" placeholder="Qué has avanzado"><button class="btn primary">Guardar sesión</button></form><div class="mutedbox">Bloques previstos: lunes y jueves Programación 19:15–20:15; martes Sistemas 19:15–20:15; viernes Sistemas 16:15–17:45; sábado práctica 10:30–12:30.</div></div></div></section>
 <section id="salud" class="page"><div class="page-intro"><div class="eyebrow">RECUPERACIÓN Y SEGUIMIENTO</div><h2>Seguimiento de epicondilitis</h2><p class="muted">Aquí registramos la evolución de la epicondilitis: nivel de dolor percibido (escala de 0 a 10), síntomas o cambios que anotes y fecha de cada registro. Es un seguimiento personal, no sustituye la valoración médica o de fisioterapia.</p></div><div class="cols"><div class="card"><h3>Registrar evolución de la epicondilitis</h3><p class="muted">Anota cómo está el dolor hoy y cualquier cambio que hayas observado.</p><form id="healthForm" class="stack"><label class="muted">Dolor asociado a la epicondilitis: <b id="painVal">3</b>/10<input class="field" type="range" min="0" max="10" value="3" name="pain" oninput="painVal.textContent=this.value"><small class="muted">0 = sin dolor · 10 = máximo dolor percibido</small></label><input class="field" name="note" placeholder="Síntomas, molestias o cambios observados"><button class="btn primary">Guardar registro de hoy</button></form></div><div class="card"><h3>Historial de epicondilitis</h3><p class="muted">Evolución del dolor y observaciones guardadas.</p><div id="healthList" class="stack"></div><div class="mutedbox">Registra lo que notes sin forzar movimientos dolorosos. Sigue las indicaciones de los profesionales que llevan tu recuperación.</div></div></div></section>
@@ -1758,7 +1772,7 @@ function renderAgenda(){
   let outcome='';
   if(done||skipped)outcome='<button class="btn reopen-toggle" onclick="reopenLifeBlock(&quot;'+day+'&quot;,'+i+')">↶ Reabrir</button>';
   else outcome='<button class="btn done-toggle" onclick="toggleLifeBlock(&quot;'+day+'&quot;,'+i+')">✓ Hecha</button><button class="btn skipped-toggle" onclick="toggleLifeSkipBlock(&quot;'+day+'&quot;,'+i+')">× No realizada</button>';
-  return '<div class="event '+(done?'completed-event ':skipped?'skipped-event ':'')+status.cls+(e[5]?' agenda-important-event':'')+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+(e[5]?'<span class="agenda-important-star" title="Importante">★</span>':'')+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div><small class="agenda-category-label" style="--event-color:'+col(e[3])+'">'+esc(calendarTypeMeta(e[3]).label)+'</small></div><div class="actions">'+controls+outcome+'</div></div>';
+  return '<div class="event '+(done?'completed-event ':skipped?'skipped-event ':'')+status.cls+(e[5]?' agenda-important-event':'')+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3],e[1],e[6])+'"></div><div><div class="et">'+(e[5]?'<span class="agenda-important-star" title="Importante">★</span>':'')+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div><small class="agenda-category-label" style="--event-color:'+col(e[3],e[1],e[6])+'">'+esc(calendarTypeMeta(e[3]).label)+'</small></div><div class="actions">'+controls+'<button class="btn agenda-star-toggle '+(e[5]?'is-important':'')+'" aria-label="'+(e[5]?'Quitar importancia':'Marcar importante')+'" title="'+(e[5]?'Quitar importancia':'Marcar importante')+'" onclick="toggleLifeImportant(&quot;'+day+'&quot;,'+i+')">★</button>'+outcome+'</div></div>';
  }).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>';
  if(window.renderAgendaCalendar)window.renderAgendaCalendar();if(window.refreshHumanPlanControls)window.refreshHumanPlanControls();
 }
@@ -1800,6 +1814,7 @@ function openAgendaEditor(mode,details){
  form.elements.end.value=end||'';
  form.elements.description.value=description;
  form.elements.important.checked=mode==='block'?!!item[5]:!!item.important;
+ form.elements.eventColor.value=mode==='block'?(item[6]||calendarTypeMeta(category,title).color):(item.color||calendarTypeMeta(category,title).color);
  const categorySelect=form.elements.category;
  if(!Array.from(categorySelect.options).some(function(option){return option.value===category})){const customOption=document.createElement('option');customOption.value=category;customOption.textContent=category;categorySelect.add(customOption)}
  categorySelect.value=category;
@@ -1828,7 +1843,7 @@ function migrateAgendaCompletionKey(oldKey,newKey){
 
 function delEvent(i){if(confirm('¿Eliminar este bloque?')){d.agenda[day].splice(i,1);save()}}
 function resetAgenda(){if(confirm('¿Restaurar horarios iniciales?')){d.agenda=JSON.parse(JSON.stringify(defaults));save()}}
-document.getElementById('eventForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.agenda[day].push([f.get('time'),f.get('title'),f.get('desc'),f.get('cat'),'block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7),f.get('important')==='on']);e.target.reset();save()};
+document.getElementById('eventForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.agenda[day].push([f.get('time'),f.get('title'),f.get('desc'),f.get('cat'),'block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7),f.get('important')==='on',String(f.get('eventColor')||calendarTypeMeta(f.get('cat'),f.get('title')).color)]);e.target.reset();save()};
 document.getElementById('taskForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.tasks.push({text:f.get('text'),area:f.get('area'),day:f.get('day'),done:false});e.target.reset();save()};
 function renderTasks(){let n=d.tasks.filter(x=>x.done).length;taskCount.textContent=n+' / '+d.tasks.length+' completadas';taskBar.style.width=(d.tasks.length?n/d.tasks.length*100:0)+'%';taskList.innerHTML=d.tasks.map((x,i)=>`<div class="item row"><label class="row"><input type="checkbox" ${x.done?'checked':''} onchange="d.tasks[${i}].done=this.checked;save()"><span><b>${esc(x.text)}</b><br><small>${esc(x.area)} · ${esc(x.day)}</small></span></label><button class="btn" onclick="d.tasks.splice(${i},1);save()">Eliminar</button></div>`).join('')||'<small>No hay tareas pendientes.</small>'}
 document.getElementById('studyForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target);d.sessions.unshift({subject:f.get('subject'),minutes:+f.get('minutes'),note:f.get('note'),date:new Date().toLocaleDateString('es-ES')});e.target.reset();save()};
@@ -2014,6 +2029,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
    <fieldset class="agenda-editor-days editor-full" data-editor-days hidden><legend>Se repite estos días</legend><div class="agenda-editor-daychecks"><label><input type="checkbox" name="days" value="Lunes"> L</label><label><input type="checkbox" name="days" value="Martes"> M</label><label><input type="checkbox" name="days" value="Miércoles"> X</label><label><input type="checkbox" name="days" value="Jueves"> J</label><label><input type="checkbox" name="days" value="Viernes"> V</label><label><input type="checkbox" name="days" value="Sábado"> S</label><label><input type="checkbox" name="days" value="Domingo"> D</label></div></fieldset>
    <label>Categoría<select class="field" name="category"><option>Trabajo</option><option>Estudios</option><option>Examen</option><option>Cita médica</option><option>Pago</option><option>Ocio</option><option>Entrenamiento</option><option>Salud</option><option>Comida</option><option>Personal</option><option>Hogar</option><option>Descanso</option><option>Rutina</option><option>Otros</option></select></label>
    <label class="editor-full">Descripción / detalles<textarea class="field" name="description" rows="3" maxlength="500" placeholder="Qué necesitas hacer, qué llevar, lugar, preparativos…"></textarea></label>
+   <label class="agenda-color-field editor-full"><span>Color del evento</span><input class="field-color" type="color" name="eventColor" value="#54d8ee"></label>
    <label class="agenda-important-toggle editor-full"><input type="checkbox" name="important"><span>★ Marcar como importante</span></label>
    <div class="agenda-editor-actions editor-full"><button type="button" class="btn" id="agendaEditorCancel">Cancelar</button><button type="submit" class="btn primary">Guardar cambios</button></div>
   </form>
@@ -2343,7 +2359,7 @@ window.getLifeAppointmentsForDay=function(name){
  return (d.appointments||[]).filter(function(a){
   if(a.date)return a.date===date;
   return (a.days||[]).includes(name)&&!(a.skipDates||[]).includes(date);
- }).map(function(a){return [a.start+'–'+a.end,a.title,a.description,a.category,'appointment:'+a.id,!!a.important]});
+ }).map(function(a){return [a.start+'–'+a.end,a.title,a.description,a.category,'appointment:'+a.id,!!a.important,a.color||'']});
 };
 function lifeAgendaItemAt(dayName,index){
  const entries=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(dayName):(d.agenda[dayName]||[]).slice()).sort(function(a,b){
@@ -2353,6 +2369,19 @@ function lifeAgendaItemAt(dayName,index){
  return entries[index]||null;
 }
 function lifeAgendaKey(item){return item[4]||String(item[0])+'|'+String(item[1])}
+window.toggleLifeImportant=function(dayName,index){
+ const item=lifeAgendaItemAt(dayName,index);if(!item)return;
+ const key=lifeAgendaKey(item);
+ if(String(key).indexOf('appointment:')===0){
+  const id=String(key).replace('appointment:',''),appointment=(d.appointments||[]).find(function(x){return x.id===id});
+  if(!appointment)return;appointment.important=!appointment.important;
+ }else{
+  const baseIndex=item._baseIndex===undefined?index:item._baseIndex;
+  const target=(d.agenda[dayName]||[])[baseIndex];if(!target)return;
+  target[5]=!target[5];
+ }
+ save();if(window.refreshNow)window.refreshNow();
+};
 window.toggleLifeBlock=function(dayName,index){
  const item=lifeAgendaItemAt(dayName,index);if(!item)return;
  const date=weekDateForDay(dayName),key=lifeAgendaKey(item);
@@ -2841,7 +2870,7 @@ agendaEditorForm.addEventListener('submit',function(e){
   const old=d.agenda[oldDay]&&d.agenda[oldDay][index];if(!old){closeAgendaEditor();return}
   const oldKey=old[4]||String(old[0])+'|'+String(old[1]);
   const time=end?start+'–'+end:(f.get('flexible')==='on'?start+' en adelante':start);
-  const updated=[time,title,description,category,old[4]||('block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7)),f.get('important')==='on'];
+  const updated=[time,title,description,category,old[4]||('block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7)),f.get('important')==='on',String(f.get('eventColor')||calendarTypeMeta(category,title).color)];
   migrateAgendaCompletionKey(oldKey,updated[4]);
   if(newDay===oldDay)d.agenda[oldDay][index]=updated;
   else{d.agenda[oldDay].splice(index,1);d.agenda[newDay]=d.agenda[newDay]||[];d.agenda[newDay].push(updated);day=newDay;window.agendaCalendarSelectedISO=weekDateForDay(newDay)}
@@ -2849,7 +2878,7 @@ agendaEditorForm.addEventListener('submit',function(e){
   const id=String(f.get('appointmentId')),item=(d.appointments||[]).find(function(x){return x.id===id});
   if(!item){closeAgendaEditor();return}
   if(!end){alert('Las citas necesitan una hora de inicio y de fin.');return}
-  item.title=title;item.start=start;item.end=end;item.description=description;item.category=category;item.important=f.get('important')==='on';
+  item.title=title;item.start=start;item.end=end;item.description=description;item.category=category;item.important=f.get('important')==='on';item.color=String(f.get('eventColor')||calendarTypeMeta(category,title).color);
   if(item.date){
    const date=String(f.get('date')||'');
    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){alert('Selecciona una fecha válida.');return}
@@ -2863,12 +2892,21 @@ agendaEditorForm.addEventListener('submit',function(e){
  }
  closeAgendaEditor();save();if(window.refreshNow)window.refreshNow();
 });
+function bindCategoryColor(select,color,title){
+ if(!select||!color)return;
+ select.addEventListener('change',function(){color.value=calendarTypeMeta(select.value,title?title.value:'').color});
+}
+const eventFormNode=document.getElementById('eventForm');
+if(eventFormNode)bindCategoryColor(eventFormNode.elements.cat,eventFormNode.elements.eventColor,eventFormNode.elements.title);
+const editorNode=document.getElementById('agendaEditorForm');
+if(editorNode)bindCategoryColor(editorNode.elements.category,editorNode.elements.eventColor,editorNode.elements.title);
 const calendarForm=document.getElementById('calendarForm');
+if(calendarForm)bindCategoryColor(calendarForm.elements.category,calendarForm.elements.eventColor,calendarForm.elements.title);
 if(calendarForm)calendarForm.addEventListener('submit',function(e){
  e.preventDefault();const form=new FormData(calendarForm),date=String(form.get('date')||''),start=String(form.get('start')||''),end=String(form.get('end')||''),title=String(form.get('title')||'').trim();
  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)||end<=start||!title){alert('Comprueba la fecha, la actividad y el horario.');return}
  d.appointments=d.appointments||[];
- d.appointments.push({id:'calendar-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:date,start:start,end:end,title:title,description:String(form.get('description')||''),category:String(form.get('category')||'Personal'),important:form.get('important')==='on',source:'calendar'});
+ d.appointments.push({id:'calendar-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:date,start:start,end:end,title:title,description:String(form.get('description')||''),category:String(form.get('category')||'Personal'),important:form.get('important')==='on',color:String(form.get('eventColor')||calendarTypeMeta(form.get('category'),title).color),source:'calendar'});
  window.agendaCalendarVisibleMonth=new Date(dateFromISO(date).getFullYear(),dateFromISO(date).getMonth(),1);
  window.agendaCalendarSelectedISO=date;day=calendarDayName(dateFromISO(date));calendarForm.reset();save();
 });
