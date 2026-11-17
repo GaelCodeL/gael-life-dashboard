@@ -1507,6 +1507,13 @@ body.agenda-editor-open{overflow:hidden}
  .calendar-preview-event>small{font-size:7px!important}
 }
 @media(prefers-reduced-motion:reduce){.calendar-day.selected{transform:none}}
+
+.calendar-day-markers .calendar-type-marker{
+ display:block!important;width:9px!important;height:6px!important;flex:0 0 9px!important;
+ border-radius:3px!important;background:var(--marker-color)!important;
+ background-color:var(--marker-color)!important;box-shadow:0 0 7px var(--marker-color)!important;
+}
+.calendar-day-markers .calendar-day-empty-mark{width:3px!important;height:3px!important;background:#354c67!important;box-shadow:none!important}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -1538,7 +1545,7 @@ body.agenda-editor-open{overflow:hidden}
  </section>
 <section id="agenda" class="page">
  <div class="card calendar-card">
-  <div class="calendar-topline"><div><div class="eyebrow">AGENDA CONECTADA</div><h3>Calendario</h3><p class="muted">Elige una fecha para ver su agenda. Las actividades que añadas aquí aparecerán también en la agenda semanal y se sincronizarán con tus otros dispositivos.</p></div><div class="calendar-month-nav"><button class="btn calendar-today-btn" type="button" onclick="selectAgendaCalendarDate(calendarDateISO(new Date()))">Hoy</button><button class="btn" type="button" onclick="changeAgendaCalendarMonth(-1)" aria-label="Mes anterior">‹</button><button class="btn" type="button" onclick="changeAgendaCalendarMonth(1)" aria-label="Mes siguiente">›</button></div></div>
+  <div class="calendar-topline"><div><div class="eyebrow">AGENDA CONECTADA</div><h3>Calendario</h3><p class="muted">Elige una fecha para ver su agenda. Las actividades que añadas aquí aparecerán también en la agenda semanal y se sincronizarán con tus otros dispositivos.</p></div><div class="calendar-month-nav"><button class="btn calendar-today-btn" type="button" onclick="showTodayInCalendar()">Hoy</button><button class="btn" type="button" onclick="changeAgendaCalendarMonth(-1)" aria-label="Mes anterior">‹</button><button class="btn" type="button" onclick="changeAgendaCalendarMonth(1)" aria-label="Mes siguiente">›</button></div></div>
   <div id="calendarMonthLabel" class="calendar-month-label"></div>
   <div id="calendarMonthSummary" class="calendar-month-summary"></div>
   <div class="calendar-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div class="calendar-legend calendar-category-legend">
@@ -1655,27 +1662,61 @@ function save(){localStorage.setItem(window.__lifeGuestMode?GUEST_K:K,JSON.strin
 function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===p));scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function calendarTypeMeta(category){
+function calendarTypeMeta(category,title,customColor){
+ const cat=String(category||'Personal'),lower=String(title||'').toLocaleLowerCase('es');
  const map={
-  'Cita médica':{key:'medical',label:'Médico',icon:'✚',color:'#ff79a8'},
-  'Examen':{key:'exam',label:'Examen',icon:'◆',color:'#b69aff'},
-  'Pago':{key:'payment',label:'Pago',icon:'€',color:'#ffc36b'},
-  'Ocio':{key:'leisure',label:'Ocio',icon:'♡',color:'#68d9ff'},
-  'Entrenamiento':{key:'training',label:'Entreno',icon:'↗',color:'#81e3a4'},
-  'Trabajo':{key:'work',label:'Trabajo',icon:'▣',color:'#7aa7ff'},
-  'Estudios':{key:'study',label:'Estudios',icon:'▤',color:'#b58cff'},
-  'Salud':{key:'health',label:'Salud',icon:'✚',color:'#ff9abb'},
-  'Comida':{key:'food',label:'Comida',icon:'◉',color:'#ffb86b'},
-  'Hogar':{key:'home',label:'Hogar',icon:'⌂',color:'#b6ed72'},
-  'Personal':{key:'personal',label:'Personal',icon:'●',color:'#54d8ee'},
-  'Descanso':{key:'rest',label:'Descanso',icon:'☾',color:'#8ca5c5'},
-  'Rutina':{key:'routine',label:'Rutina',icon:'○',color:'#91a8c9'},
-  'Otros':{key:'other',label:'Otros',icon:'•',color:'#9baec4'}
+  medical:{key:'medical',label:'Médico',icon:'✚',color:'#ff79a8'},
+  exam:{key:'exam',label:'Examen',icon:'◆',color:'#b69aff'},
+  payment:{key:'payment',label:'Pago',icon:'€',color:'#ffc36b'},
+  leisure:{key:'leisure',label:'Ocio',icon:'♡',color:'#68d9ff'},
+  training:{key:'training',label:'Entreno',icon:'↗',color:'#81e3a4'},
+  work:{key:'work',label:'Trabajo',icon:'▣',color:'#7aa7ff'},
+  study:{key:'study',label:'Estudios',icon:'▤',color:'#b58cff'},
+  food:{key:'food',label:'Comida',icon:'◉',color:'#ffb86b'},
+  home:{key:'home',label:'Hogar',icon:'⌂',color:'#b6ed72'},
+  personal:{key:'personal',label:'Personal',icon:'●',color:'#54d8ee'},
+  rest:{key:'rest',label:'Descanso',icon:'☾',color:'#8ca5c5'},
+  routine:{key:'routine',label:'Rutina',icon:'○',color:'#91a8c9'},
+  other:{key:'other',label:'Otros',icon:'•',color:'#9baec4'}
  };
- return map[String(category||'Personal')]||{key:'other',label:String(category||'Otros'),icon:'•',color:'#9baec4'};
+ let key='other';
+ if(cat==='Cita médica'||cat==='Salud'||/fisio|m[eé]dic|doctor|dentist|consulta|hospital|anal[ií]tica|rehabilitaci[oó]n/.test(lower))key='medical';
+ else if(cat==='Examen'||/examen|prueba oficial|evaluaci[oó]n/.test(lower))key='exam';
+ else if(cat==='Pago'||/pagar|pago|recibo|factura|vencimiento|cuota|suscripci[oó]n/.test(lower))key='payment';
+ else if(cat==='Ocio'||/quedar|amigos|concierto|cine|evento social|plan de ocio/.test(lower))key='leisure';
+ else if(cat==='Entrenamiento'||/entreno|entrenamiento|gimnasio|gym|pesas|torso|pierna/.test(lower))key='training';
+ else if(cat==='Trabajo')key='work';
+ else if(cat==='Estudios')key='study';
+ else if(cat==='Comida')key='food';
+ else if(cat==='Hogar')key='home';
+ else if(cat==='Personal')key='personal';
+ else if(cat==='Descanso')key='rest';
+ else if(cat==='Rutina')key='routine';
+ const meta=map[key]||map.other;
+ return Object.assign({},meta,{color:/^#[0-9a-f]{6}$/i.test(String(customColor||''))?customColor:meta.color});
 }
 window.calendarTypeMeta=calendarTypeMeta;
-function col(c){return calendarTypeMeta(c).color}
+function col(c,title,color){return calendarTypeMeta(c,title,color).color}
+function isCalendarHighlight(item){
+ const title=Array.isArray(item)?item[1]:item.title;
+ const category=Array.isArray(item)?item[3]:item.category;
+ const important=Array.isArray(item)?!!item[5]:!!item.important;
+ const key=calendarTypeMeta(category,title).key;
+ return important||['medical','exam','payment','leisure','training'].includes(key);
+}
+function calendarHighlightsForDate(iso){
+ const date=dateFromISO(iso),name=calendarDayName(date);
+ const recurring=(d.agenda[name]||[]).map(function(item,index){
+  return {title:item[1],description:item[2]||'',category:item[3]||'Personal',important:!!item[5],color:item[6]||'',id:item[4]||('weekly:'+name+':'+index),source:'weekly'};
+ }).filter(isCalendarHighlight);
+ const appointments=(d.appointments||[]).filter(function(item){
+  if(item.date)return item.date===iso;
+  return (item.days||[]).includes(name)&&!(item.skipDates||[]).includes(iso);
+ }).map(function(item){return {title:item.title,description:item.description||'',category:item.category||'Personal',important:!!item.important,color:item.color||'',id:item.id,source:'appointment'}});
+ return recurring.concat(appointments).filter(isCalendarHighlight).map(function(item){
+  return Object.assign({},item,{meta:calendarTypeMeta(item.category,item.title,item.color)});
+ });
+}
 function agendaStatus(event,dateKey,done,skipped,autoDone){
  if(skipped)return {label:'NO REALIZADA',cls:'state-skipped'};
  if(done)return {label:autoDone?'HECHA · AUTO':'HECHA',cls:'state-done'};
@@ -2229,12 +2270,15 @@ window.refreshHumanPlanControls=function(){
  if(restore)restore.hidden=!(d.humanPlanApplied&&d.humanPlanBackup);
 };
 function calendarDateISO(date){return localDateKey(date)}
+window.showTodayInCalendar=function(){window.selectAgendaCalendarDate(calendarDateISO(new Date()))};
 function calendarDayName(date){return DAY[(date.getDay()+6)%7]}
 function dateFromISO(iso){return new Date(iso+'T12:00:00')}
 window.selectAgendaCalendarDate=function(iso){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso))return;
  window.agendaCalendarSelectedISO=iso;
- const date=dateFromISO(iso);day=calendarDayName(date);renderAgenda();
+ const date=dateFromISO(iso);
+ window.agendaCalendarVisibleMonth=new Date(date.getFullYear(),date.getMonth(),1);
+ day=calendarDayName(date);renderAgenda();
 };
 window.changeAgendaCalendarMonth=function(offset){
  const current=window.agendaCalendarVisibleMonth||new Date();
@@ -2248,44 +2292,42 @@ function renderAgendaCalendar(){
  label.textContent=new Intl.DateTimeFormat('es-ES',{month:'long',year:'numeric'}).format(month);
  const first=new Date(month.getFullYear(),month.getMonth(),1),offset=(first.getDay()+6)%7;
  const daysInMonth=new Date(month.getFullYear(),month.getMonth()+1,0).getDate(),total=Math.ceil((offset+daysInMonth)/7)*7,html=[];
- const today=calendarDateISO(new Date());
- const monthCounts={};
+ const today=calendarDateISO(new Date()),monthCounts={medical:0,exam:0,payment:0,leisure:0,training:0,important:0};
  for(let i=0;i<total;i++){
-  const date=new Date(month.getFullYear(),month.getMonth(),1-offset+i),iso=calendarDateISO(date),inMonth=date.getMonth()===month.getMonth(),dayName=calendarDayName(date);
-  const recurringItems=d.agenda[dayName]||[];
-  const dayAppointments=(d.appointments||[]).filter(function(item){
-   if(item.date)return item.date===iso;
-   return (item.days||[]).includes(dayName)&&!(item.skipDates||[]).includes(iso);
+  const date=new Date(month.getFullYear(),month.getMonth(),1-offset+i),iso=calendarDateISO(date),inMonth=date.getMonth()===month.getMonth();
+  const highlights=calendarHighlightsForDate(iso),uniqueTypes=[];
+  highlights.forEach(function(item){
+   const markerKey=item.meta.key+'|'+item.meta.color;
+   if(!uniqueTypes.some(function(entry){return entry.key===markerKey}))uniqueTypes.push({key:markerKey,meta:item.meta});
+   if(inMonth&&Object.prototype.hasOwnProperty.call(monthCounts,item.meta.key))monthCounts[item.meta.key]++;
+   if(inMonth&&item.important)monthCounts.important++;
   });
-  const categories=Array.from(new Set(recurringItems.map(function(item){return item[3]||'Personal'}).concat(dayAppointments.map(function(item){return item.category||'Personal'}))));
-  const total=recurringItems.length+dayAppointments.length,has=total>0;
-  const isImportant=recurringItems.some(function(item){return !!item[5]})||dayAppointments.some(function(item){return !!item.important});
-  if(inMonth)categories.forEach(function(category){
-   const meta=calendarTypeMeta(category);
-   const count=recurringItems.filter(function(item){return (item[3]||'Personal')===category}).length+
-    dayAppointments.filter(function(item){return (item.category||'Personal')===category}).length;
-   monthCounts[meta.key]=(monthCounts[meta.key]||0)+count;
-  });
-  const markerHtml=categories.slice(0,4).map(function(category){
-   const meta=calendarTypeMeta(category);
-   return '<i class="calendar-type-marker" style="--marker-color:'+meta.color+'" title="'+esc(meta.label)+'"></i>';
-  }).join('')+(categories.length>4?'<small class="calendar-more-markers">+'+(categories.length-4)+'</small>':'');
-  const importantCount=recurringItems.filter(function(item){return !!item[5]}).length+dayAppointments.filter(function(item){return !!item.important}).length;
-  if(inMonth)monthCounts.important=(monthCounts.important||0)+importantCount;
-  const weekend=date.getDay()===0||date.getDay()===6;
-  const specialClass=categories.some(function(c){return ['Cita médica','Examen','Pago','Ocio','Entrenamiento'].includes(c)});
-  html.push('<button type="button" class="calendar-day '+(!inMonth?'outside-month ':'')+(iso===selected?'selected ':'')+(iso===today?'today ':'')+(weekend?'weekend ':'')+(has?'has-items ':'')+(specialClass?'has-calendar-events ':'')+(isImportant?'has-important ':'')+'" title="'+iso+(total?' · '+total+' actividades':' · Sin bloques')+(isImportant?' · Contiene elementos importantes':'')+'" onclick="selectAgendaCalendarDate(\''+iso+'\')"><span class="calendar-day-top"><span class="calendar-day-number">'+date.getDate()+'</span>'+(isImportant?'<b class="calendar-important-star" aria-label="Importante">★</b>':'')+'</span><span class="calendar-day-markers">'+(markerHtml||'<i class="calendar-day-empty-mark"></i>')+'</span>'+(total?'<small class="calendar-day-count">'+total+' act.</small>':'')+'</button>');
+  const markerHtml=uniqueTypes.slice(0,4).map(function(entry){
+   return '<i class="calendar-type-marker" style="--marker-color:'+entry.meta.color+'" title="'+esc(entry.meta.label)+'"></i>';
+  }).join('')+(uniqueTypes.length>4?'<small class="calendar-more-markers">+'+(uniqueTypes.length-4)+'</small>':'');
+  const important=highlights.some(function(item){return item.important}),weekend=date.getDay()===0||date.getDay()===6,count=highlights.length;
+  html.push('<button type="button" class="calendar-day '+(!inMonth?'outside-month ':'')+(iso===selected?'selected ':'')+(iso===today?'today ':'')+(weekend?'weekend ':'')+(count?'has-items ':'')+(uniqueTypes.length?'has-calendar-events ':'')+(important?'has-important ':'')+'" title="'+iso+(count?' · '+count+' hitos':' · Sin hitos destacados')+(important?' · Contiene prioridades':'')+'" onclick="selectAgendaCalendarDate(&quot;'+iso+'&quot;)"><span class="calendar-day-top"><span class="calendar-day-number">'+date.getDate()+'</span>'+(important?'<b class="calendar-important-star" aria-label="Importante">★</b>':'')+'</span><span class="calendar-day-markers">'+(markerHtml||'<i class="calendar-day-empty-mark"></i>')+'</span>'+(count?'<small class="calendar-day-count">'+count+(count===1?' hito':' hitos')+'</small>':'')+'</button>');
  }
-  grid.innerHTML=html.join('');
+ grid.innerHTML=html.join('');
  const monthSummary=document.getElementById('calendarMonthSummary');
- if(monthSummary){const summaryTypes=[['medical','Médico'],['exam','Exámenes'],['payment','Pagos'],['leisure','Ocio'],['training','Entrenos']];monthSummary.innerHTML=summaryTypes.filter(function(entry){return monthCounts[entry[0]]}).map(function(entry){const meta=({medical:calendarTypeMeta('Cita médica'),exam:calendarTypeMeta('Examen'),payment:calendarTypeMeta('Pago'),leisure:calendarTypeMeta('Ocio'),training:calendarTypeMeta('Entrenamiento')})[entry[0]];return '<span class="month-summary-chip" style="--chip-color:'+meta.color+'"><i></i><b>'+monthCounts[entry[0]]+'</b>'+entry[1]+'</span>'}).join('')+(monthCounts.important?'<span class="month-summary-chip month-summary-important"><i>★</i><b>'+monthCounts.important+'</b>Prioridades</span>':'')||'<small>Este mes aún no tiene citas, exámenes ni eventos especiales.</small>'}
+ if(monthSummary){
+  const types=[['medical','Médico'],['exam','Exámenes'],['payment','Pagos'],['leisure','Ocio'],['training','Entrenos']];
+  const items=types.filter(function(entry){return monthCounts[entry[0]]}).map(function(entry){
+   const meta=({medical:calendarTypeMeta('Cita médica'),exam:calendarTypeMeta('Examen'),payment:calendarTypeMeta('Pago'),leisure:calendarTypeMeta('Ocio'),training:calendarTypeMeta('Entrenamiento')})[entry[0]];
+   return '<span class="month-summary-chip" style="--chip-color:'+meta.color+'"><i></i><b>'+monthCounts[entry[0]]+'</b>'+entry[1]+'</span>';
+  }).join('')+(monthCounts.important?'<span class="month-summary-chip month-summary-important"><i>★</i><b>'+monthCounts.important+'</b>Prioridades</span>':'');
+  monthSummary.innerHTML=items||'<small>Sin citas, exámenes, pagos, entrenos ni planes destacados este mes.</small>';
+ }
  const chosen=dateFromISO(selected),chosenName=calendarDayName(chosen);
  const events=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(chosenName):(d.agenda[chosenName]||[]).slice()).slice().sort(function(a,b){
   function mins(item){const m=String(item[0]||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
   return mins(a)-mins(b);
  });
  const formatted=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(chosen);
- summary.innerHTML='<div class="calendar-selected-heading"><span class="calendar-selected-icon">▦</span><div><b>'+formatted+'</b><small>'+events.length+' actividades programadas · '+events.filter(function(item){return !!item[5]}).length+' importantes</small></div><span class="calendar-selected-chip">DÍA SELECCIONADO</span></div><div class="calendar-preview-list">'+events.slice(0,6).map(function(item){const meta=calendarTypeMeta(item[3]);return '<span class="calendar-preview-event" style="--event-color:'+meta.color+'"><time>'+esc(item[0])+'</time><i>'+esc(meta.icon)+'</i><b>'+esc(item[1])+'</b><small>'+esc(meta.label)+'</small>'+(item[5]?'<strong class="calendar-preview-important" title="Importante">★</strong>':'')+'</span>'}).join('')+(events.length>6?'<small>+'+(events.length-6)+' más en la agenda</small>':'')+'</div>';
+ summary.innerHTML='<div class="calendar-selected-heading"><span class="calendar-selected-icon">▦</span><div><b>'+formatted+'</b><small>'+events.length+' actividades en la agenda · '+events.filter(function(item){return !!item[5]}).length+' importantes</small></div><span class="calendar-selected-chip">DÍA SELECCIONADO</span></div><div class="calendar-preview-list">'+events.slice(0,6).map(function(item){
+  const meta=calendarTypeMeta(item[3],item[1],item[6]);
+  return '<span class="calendar-preview-event" style="--event-color:'+meta.color+'"><time>'+esc(item[0])+'</time><i>'+esc(meta.icon)+'</i><b>'+esc(item[1])+'</b><small>'+esc(meta.label)+'</small>'+(item[5]?'<strong class="calendar-preview-important" title="Importante">★</strong>':'')+'</span>';
+ }).join('')+(events.length>6?'<small>+'+(events.length-6)+' más en la agenda</small>':'')+'</div>';
  const dateInput=document.querySelector('#calendarForm [name="date"]');if(dateInput&&dateInput.value!==selected)dateInput.value=selected;
 }
 window.renderAgendaCalendar=renderAgendaCalendar;
