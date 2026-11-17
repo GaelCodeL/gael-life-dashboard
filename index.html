@@ -2091,7 +2091,7 @@ window.deleteLifeAppointment=function(id){
  }
 };
 window.getLifeAgendaForDay=function(name){
- const base=(d.agenda[name]||[]).map(function(e,i){var copy=e.slice();copy._baseIndex=i;return copy});
+ const rawBase=(d.agenda[name]||[]).map(function(e,i){var copy=e.slice();copy._baseIndex=i;return copy});
  const appointments=window.getLifeAppointmentsForDay(name);
  function toMin(value){var m=String(value||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):null}
  function toTime(value){return String(Math.floor(value/60)).padStart(2,'0')+':'+String(value%60).padStart(2,'0')}
@@ -2103,6 +2103,7 @@ window.getLifeAgendaForDay=function(name){
   return {start:start,end:end,item:a};
  }).filter(Boolean);
  const hasClinicPhysio=appointments.some(function(a){return /fisio|fisioterapia/i.test(String(a[1]||''))});
+ const base=hasClinicPhysio?rawBase.filter(function(e){return !/ejercicios de fisioterapia en casa/i.test(String(e[1]||''))}):rawBase;
  function isProtected(e){
   var title=String(e[1]||'').toLowerCase(),category=String(e[3]||'').toLowerCase();
   return /ducha|preparar mañana|preparar el día siguiente|cena|dormir|acostarse|vuelta a casa|regreso a casa|desplazamiento a casa|ejercicios de fisioterapia en casa/.test(title)||
@@ -2129,7 +2130,6 @@ window.getLifeAgendaForDay=function(name){
  const adjusted=base.map(function(e){return moved.get(e)||e});
  const result=[];
  adjusted.forEach(function(e){
-  if(hasClinicPhysio&&/ejercicios de fisioterapia en casa/i.test(String(e[1]||'')))return;
   var times=String(e[0]||'').match(/\d{1,2}:\d{2}/g)||[];
   if(times.length<2){result.push(e);return}
   var start=toMin(times[0]),end=toMin(times[1]);
@@ -2156,9 +2156,8 @@ window.isAutoCompleteRoutine=function(item){
  const first=times.length?Number(times[0].split(':')[0])*60+Number(times[0].split(':')[1]):null;
  const wake=/despert|levant|rutina de mañana|aseo matutino/.test(title);
  const morningPreparation=/^preparaci[oó]n$/.test(title)&&first!==null&&first<11*60;
- const routinePreparation=category==='rutina'&&/preparar|preparaci[oó]n/.test(title);
  const sleep=/dormir|acost|hora de dormir|descanso nocturno/.test(title)||(category==='descanso'&&/^descanso$/.test(title));
- return wake||morningPreparation||routinePreparation||sleep;
+ return wake||morningPreparation||sleep;
 };
 window.autoCompleteLifeRoutines=function(){
  const now=new Date(),previousCalendarDate=window.agendaCalendarSelectedISO;let changed=false;
