@@ -1795,6 +1795,143 @@ function ensureData(){
  d.completedBlocks=d.completedBlocks||{};d.skippedBlocks=d.skippedBlocks||{};d.autoCompletedBlocks=d.autoCompletedBlocks||{};d.manualAgendaPending=d.manualAgendaPending||{};
  d.appointments=d.appointments||[];
 }
+function buildHumanWeeklyAgenda(){
+ const result={},weekdays=['Lunes','Martes','Miércoles','Jueves','Viernes'];
+ const common=[
+  ['07:00–07:15','Despertar y aseo','Levantarte sin empezar el día con prisas.','Rutina'],
+  ['07:15–07:40','Desayuno','Desayunar con tiempo.','Comida'],
+  ['07:40–08:15','Ducha y vestirse','Ducha, higiene y prepararte para salir.','Rutina'],
+  ['08:15–09:00','Desplazamiento / margen de entrada','Trayecto o margen previo al trabajo; ajusta este tramo a tu desplazamiento real.','Personal'],
+  ['09:00–14:00','Trabajo','Jornada laboral.','Trabajo'],
+  ['14:00–14:30','Pausa para comer','Comida dentro de la jornada; mueve la hora si tu descanso laboral es distinto.','Comida'],
+  ['14:30–17:00','Trabajo','Continuación de la jornada.','Trabajo'],
+  ['17:00–17:15','Merienda y pausa','Parar un momento y comer algo.','Comida'],
+  ['17:15–18:30','Trabajo','Último tramo de la jornada.','Trabajo']
+ ];
+ weekdays.forEach(function(dayName){
+  var events=common.map(function(e){return e.slice()});
+  if(dayName==='Martes'||dayName==='Jueves'){
+   events.push(
+    ['18:30–19:10','Desplazamiento a fisioterapia','Salir del trabajo y llegar a la sesión con margen.','Personal'],
+    ['20:10–20:40','Vuelta a casa','Trayecto y margen para llegar sin prisas.','Personal'],
+    ['20:40–20:55','Ducha','Ducha rápida después de la sesión.','Rutina'],
+    ['20:55–21:25','Cena','Reservar tiempo real para cenar después de fisioterapia.','Comida'],
+    ['21:25–21:40','Preparar mañana','Ropa, mochila, comida y revisar lo imprescindible del día siguiente.','Rutina'],
+    ['21:40–22:45','Desconexión y tiempo libre','Bajar el ritmo; no se programa estudio después de fisioterapia.','Descanso']
+   );
+  }else{
+   events.push(
+    ['18:30–19:00','Desplazamiento a casa','Trayecto y transición al terminar de trabajar.','Personal'],
+    ['19:00–19:20','Ejercicios de fisioterapia en casa','Reservar al menos 20 minutos para la pauta domiciliaria que te haya indicado fisioterapia.','Salud'],
+    ['19:20–19:40','Ducha','Ducha después de los ejercicios.','Rutina'],
+    ['19:40–20:10','Cena','Tiempo para preparar y comer sin prisas.','Comida'],
+    ['20:10–21:10','Estudio DAM','Un bloque de concentración de una hora. Si estás agotado, se puede reducir o mover.','Estudios'],
+    ['21:10–21:25','Preparar mañana','Ropa, mochila, comida y revisar la agenda del día siguiente.','Rutina'],
+    ['21:25–22:45','Desconexión y tiempo libre','Descanso real antes de dormir.','Descanso']
+   );
+  }
+  events.push(['22:45','Dormir','Objetivo de descanso: aproximadamente ocho horas antes de levantarte.','Descanso']);
+  result[dayName]=events;
+ });
+ result['Sábado']=[
+  ['08:00–08:15','Despertar y aseo','Comenzar el día sin prisas.','Rutina'],
+  ['08:15–08:45','Desayuno','Desayuno tranquilo.','Comida'],
+  ['08:45–09:15','Ducha y prepararse','Higiene y preparar el espacio de estudio.','Rutina'],
+  ['09:30–11:30','Estudio DAM','Bloque principal de estudio de fin de semana.','Estudios'],
+  ['11:45–12:05','Ejercicios de fisioterapia en casa','Veinte minutos de ejercicios pautados.','Salud'],
+  ['12:05–12:25','Higiene y pausa','Recuperar y descansar después de los ejercicios.','Rutina'],
+  ['13:30–14:15','Comida','Comer con tiempo.','Comida'],
+  ['16:30–17:15','Hogar y recados','Hueco flexible para tareas domésticas o compras.','Hogar'],
+  ['20:30–21:00','Cena','Cena tranquila.','Comida'],
+  ['21:00–21:15','Preparar mañana','Dejar preparado lo necesario.','Rutina'],
+  ['21:15–22:45','Tiempo libre y descanso','Tarde-noche sin obligaciones añadidas.','Descanso'],
+  ['22:45','Dormir','Mantener un horario que permita descansar.','Descanso']
+ ];
+ result['Domingo']=[
+  ['08:30–08:50','Despertar y aseo','Mañana flexible.','Rutina'],
+  ['08:50–09:20','Desayuno','Desayuno tranquilo.','Comida'],
+  ['13:30–14:15','Comida','Comer con tiempo.','Comida'],
+  ['17:00–18:00','Planificar semana y preparar comidas','Revisar compromisos y dejar preparadas algunas bases de comida.','Hogar'],
+  ['19:45–20:05','Ducha','Preparar el cierre del fin de semana.','Rutina'],
+  ['20:15–20:45','Cena','Cena con tiempo.','Comida'],
+  ['20:45–21:00','Preparar lunes','Ropa, mochila, comida y primeras prioridades.','Rutina'],
+  ['21:00–22:45','Descanso y tiempo personal','Dejar espacio para desconectar.','Descanso'],
+  ['22:45','Dormir','Dormir con margen antes del lunes.','Descanso']
+ ];
+ return result;
+}
+function hasRecurringPhysio(dayName){
+ return (d.appointments||[]).some(function(item){
+  return /fisio|fisioterapia/i.test(String(item.title||''))&&!item.date&&(item.days||[]).includes(dayName);
+ });
+}
+function applyHumanWeeklyPlan(){
+ if(!d.humanPlanBackup)d.humanPlanBackup=JSON.parse(JSON.stringify(d.agenda||{}));
+ d.agenda=buildHumanWeeklyAgenda();
+ d.humanPlanGeneratedAppointmentIds=d.humanPlanGeneratedAppointmentIds||[];
+ const needed=['Martes','Jueves'].filter(function(dayName){return !hasRecurringPhysio(dayName)});
+ if(needed.length){
+  const id='physio-weekly-'+Date.now();
+  d.appointments=d.appointments||[];
+  d.appointments.push({id:id,title:'Fisioterapia',description:'Sesión habitual en clínica. Ajusta el horario si cambia.',start:'19:10',end:'20:10',category:'Salud',days:needed,source:'human-plan',plannerGenerated:true});
+  d.humanPlanGeneratedAppointmentIds.push(id);
+ }
+ d.humanPlanApplied=true;save();
+}
+function restorePreviousWeeklyPlan(){
+ if(!d.humanPlanBackup)return;
+ if(!confirm('Se restaurarán los bloques semanales que tenías antes de aplicar la propuesta. Las citas del calendario y su historial se conservarán. ¿Continuar?'))return;
+ d.agenda=d.humanPlanBackup;delete d.humanPlanBackup;
+ (d.humanPlanGeneratedAppointmentIds||[]).forEach(function(id){d.appointments=(d.appointments||[]).filter(function(item){return item.id!==id})});
+ delete d.humanPlanGeneratedAppointmentIds;d.humanPlanApplied=false;save();
+}
+window.refreshHumanPlanControls=function(){
+ const apply=document.getElementById('applyHumanPlanBtn'),restore=document.getElementById('restoreHumanPlanBtn');
+ if(apply){apply.disabled=!!d.humanPlanApplied;apply.textContent=d.humanPlanApplied?'Semana realista aplicada':'Aplicar semana realista'}
+ if(restore)restore.hidden=!(d.humanPlanApplied&&d.humanPlanBackup);
+};
+function calendarDateISO(date){return localDateKey(date)}
+function calendarDayName(date){return DAY[(date.getDay()+6)%7]}
+function dateFromISO(iso){return new Date(iso+'T12:00:00')}
+window.selectAgendaCalendarDate=function(iso){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(iso))return;
+ window.agendaCalendarSelectedISO=iso;
+ const date=dateFromISO(iso);day=calendarDayName(date);renderAgenda();
+};
+window.changeAgendaCalendarMonth=function(offset){
+ const current=window.agendaCalendarVisibleMonth||new Date();
+ window.agendaCalendarVisibleMonth=new Date(current.getFullYear(),current.getMonth()+Number(offset),1);
+ window.selectAgendaCalendarDate(calendarDateISO(window.agendaCalendarVisibleMonth));
+};
+function renderAgendaCalendar(){
+ const grid=document.getElementById('calendarGrid'),label=document.getElementById('calendarMonthLabel'),summary=document.getElementById('calendarSelection');
+ if(!grid||!label||!summary)return;
+ const month=window.agendaCalendarVisibleMonth||new Date(),selected=window.agendaCalendarSelectedISO||calendarDateISO(new Date());
+ label.textContent=new Intl.DateTimeFormat('es-ES',{month:'long',year:'numeric'}).format(month);
+ const first=new Date(month.getFullYear(),month.getMonth(),1),offset=(first.getDay()+6)%7;
+ const daysInMonth=new Date(month.getFullYear(),month.getMonth()+1,0).getDate(),total=Math.ceil((offset+daysInMonth)/7)*7,html=[];
+ const today=calendarDateISO(new Date());
+ for(let i=0;i<total;i++){
+  const date=new Date(month.getFullYear(),month.getMonth(),1-offset+i),iso=calendarDateISO(date),inMonth=date.getMonth()===month.getMonth(),dayName=calendarDayName(date);
+  const recurring=(d.agenda[dayName]||[]).length>0;
+  const appointments=(d.appointments||[]).filter(function(item){
+   if(item.date)return item.date===iso;
+   return (item.days||[]).includes(dayName)&&!(item.skipDates||[]).includes(iso);
+  }).length;
+  const has=recurring||appointments>0;
+  html.push('<button type="button" class="calendar-day '+(!inMonth?'outside-month ':'')+(iso===selected?'selected ':'')+(iso===today?'today ':'')+(has?'has-items':'')+'" onclick="selectAgendaCalendarDate(\''+iso+'\')"><span>'+date.getDate()+'</span>'+(has?'<i></i>':'')+'</button>');
+ }
+ grid.innerHTML=html.join('');
+ const chosen=dateFromISO(selected),chosenName=calendarDayName(chosen);
+ const events=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(chosenName):(d.agenda[chosenName]||[]).slice()).slice().sort(function(a,b){
+  function mins(item){const m=String(item[0]||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
+  return mins(a)-mins(b);
+ });
+ const formatted=new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(chosen);
+ summary.innerHTML='<div><b>'+formatted+'</b><small>'+events.length+' actividades en la agenda</small></div><div class="calendar-preview-list">'+events.slice(0,3).map(function(item){return '<span><time>'+esc(item[0])+'</time><b>'+esc(item[1])+'</b></span>'}).join('')+(events.length>3?'<small>+'+(events.length-3)+' más</small>':'')+'</div>';
+ const dateInput=document.querySelector('#calendarForm [name="date"]');if(dateInput&&dateInput.value!==selected)dateInput.value=selected;
+}
+window.renderAgendaCalendar=renderAgendaCalendar;
 function localDateKey(date){return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-')}
 function weekDateForDay(name){
  const reference=window.agendaCalendarSelectedISO?new Date(window.agendaCalendarSelectedISO+'T12:00:00'):new Date();
@@ -2259,6 +2396,23 @@ document.getElementById('diaryForm').addEventListener('submit',function(e){e.pre
 document.getElementById('leisureForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.target);d.leisure.unshift({idea:f.get('idea'),type:f.get('type')});e.target.reset();save()});
 document.getElementById('diaryEntries').addEventListener('click',function(e){const id=e.target.dataset.diaryDelete;if(id!==undefined){d.diary=d.diary.filter(x=>x.id!==id);save()}});
 document.getElementById('leisureList').addEventListener('click',function(e){const i=e.target.dataset.leisureDelete;if(i!==undefined){d.leisure.splice(Number(i),1);save()}});
+const calendarForm=document.getElementById('calendarForm');
+if(calendarForm)calendarForm.addEventListener('submit',function(e){
+ e.preventDefault();const form=new FormData(calendarForm),date=String(form.get('date')||''),start=String(form.get('start')||''),end=String(form.get('end')||''),title=String(form.get('title')||'').trim();
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)||end<=start||!title){alert('Comprueba la fecha, la actividad y el horario.');return}
+ d.appointments=d.appointments||[];
+ d.appointments.push({id:'calendar-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),date:date,start:start,end:end,title:title,description:String(form.get('description')||''),category:String(form.get('category')||'Personal'),source:'calendar'});
+ window.agendaCalendarVisibleMonth=new Date(dateFromISO(date).getFullYear(),dateFromISO(date).getMonth(),1);
+ window.agendaCalendarSelectedISO=date;day=calendarDayName(dateFromISO(date));calendarForm.reset();save();
+});
+const applyPlanButton=document.getElementById('applyHumanPlanBtn');
+if(applyPlanButton)applyPlanButton.addEventListener('click',function(){
+ if(d.humanPlanApplied)return;
+ if(!confirm('Voy a sustituir los bloques semanales actuales por una propuesta basada en tu jornada 09:00–18:30. Se guardará una copia para restaurarla. Las citas puntuales y los registros se conservarán. ¿Aplicar?'))return;
+ applyHumanWeeklyPlan();
+});
+const restorePlanButton=document.getElementById('restoreHumanPlanBtn');
+if(restorePlanButton)restorePlanButton.addEventListener('click',restorePreviousWeeklyPlan);
 ensureData();window.render();if(window.refreshNow)window.refreshNow();
 })();
 </script></body></html></html>
