@@ -2260,19 +2260,25 @@ function renderAgendaCalendar(){
   const categories=Array.from(new Set(recurringItems.map(function(item){return item[3]||'Personal'}).concat(dayAppointments.map(function(item){return item.category||'Personal'}))));
   const total=recurringItems.length+dayAppointments.length,has=total>0;
   const isImportant=recurringItems.some(function(item){return !!item[5]})||dayAppointments.some(function(item){return !!item.important});
+  if(inMonth)categories.forEach(function(category){
+   const meta=calendarTypeMeta(category);
+   const count=recurringItems.filter(function(item){return (item[3]||'Personal')===category}).length+
+    dayAppointments.filter(function(item){return (item.category||'Personal')===category}).length;
+   monthCounts[meta.key]=(monthCounts[meta.key]||0)+count;
+  });
   const markerHtml=categories.slice(0,4).map(function(category){
    const meta=calendarTypeMeta(category);
-   if(inMonth)monthCounts[meta.key]=(monthCounts[meta.key]||0)+1;
    return '<i class="calendar-type-marker" style="--marker-color:'+meta.color+'" title="'+esc(meta.label)+'"></i>';
   }).join('')+(categories.length>4?'<small class="calendar-more-markers">+'+(categories.length-4)+'</small>':'');
-  if(inMonth)monthCounts.important=(monthCounts.important||0)+(isImportant?1:0);
+  const importantCount=recurringItems.filter(function(item){return !!item[5]}).length+dayAppointments.filter(function(item){return !!item.important}).length;
+  if(inMonth)monthCounts.important=(monthCounts.important||0)+importantCount;
   const weekend=date.getDay()===0||date.getDay()===6;
   const specialClass=categories.some(function(c){return ['Cita médica','Examen','Pago','Ocio','Entrenamiento'].includes(c)});
   html.push('<button type="button" class="calendar-day '+(!inMonth?'outside-month ':'')+(iso===selected?'selected ':'')+(iso===today?'today ':'')+(weekend?'weekend ':'')+(has?'has-items ':'')+(specialClass?'has-calendar-events ':'')+(isImportant?'has-important ':'')+'" title="'+iso+(total?' · '+total+' actividades':' · Sin bloques')+(isImportant?' · Contiene elementos importantes':'')+'" onclick="selectAgendaCalendarDate(\''+iso+'\')"><span class="calendar-day-top"><span class="calendar-day-number">'+date.getDate()+'</span>'+(isImportant?'<b class="calendar-important-star" aria-label="Importante">★</b>':'')+'</span><span class="calendar-day-markers">'+(markerHtml||'<i class="calendar-day-empty-mark"></i>')+'</span>'+(total?'<small class="calendar-day-count">'+total+' act.</small>':'')+'</button>');
  }
   grid.innerHTML=html.join('');
  const monthSummary=document.getElementById('calendarMonthSummary');
- if(monthSummary){const summaryTypes=[['medical','Médico'],['exam','Exámenes'],['payment','Pagos'],['leisure','Ocio'],['training','Entrenos']];monthSummary.innerHTML=summaryTypes.filter(function(entry){return monthCounts[entry[0]]}).map(function(entry){const meta=({medical:calendarTypeMeta('Cita médica'),exam:calendarTypeMeta('Examen'),payment:calendarTypeMeta('Pago'),leisure:calendarTypeMeta('Ocio'),training:calendarTypeMeta('Entrenamiento')})[entry[0]];return '<span class="month-summary-chip" style="--chip-color:'+meta.color+'"><i></i><b>'+monthCounts[entry[0]]+'</b>'+entry[1]+'</span>'}).join('')+(monthCounts.important?'<span class="month-summary-chip month-summary-important"><i>★</i><b>'+monthCounts.important+'</b>Importantes</span>':'')||'<small>Este mes aún no tiene citas, exámenes ni eventos especiales.</small>'}
+ if(monthSummary){const summaryTypes=[['medical','Médico'],['exam','Exámenes'],['payment','Pagos'],['leisure','Ocio'],['training','Entrenos']];monthSummary.innerHTML=summaryTypes.filter(function(entry){return monthCounts[entry[0]]}).map(function(entry){const meta=({medical:calendarTypeMeta('Cita médica'),exam:calendarTypeMeta('Examen'),payment:calendarTypeMeta('Pago'),leisure:calendarTypeMeta('Ocio'),training:calendarTypeMeta('Entrenamiento')})[entry[0]];return '<span class="month-summary-chip" style="--chip-color:'+meta.color+'"><i></i><b>'+monthCounts[entry[0]]+'</b>'+entry[1]+'</span>'}).join('')+(monthCounts.important?'<span class="month-summary-chip month-summary-important"><i>★</i><b>'+monthCounts.important+'</b>Prioridades</span>':'')||'<small>Este mes aún no tiene citas, exámenes ni eventos especiales.</small>'}
  const chosen=dateFromISO(selected),chosenName=calendarDayName(chosen);
  const events=(window.getLifeAgendaForDay?window.getLifeAgendaForDay(chosenName):(d.agenda[chosenName]||[]).slice()).slice().sort(function(a,b){
   function mins(item){const m=String(item[0]||'').match(/(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):9999}
