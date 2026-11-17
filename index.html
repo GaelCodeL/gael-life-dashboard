@@ -1869,9 +1869,13 @@ window.getLifeAgendaForDay=function(name){
 }
 window.isAutoCompleteRoutine=function(item){
  const title=String(item[1]||'').toLowerCase(),category=String(item[3]||'').toLowerCase();
+ const times=String(item[0]||'').match(/(\\d{1,2}):(\\d{2})/g)||[];
+ const first=times.length?Number(times[0].split(':')[0])*60+Number(times[0].split(':')[1]):null;
  const wake=/despert|levant|rutina de mañana|aseo matutino/.test(title);
+ const morningPreparation=/^preparaci[oó]n$/.test(title)&&first!==null&&first<11*60;
+ const routinePreparation=category==='rutina'&&/preparar|preparaci[oó]n/.test(title);
  const sleep=/dormir|acost|hora de dormir|descanso nocturno/.test(title)||(category==='descanso'&&/^descanso$/.test(title));
- return wake||sleep;
+ return wake||morningPreparation||routinePreparation||sleep;
 };
 window.autoCompleteLifeRoutines=function(){
  const now=new Date();let changed=false;
