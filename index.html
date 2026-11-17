@@ -2947,7 +2947,7 @@ window.go=function(p){
  const org=['organizar','agenda','tareas','comidas','estudios','hogar'].includes(p),well=['bienestar','salud','diario'].includes(p);
  const sub=document.getElementById('subNav');sub.hidden=true;
  document.getElementById('organizeSubNav').hidden=!org;document.getElementById('wellbeingSubNav').hidden=!well;
- const dockTarget=p==='hub'?'hub':p==='agenda'?'agenda':p==='estadisticas'?'estadisticas':p==='perfil'?'perfil':'';
+ const dockTarget=(p==='hub'||p==='inicio')?'hub':p==='agenda'?'agenda':p==='estadisticas'?'estadisticas':p==='perfil'?'perfil':'';
  document.querySelectorAll('#mobileDock [data-dock]').forEach(x=>x.classList.toggle('active',x.dataset.dock===dockTarget));
  const top=org?'organizar':well?'bienestar':p==='hub'?'inicio':p;
  document.querySelectorAll('#subNav button').forEach(function(button){var target=(button.getAttribute('onclick')||'').match(/go\('([^']+)'\)/);button.classList.toggle('active',!!target&&target[1]===p)});
