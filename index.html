@@ -1589,6 +1589,16 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom))!important}
  .launch-tile b{font-size:11px}.launch-tile small{font-size:9px}
  .quick-sheet-grid{gap:7px}.quick-sheet-grid button{min-height:53px;padding:8px}.quick-sheet-grid button b{font-size:10px}
 }
+/* Compact contextual surfaces: glance first, details on demand */
+.context-glance{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px;padding:12px 13px;border:1px solid #2c4563;border-radius:16px;background:linear-gradient(120deg,#14263d,#101c30);box-shadow:inset 0 1px #ffffff08}
+.context-glance-main{min-width:0;display:grid;gap:3px}.context-glance-label{font-size:9px;font-weight:900;letter-spacing:1.25px;color:#7dddec}.context-glance-value{font-size:16px;line-height:1.2;font-weight:850;color:#edf5ff}.context-glance-note{font-size:10px;line-height:1.35;color:#9aadc5}
+.context-glance-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;flex:0 0 auto}.context-glance-actions button{min-height:36px;padding:7px 10px;border:1px solid #3b5676;border-radius:11px;background:#1a304a;color:#dff5ff;font-size:10px;font-weight:800;white-space:nowrap}
+.context-glance-actions button.primary{background:linear-gradient(120deg,#4ecde1,#a18aff);border:0;color:#081523}
+.workspace-tabs{position:sticky;top:calc(7px + env(safe-area-inset-top));z-index:30;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:5px;margin:0 0 12px;border:1px solid #2c4563;border-radius:14px;background:rgba(9,18,32,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.workspace-tabs::-webkit-scrollbar{display:none}.workspace-tab{min-height:39px;white-space:nowrap;flex:0 0 auto;padding:8px 12px}
+.workspace-panel{animation:contextReveal .18s ease both}@keyframes contextReveal{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+button,.btn,.actionbtn,.module-card{touch-action:manipulation}
+@media(max-width:520px){.context-glance{align-items:flex-start;padding:11px;gap:8px}.context-glance-actions{max-width:46%;flex-direction:column}.context-glance-actions button{width:100%;min-height:39px}.workspace-heading{gap:8px}.workspace-heading h2{font-size:23px}.workspace-heading p{font-size:11px}.card{padding:14px}.workspace-panel>.card,.workspace-panel .card{border-radius:16px}.page{padding-bottom:calc(104px + env(safe-area-inset-bottom))}}
 /* Back navigation */
 .back-to-hub{display:inline-flex;align-items:center;gap:5px;padding:8px 12px;border:1px solid #314966;border-radius:12px;background:#101e32;color:#c9d8eb;font-size:11px;font-weight:800;cursor:pointer}.back-to-hub span{font-size:20px;line-height:12px;color:#6bddec}.back-to-hub[hidden]{display:none!important}
 /* Focused agenda screens and true home hub */
@@ -2948,7 +2958,31 @@ function renderToday(){
 }
 document.getElementById('priorities').addEventListener('change',function(e){const i=e.target.dataset.homeDone;if(i!==undefined){d.tasks[Number(i)].done=e.target.checked;save()}});
 function renderNew(){renderToday();renderMenu();renderShopping();renderHabits();renderTraining();renderDiary()}
-window.render=function(){ensureData();const autoChanged=window.autoCompleteLifeRoutines();if(autoChanged){localStorage.setItem(window.__lifeGuestMode?'gael-life-os-demo-v1':K,JSON.stringify(d));if(!window.__lifeGuestMode&&typeof cloudSave==='function')cloudSave()}baseRender();renderNew();if(window.refreshNow)window.refreshNow()};
+function updateContextGlances(){
+ const today=getTodayName(),agendaItems=(d.agenda&&d.agenda[day||today])||[],pending=(d.tasks||[]).filter(x=>!x.done),done=(d.tasks||[]).filter(x=>x.done);
+ const sessions=d.sessions||[],health=d.health||[],shopping=d.shopping||[],chores=d.chores||[],diary=d.diary||[];
+ const plan=(d.trainingPlans||[]).find(x=>x.id===d.activeTrainingPlanId)||(d.trainingPlans||[])[0];
+ const activeDay=plan&&(plan.days||[]).find(x=>x.id===d.activeTrainingDayId)||(plan&&(plan.days||[])[0]);
+ const habitCount=Object.keys(d.habitLogs||{}).length;
+ const configs={
+  agenda:{label:'TU AGENDA',value:agendaItems.length+' bloques · '+day,note:'Consulta primero el día y abre calendario o semana solo cuando lo necesites.',actions:[['Mi día',"setWorkspaceTab('agenda','day')",true],['＋ Crear',"setWorkspaceTab('agenda','create')"]]},
+  tareas:{label:'TUS PRIORIDADES',value:pending.length+' pendientes',note:done.length+' completadas · marca cada tarea al terminarla.',actions:[['＋ Nueva',"setWorkspaceTab('tasks','add')",true],['Ver hechas',"setWorkspaceTab('tasks','done')"]]},
+  estudios:{label:'TU PROGRESO',value:sessions.length+' sesiones registradas',note:sessions.reduce((a,x)=>a+(Number(x.minutes)||0),0)+' minutos de estudio acumulados.',actions:[['＋ Registrar',"setWorkspaceTab('study','record')",true],['Ver ruta',"setWorkspaceTab('study','overview')"]]},
+  salud:{label:'SEGUIMIENTO',value:health.length?( 'Último registro · '+health[0].pain+'/10'):'Sin registros todavía',note:health.length?'Registro más reciente: '+(health[0].date||'fecha no indicada'):'Guarda una observación cuando quieras revisar tu evolución.',actions:[['＋ Registrar',"document.getElementById('healthForm').scrollIntoView({behavior:'smooth',block:'center'})",true],['Historial',"document.getElementById('healthList').scrollIntoView({behavior:'smooth',block:'center'})"]]},
+  comidas:{label:'PLAN DE COMIDAS',value:(d.weekMenu||[]).length+' días planificados',note:shopping.filter(x=>!x.done).length+' productos pendientes en la compra.',actions:[['Ver menú',"setWorkspaceTab('food','menu')",true],['＋ Compra',"setWorkspaceTab('food','shopping')"]]},
+  hogar:{label:'TU HOGAR',value:chores.filter(x=>!x.done).length+' tareas por hacer',note:chores.filter(x=>x.done).length+' tareas domésticas completadas.',actions:[['Ver rutina',"document.getElementById('chores').scrollIntoView({behavior:'smooth',block:'center'})",true],['＋ Añadir',"document.getElementById('choreForm').scrollIntoView({behavior:'smooth',block:'center'})"]]},
+  entreno:{label:'PLAN ACTIVO',value:plan?(plan.name||'Plan sin nombre'):'Sin plan creado',note:activeDay?((activeDay.name||activeDay.weekday||'Sesión')+' · '+(activeDay.exercises||[]).length+' ejercicios'):'Crea un plan para organizar tus sesiones.',actions:[['Mi plan',"setWorkspaceTab('training','plan')",true],['Historial',"setWorkspaceTab('training','history')"]]},
+  bienestar:{label:'CUIDADO PERSONAL',value:'Hábitos a tu ritmo',note:habitCount+' días con registros de hábitos.',actions:[['Hábitos',"setWorkspaceTab('well','habits')",true],['Biblioteca',"setWorkspaceTab('well','library')"]]},
+  diario:{label:'TU ESPACIO PERSONAL',value:diary.length+' entradas guardadas',note:'Escribe sin presión o recupera una idea que quieras conservar.',actions:[['＋ Escribir',"setWorkspaceTab('diary','write')",true],['Ver entradas',"setWorkspaceTab('diary','entries')"]]}
+ };
+ Object.keys(configs).forEach(function(id){
+  const page=document.getElementById(id),cfg=configs[id];if(!page||!cfg)return;
+  let box=page.querySelector(':scope > .context-glance');
+  if(!box){box=document.createElement('div');box.className='context-glance';box.setAttribute('aria-live','polite');page.insertBefore(box,page.firstElementChild)}
+  box.innerHTML='<div class="context-glance-main"><span class="context-glance-label">'+esc(cfg.label)+'</span><b class="context-glance-value">'+esc(cfg.value)+'</b><small class="context-glance-note">'+esc(cfg.note)+'</small></div><div class="context-glance-actions">'+cfg.actions.map(function(a){return '<button type="button" class="'+(a[2]?'primary':'')+'" onclick="'+a[1].replace(/"/g,'&quot;')+'">'+esc(a[0])+'</button>'}).join('')+'</div>';
+ });
+}
+window.render=function(){ensureData();const autoChanged=window.autoCompleteLifeRoutines();if(autoChanged){localStorage.setItem(window.__lifeGuestMode?'gael-life-os-demo-v1':K,JSON.stringify(d));if(!window.__lifeGuestMode&&typeof cloudSave==='function')cloudSave()}baseRender();renderNew();updateContextGlances();if(window.refreshNow)window.refreshNow()};
 window.go=function(p){
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
  const page=document.getElementById(p);if(page)page.classList.add('active');
