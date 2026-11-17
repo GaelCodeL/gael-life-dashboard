@@ -1327,7 +1327,7 @@ function renderAgenda(){
   const baseIndex=e._baseIndex===undefined?i:e._baseIndex;
   const controls=isAppointment?'<button class="btn" onclick="editLifeAppointment(&quot;'+appointmentId+'&quot;)">Ajustar</button>':'<button class="btn" onclick="editEvent('+baseIndex+')">Editar</button> <button class="btn delete-event" title="Eliminar actividad" aria-label="Eliminar actividad" onclick="delEvent('+baseIndex+')">×</button>';
   let outcome='';
-  if(done||skipped)outcome='<button class="btn reopen-toggle" onclick="toggleLifeBlock(&quot;'+day+'&quot;,'+i+')">↶ Reabrir</button>';
+  if(done||skipped)outcome='<button class="btn reopen-toggle" onclick="reopenLifeBlock(&quot;'+day+'&quot;,'+i+')">↶ Reabrir</button>';
   else outcome='<button class="btn done-toggle" onclick="toggleLifeBlock(&quot;'+day+'&quot;,'+i+')">✓ Hecha</button><button class="btn skipped-toggle" onclick="toggleLifeSkipBlock(&quot;'+day+'&quot;,'+i+')">× No realizada</button>';
   return '<div class="event '+(done?'completed-event ':skipped?'skipped-event ':'')+status.cls+'"><div class="time">'+esc(e[0])+'</div><div class="stripe" style="--c:'+col(e[3])+'"></div><div><div class="et">'+esc(e[1])+' <span class="agenda-state '+status.cls+'">'+status.label+'</span></div><div class="ed">'+esc(e[2])+'</div></div><div class="actions">'+controls+outcome+'</div></div>';
  }).join('')||'<div class="emptyhint">No has añadido bloques para este día. Puedes dejarlo libre o planificar algo aquí.</div>';
@@ -1696,6 +1696,17 @@ window.toggleLifeBlock=function(dayName,index){
   d.completedBlocks[date][key]=new Date().toISOString();
   delete d.skippedBlocks[date][key];delete d.manualAgendaPending[date][key];delete d.autoCompletedBlocks[date][key];
  }
+ save();if(window.refreshNow)window.refreshNow();
+};
+window.reopenLifeBlock=function(dayName,index){
+ const item=lifeAgendaItemAt(dayName,index);if(!item)return;
+ const date=weekDateForDay(dayName),key=lifeAgendaKey(item);
+ d.completedBlocks=d.completedBlocks||{};d.completedBlocks[date]=d.completedBlocks[date]||{};
+ d.skippedBlocks=d.skippedBlocks||{};d.skippedBlocks[date]=d.skippedBlocks[date]||{};
+ d.autoCompletedBlocks=d.autoCompletedBlocks||{};d.autoCompletedBlocks[date]=d.autoCompletedBlocks[date]||{};
+ d.manualAgendaPending=d.manualAgendaPending||{};d.manualAgendaPending[date]=d.manualAgendaPending[date]||{};
+ delete d.completedBlocks[date][key];delete d.skippedBlocks[date][key];delete d.autoCompletedBlocks[date][key];
+ if(window.isAutoCompleteRoutine&&window.isAutoCompleteRoutine(item))d.manualAgendaPending[date][key]=true;
  save();if(window.refreshNow)window.refreshNow();
 };
 window.toggleLifeSkipBlock=function(dayName,index){
