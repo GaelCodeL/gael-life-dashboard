@@ -1527,11 +1527,86 @@ body.agenda-editor-open{overflow:hidden}
 .agenda-star-toggle.is-important{color:#ffd16f!important;border-color:#a47d3d!important;background:#3a2e1b!important;box-shadow:0 0 13px #ffd16f26}
 .agenda-star-toggle:active{transform:scale(.92)}
 @media(max-width:520px){.agenda-color-field .field-color{width:50px!important;height:36px!important}.agenda-star-toggle{min-width:29px!important;width:29px;height:29px}}
+ 
+/* ── GAEL LIFE OS · navigation redesign 2026 ── */
+html{scroll-padding-bottom:110px}
+body{padding-bottom:calc(104px + env(safe-area-inset-bottom))!important}
+#nav{display:none!important}
+.topbar{margin-bottom:12px}
+.home-launchpad{margin:10px 0 18px}
+.launchpad-heading{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:0 2px 12px}
+.launchpad-heading h2{font-size:clamp(23px,5vw,30px);letter-spacing:-1px;margin:4px 0 0;color:#edf4ff}
+.launchpad-hint{font-size:10px;color:#8298b5;padding-bottom:4px}
+.launchpad-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.launch-tile{display:grid;grid-template-columns:42px minmax(0,1fr) 14px;align-items:center;gap:10px;min-height:82px;padding:12px;text-align:left;color:#edf4ff;border:1px solid #2b4260;border-radius:17px;background:linear-gradient(145deg,#14243a,#0d192b);box-shadow:0 9px 26px #0002;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
+.launch-tile:active{transform:scale(.98)}
+.launch-tile:hover{border-color:#6282a8;box-shadow:0 12px 30px #0003}
+.launch-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;font-size:21px;font-weight:800;background:#19354a;color:#69dbea}
+.launch-tile b{display:block;font-size:13px;letter-spacing:-.2px}
+.launch-tile small{display:block;margin-top:4px;font-size:10px;color:#9aadc5;line-height:1.25}
+.launch-tile i{font-style:normal;color:#7188a7;font-size:15px}
+.tile-agenda .launch-icon{background:#163c4b;color:#6cdeeb}.tile-tasks .launch-icon{background:#243d39;color:#9de1b4}
+.tile-study .launch-icon{background:#2b294a;color:#b8a7ff}.tile-training .launch-icon{background:#403047;color:#f0a8ce}
+.tile-health .launch-icon{background:#3c2b3c;color:#f49abd}.tile-food .launch-icon{background:#3b3525;color:#f0c77e}
+.tile-home .launch-icon{background:#26394a;color:#9fc7ed}.tile-diary .launch-icon{background:#3b3046;color:#d3b1f2}
+.mobile-dock{position:fixed;z-index:9000;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));height:68px;display:grid;grid-template-columns:1fr 1fr 1.15fr 1fr 1fr;align-items:center;padding:6px 9px;border:1px solid #344b68;border-radius:23px;background:rgba(9,18,32,.91);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 14px 45px #0008}
+.dock-item{height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:#8094af;cursor:pointer}
+.dock-item span{font-size:20px;line-height:1.1}.dock-item small{font-size:9px;font-weight:750;color:inherit}
+.dock-item.active{color:#70ddec}.dock-item.active span{filter:drop-shadow(0 0 8px #5bd8ec55)}
+.dock-add{justify-self:center;display:grid;place-items:center;width:54px;height:54px;border:0;border-radius:18px;background:linear-gradient(135deg,#5bd8ec,#a58cff);color:#081321;box-shadow:0 7px 22px #6e9de955;cursor:pointer;transform:translateY(-10px)}
+.dock-add span{font-size:31px;font-weight:400;line-height:1}
+.quick-sheet-backdrop{position:fixed;inset:0;z-index:9500;display:flex;align-items:flex-end;justify-content:center;padding:12px;background:#020712a8;backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+.quick-sheet-backdrop.open{opacity:1;visibility:visible}
+.quick-sheet{width:min(620px,100%);padding:12px 17px calc(22px + env(safe-area-inset-bottom));border:1px solid #405675;border-radius:25px;background:linear-gradient(150deg,#172943,#0b1628);box-shadow:0 25px 80px #000a;transform:translateY(18px);transition:transform .22s}
+.quick-sheet-backdrop.open .quick-sheet{transform:translateY(0)}
+.quick-sheet-grabber{width:38px;height:4px;border-radius:5px;background:#62758f;margin:0 auto 17px}
+.quick-sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.quick-sheet-head h2{font-size:23px;margin:5px 0 0;letter-spacing:-.6px}
+.quick-sheet-close{width:36px;height:36px;border:1px solid #3b506c;border-radius:50%;background:#14243a;color:#d9e5f4;font-size:23px;cursor:pointer}
+.quick-sheet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quick-sheet-grid button{display:flex;align-items:center;gap:10px;min-height:57px;padding:10px;border:1px solid #304663;border-radius:13px;background:#101f34;color:#eaf2ff;text-align:left;cursor:pointer}
+.quick-sheet-grid button span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#1d3850;color:#70ddec;font-size:18px}
+.quick-sheet-grid button b{font-size:11px}
+.stats-overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stats-overview-card{display:grid;gap:7px;padding:17px;border:1px solid #304663;border-radius:17px;background:linear-gradient(145deg,#14243a,#0d192b)}
+.stats-overview-card span{font-size:9px;font-weight:900;letter-spacing:1px;color:#91a9c6}
+.stats-overview-card b{font-size:27px;letter-spacing:-1px;color:#70ddec}
+.stats-overview-card small{font-size:10px;color:#91a4bd}
+.stats-note{margin-top:12px}.profile-card{display:flex;align-items:center;gap:14px}
+.profile-mark{display:grid;place-items:center;width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#5bd8ec,#a58cff);color:#081321;font-size:23px;font-weight:950}
+.profile-links{display:grid;grid-template-columns:1fr 1fr;gap:9px}.profile-links .module-card{min-height:65px}
+#estadisticas,#perfil{padding-bottom:18px}
+@media(min-width:760px){
+ body{padding-bottom:35px!important}
+ .mobile-dock{left:50%;right:auto;transform:translateX(-50%);width:min(520px,calc(100% - 40px))}
+ .launchpad-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .launch-tile{min-height:104px;padding:14px}
+}
+@media(max-width:420px){
+ .mobile-dock{left:8px;right:8px;height:65px;bottom:calc(7px + env(safe-area-inset-bottom));border-radius:21px}
+ .launchpad-grid{gap:7px}.launch-tile{grid-template-columns:35px minmax(0,1fr) 10px;gap:8px;min-height:76px;padding:9px;border-radius:14px}
+ .launch-icon{width:35px;height:35px;border-radius:11px;font-size:18px}
+ .launch-tile b{font-size:11px}.launch-tile small{font-size:9px}
+ .quick-sheet-grid{gap:7px}.quick-sheet-grid button{min-height:53px;padding:8px}.quick-sheet-grid button b{font-size:10px}
+}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
-<nav class="nav" id="nav"><button class="active" data-p="inicio">Hoy</button><button data-p="organizar">Organizar</button><button data-p="entreno">Entreno</button><button data-p="bienestar">Bienestar</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button><button onclick="go('diario')">Diario</button></div></div>
+<nav class="nav" id="nav" aria-label="Navegación principal"><button class="active" data-p="inicio">Hoy</button><button data-p="organizar">Organizar</button><button data-p="entreno">Entreno</button><button data-p="bienestar">Bienestar</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button><button onclick="go('diario')">Diario</button></div></div>
 <section id="inicio" class="page active">
+ <section class="home-launchpad" aria-label="Secciones principales">
+ <div class="launchpad-heading"><div><span class="eyebrow">TU ESPACIO</span><h2>¿Qué necesitas?</h2></div><span class="launchpad-hint">Todo a tu ritmo</span></div>
+ <div class="launchpad-grid">
+  <button class="launch-tile tile-agenda" onclick="go('agenda')"><span class="launch-icon">▦</span><span><b>Agenda</b><small>Tu día y tus citas</small></span><i>↗</i></button>
+  <button class="launch-tile tile-tasks" onclick="go('tareas')"><span class="launch-icon">✓</span><span><b>Tareas</b><small>Pendientes y prioridades</small></span><i>↗</i></button>
+  <button class="launch-tile tile-study" onclick="go('estudios')"><span class="launch-icon">⌘</span><span><b>Estudios</b><small>Clases y progreso</small></span><i>↗</i></button>
+  <button class="launch-tile tile-training" onclick="go('entreno')"><span class="launch-icon">✳</span><span><b>Entrenamiento</b><small>Planes y sesiones</small></span><i>↗</i></button>
+  <button class="launch-tile tile-health" onclick="go('salud')"><span class="launch-icon">♡</span><span><b>Salud y hábitos</b><small>Tu bienestar</small></span><i>↗</i></button>
+  <button class="launch-tile tile-food" onclick="go('comidas')"><span class="launch-icon">◒</span><span><b>Alimentación</b><small>Menú y compra</small></span><i>↗</i></button>
+  <button class="launch-tile tile-home" onclick="go('hogar')"><span class="launch-icon">⌂</span><span><b>Hogar</b><small>Rutinas y organización</small></span><i>↗</i></button>
+  <button class="launch-tile tile-diary" onclick="go('diario')"><span class="launch-icon">✎</span><span><b>Diario</b><small>Notas personales</small></span><i>↗</i></button>
+ </div>
+</section>
  <div class="home-greeting"><div class="home-greeting-copy"><span class="home-date" id="liveDate">Cargando fecha…</span><div class="greeting-message"><strong id="greetingMain">Buenos días</strong><span class="greeting-sub" id="greetingSub">Vamos paso a paso.</span></div></div><div class="home-status-tools"><div class="sleep-countdown" id="sleepCountdown" title="Tiempo que falta para tu hora prevista de dormir"><span class="sleep-countdown-label">🌙 DORMIR EN</span><strong id="sleepCountdownValue">-- h -- min</strong></div><div class="home-clock" id="liveClock">--:--</div></div></div>
  <section class="today-focus" id="nowPanel">
   <div class="focus-label"><span class="pulse"></span><span id="focusModeLabel">AHORA MISMO</span></div>
@@ -1633,7 +1708,44 @@ body.agenda-editor-open{overflow:hidden}
 </section>
 <section id="bienestar" class="page"><div class="page-intro"><div class="eyebrow">CUIDARTE TAMBIÉN ES AVANZAR</div><h2>Hábitos amables, no obligaciones.</h2><p class="muted">Pequeños apoyos para tu descanso, movimiento, alimentación y salud mental. Los días difíciles también cuentan.</p></div><div class="wellbeing-banner"><div><div class="eyebrow">UN RECORDATORIO PARA HOY</div><div class="wellbeing-quote" id="kindReminder">No tienes que resolverlo todo hoy. Solo dar el siguiente paso posible.</div></div><button class="btn" id="newReminder" type="button">Otro recordatorio</button></div><div class="card"><div class="row"><div><h3>Hábitos de hoy</h3><p class="muted">Registra sin convertirlo en una competición.</p></div><span class="pill" id="habitProgress">0 / 0</span></div><div id="habitCards" class="habit-grid"></div></div><div class="card"><div class="row"><div><h3>Biblioteca de hábitos fiables</h3><p class="muted">Selección inicial basada en fuentes sanitarias y guías de organismos oficiales.</p></div><span class="tag">Fuentes enlazadas</span></div><div class="research-bar"><input class="field" id="habitSearch" placeholder="Buscar: caminar, sueño, estrés, alimentación…"><button class="btn" id="searchEvidence" type="button">Buscar estudios</button></div><div id="habitLibrary" class="library-grid"></div><p class="small-note muted">La búsqueda abre resultados de PubMed para que puedas revisar autores, diseño y conclusiones. No se presentan titulares virales como evidencia.</p></div><div class="card"><h3>Seguimiento de salud</h3><p class="muted">Dolor, síntomas y recuperación.</p><button class="btn primary" onclick="go('salud')">Abrir registro de salud</button></div></section>
 <section id="diario" class="page"><div class="page-intro"><div class="eyebrow">TU ESPACIO PERSONAL</div><h2>También hay vida fuera de la lista de tareas.</h2><p class="muted">Un diario privado para ordenar pensamientos y un rincón de ocio para guardar planes que te ilusionen.</p></div><div class="cols"><div class="card"><h3>Escribir una entrada</h3><form id="diaryForm" class="stack"><label class="muted">¿Cómo te encuentras?<select class="field" name="mood"><option value="5">Muy bien</option><option value="4">Bien</option><option value="3" selected>Normal</option><option value="2">Bajo de ánimo</option><option value="1">Día difícil</option></select></label><textarea class="field" name="entry" rows="5" placeholder="Escribe para ti. No hace falta que quede bonito."></textarea><input class="field" name="good" placeholder="Algo que agradeces o reconoces (opcional)"><button class="btn primary">Guardar entrada</button></form></div><div class="card"><h3>Planes e ideas de ocio</h3><p class="muted">Cosas que quieres probar, sitios que visitar y momentos que te apetece reservar.</p><form id="leisureForm" class="stack"><input class="field" name="idea" placeholder="Una idea que te apetezca…" required><select class="field" name="type"><option>Plan pendiente</option><option>Ocio en casa</option><option>Naturaleza</option><option>Cultura / tecnología</option><option>Conocer gente</option></select><button class="btn">Guardar idea</button></form><div id="leisureList" class="stack"></div></div></div><div class="card"><h3>Mis entradas</h3><div id="diaryEntries" class="stack"></div></div></section>
-<div class="mutedbox row"><span id="cloudStatus">Conectando con la nube…</span><button class="btn" id="logoutBtn" type="button">Cerrar sesión</button></div><p class="muted" style="text-align:center;font-size:10px">GAEL · LIFE OS · sincronización en la nube</p></div>
+<section id="estadisticas" class="page">
+ <div class="page-intro"><div class="eyebrow">TU EVOLUCIÓN</div><h2>Progreso sin ruido.</h2><p class="muted">Una vista rápida de lo que has ido registrando. Sin rankings ni presión.</p></div>
+ <div class="stats-overview-grid">
+  <article class="stats-overview-card"><span>TAREAS COMPLETADAS</span><b id="overviewTasks">—</b><small>De tus tareas registradas</small></article>
+  <article class="stats-overview-card"><span>SESIONES DE ESTUDIO</span><b id="overviewStudy">—</b><small>Sesiones guardadas</small></article>
+  <article class="stats-overview-card"><span>ENTRENAMIENTOS</span><b id="overviewTraining">—</b><small>Registros de entrenamiento</small></article>
+  <article class="stats-overview-card"><span>HÁBITOS DE HOY</span><b id="overviewHabits">—</b><small>Hábitos marcados hoy</small></article>
+ </div>
+ <div class="card stats-note"><b>Una idea importante</b><p class="muted">Estas cifras reflejan únicamente los registros guardados en la aplicación. Tu progreso no se reduce a números.</p></div>
+</section>
+<section id="perfil" class="page">
+ <div class="page-intro"><div class="eyebrow">TU CUENTA</div><h2>Tu espacio, tus reglas.</h2><p class="muted">Preferencias, sincronización y acceso a tu información.</p></div>
+ <div class="card profile-card"><div class="profile-mark">G.</div><div><b>GAEL · LIFE OS</b><p class="muted">Tu espacio personal conectado.</p></div></div>
+ <div class="card"><h3>Estado de sincronización</h3><div class="mutedbox row"><span id="cloudStatus">Conectando con la nube…</span><button class="btn" id="logoutBtn" type="button">Cerrar sesión</button></div><p class="muted small-note">Tus cambios se guardan en este dispositivo y, cuando tienes sesión iniciada, se sincronizan con tu cuenta.</p></div>
+ <div class="card"><h3>Accesos</h3><div class="profile-links"><button class="module-card" onclick="go('bienestar')">Hábitos y bienestar <span>↗</span></button><button class="module-card" onclick="go('organizar')">Organización <span>↗</span></button></div></div>
+</section></div>
+<nav class="mobile-dock" id="mobileDock" aria-label="Navegación inferior">
+ <button class="dock-item active" data-dock="inicio" aria-label="Inicio"><span>⌂</span><small>Inicio</small></button>
+ <button class="dock-item" data-dock="agenda" aria-label="Agenda"><span>▦</span><small>Agenda</small></button>
+ <button class="dock-add" id="dockAdd" aria-label="Añadir"><span>＋</span></button>
+ <button class="dock-item" data-dock="estadisticas" aria-label="Estadísticas"><span>◔</span><small>Progreso</small></button>
+ <button class="dock-item" data-dock="perfil" aria-label="Perfil"><span>◎</span><small>Perfil</small></button>
+</nav>
+<div class="quick-sheet-backdrop" id="quickSheet" aria-hidden="true">
+ <section class="quick-sheet" role="dialog" aria-modal="true" aria-label="Añadir rápidamente">
+  <div class="quick-sheet-grabber"></div><div class="quick-sheet-head"><div><span class="eyebrow">ACCESO RÁPIDO</span><h2>¿Qué quieres añadir?</h2></div><button type="button" class="quick-sheet-close" id="quickSheetClose" aria-label="Cerrar">×</button></div>
+  <div class="quick-sheet-grid">
+   <button data-quick-go="tareas"><span>✓</span><b>Tarea</b></button>
+   <button data-quick-go="agenda"><span>▦</span><b>Evento o cita</b></button>
+   <button data-quick-go="estudios"><span>⌘</span><b>Sesión de estudio</b></button>
+   <button data-quick-go="entreno"><span>✳</span><b>Entrenamiento</b></button>
+   <button data-quick-go="salud"><span>♡</span><b>Registro de salud</b></button>
+   <button data-quick-go="diario"><span>✎</span><b>Nota personal</b></button>
+   <button data-quick-go="comidas"><span>◒</span><b>Comida o compra</b></button>
+   <button data-quick-go="hogar"><span>⌂</span><b>Tarea del hogar</b></button>
+  </div>
+ </section>
+</div>
 <script>
 // Helper available before the calendar's first render (the later script also uses it).
 window.dateFromISO=function(iso){return new Date(iso+'T12:00:00')}
@@ -2830,14 +2942,36 @@ window.go=function(p){
  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
  const page=document.getElementById(p);if(page)page.classList.add('active');
  const org=['organizar','agenda','tareas','comidas','estudios','hogar'].includes(p),well=['bienestar','salud','diario'].includes(p);
- const sub=document.getElementById('subNav');sub.hidden=!(org||well);
+ const sub=document.getElementById('subNav');sub.hidden=true;
  document.getElementById('organizeSubNav').hidden=!org;document.getElementById('wellbeingSubNav').hidden=!well;
+ const dockTarget=p==='inicio'?'inicio':p==='agenda'?'agenda':p==='estadisticas'?'estadisticas':p==='perfil'?'perfil':'';
+ document.querySelectorAll('#mobileDock [data-dock]').forEach(x=>x.classList.toggle('active',x.dataset.dock===dockTarget));
  const top=org?'organizar':well?'bienestar':p;
  document.querySelectorAll('#subNav button').forEach(function(button){var target=(button.getAttribute('onclick')||'').match(/go\('([^']+)'\)/);button.classList.toggle('active',!!target&&target[1]===p)});
  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===top));
+ if(p==='estadisticas')renderOverviewStats();
  window.scrollTo({top:0,behavior:'smooth'});
 };
 document.querySelectorAll('#nav button').forEach(b=>{b.onclick=null;b.addEventListener('click',()=>window.go(b.dataset.p))});
+document.querySelectorAll('#mobileDock [data-dock]').forEach(b=>b.addEventListener('click',()=>window.go(b.dataset.dock)));
+const quickSheet=document.getElementById('quickSheet');
+function closeQuickSheet(){quickSheet.classList.remove('open');quickSheet.setAttribute('aria-hidden','true')}
+document.getElementById('dockAdd').addEventListener('click',()=>{quickSheet.classList.add('open');quickSheet.setAttribute('aria-hidden','false')});
+document.getElementById('quickSheetClose').addEventListener('click',closeQuickSheet);
+quickSheet.addEventListener('click',e=>{if(e.target===quickSheet)closeQuickSheet()});
+quickSheet.querySelectorAll('[data-quick-go]').forEach(b=>b.addEventListener('click',()=>{const p=b.dataset.quickGo;closeQuickSheet();window.go(p)}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeQuickSheet()});
+function renderOverviewStats(){
+ const tasks=Array.isArray(d.tasks)?d.tasks:[],sessions=Array.isArray(d.sessions)?d.sessions:[],logs=Array.isArray(d.trainingLogs)?d.trainingLogs:[];
+ const todayKey=dateKey(),todayHabits=(d.habitLogs&&d.habitLogs[todayKey])||{};
+ const habitDone=Object.values(todayHabits).filter(Boolean).length;
+ const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+ set('overviewTasks',tasks.filter(x=>x.done).length+' / '+tasks.length);
+ set('overviewStudy',sessions.length);
+ set('overviewTraining',logs.length);
+ set('overviewHabits',habitDone);
+}
+
 document.getElementById('menuShopBtn').addEventListener('click',function(){
  const rules=[['Pollo',/pollo/i],['Pavo',/pavo/i],['Carne picada o ternera',/ternera|carne picada|hamburguesa/i],['Huevos',/huevo|tortilla/i],['Arroz',/arroz/i],['Pasta',/pasta/i],['Patata',/patata/i],['Cuscús',/cuscús/i],['Tomate',/tomate/i],['Calabacín',/calabacín/i],['Zanahoria',/zanahoria/i],['Pimientos',/pimiento/i],['Lechuga / ensalada',/lechuga|ensalada/i],['Champiñones',/champiñón/i],['Judías verdes',/judías verdes/i],['Queso',/queso/i]];
  const text=d.weekMenu.map(x=>[x.lunch,x.dinner].join(' ')).join(' ');
