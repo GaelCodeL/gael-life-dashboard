@@ -1457,6 +1457,9 @@ body.agenda-editor-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){
  .calendar-day.selected{transform:none}
 }
+
+.agenda-flexible-toggle{display:flex!important;align-items:center;grid-column:1/-1;gap:8px!important;padding:9px 10px;border:1px solid #354e6b;border-radius:10px;background:#0b1b30;color:#a9c4dc!important;font-size:10px!important}
+.agenda-flexible-toggle input{accent-color:#63dceb;width:16px;height:16px}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div></div>
 
@@ -1650,6 +1653,7 @@ function openAgendaEditor(mode,details){
  const dayWrap=form.querySelector('[data-editor-day]');
  const dateWrap=form.querySelector('[data-editor-date]');
  const daysWrap=form.querySelector('[data-editor-days]');
+ const flexibleWrap=form.querySelector('[data-editor-flexible]');
  const item=mode==='block'?d.agenda[details.dayName||day][details.index]:(d.appointments||[]).find(function(x){return x.id===details.id});
  if(!item)return;
  let title,start,end,description,category,dateValue='';
@@ -1657,13 +1661,14 @@ function openAgendaEditor(mode,details){
   title=item[1];description=item[2]||'';category=item[3]||'Personal';
   const times=String(item[0]||'').match(/\d{1,2}:\d{2}/g)||[];
   start=times[0]||'';end=times[1]||'';
-  dayWrap.hidden=false;dateWrap.hidden=true;daysWrap.hidden=true;
+  dayWrap.hidden=false;dateWrap.hidden=true;daysWrap.hidden=true;flexibleWrap.hidden=false;
+  form.elements.flexible.checked=/en adelante|flexible/i.test(String(item[0]||''));
   form.elements.weekday.value=details.dayName||day;
   document.getElementById('agendaEditorModeText').textContent='Bloque semanal · '+(details.dayName||day);
  }else{
   title=item.title;start=item.start;end=item.end;description=item.description||'';category=item.category||'Personal';
-  if(item.date){dateValue=item.date;dayWrap.hidden=true;dateWrap.hidden=false;daysWrap.hidden=true;document.getElementById('agendaEditorModeText').textContent='Actividad de una fecha concreta'}
-  else{dayWrap.hidden=true;dateWrap.hidden=true;daysWrap.hidden=false;document.getElementById('agendaEditorModeText').textContent='Actividad recurrente'}
+  if(item.date){dateValue=item.date;dayWrap.hidden=true;dateWrap.hidden=false;daysWrap.hidden=true;flexibleWrap.hidden=true;document.getElementById('agendaEditorModeText').textContent='Actividad de una fecha concreta'}
+  else{dayWrap.hidden=true;dateWrap.hidden=true;daysWrap.hidden=false;flexibleWrap.hidden=true;document.getElementById('agendaEditorModeText').textContent='Actividad recurrente'}
   if(item.date)form.elements.date.value=dateValue;
   const activeDays=item.days||[];
   form.querySelectorAll('[name="days"]').forEach(function(input){input.checked=activeDays.includes(input.value)});
@@ -1672,7 +1677,9 @@ function openAgendaEditor(mode,details){
  form.elements.start.value=start||'';
  form.elements.end.value=end||'';
  form.elements.description.value=description;
- form.elements.category.value=category;
+ const categorySelect=form.elements.category;
+ if(!Array.from(categorySelect.options).some(function(option){return option.value===category})){const customOption=document.createElement('option');customOption.value=category;customOption.textContent=category;categorySelect.add(customOption)}
+ categorySelect.value=category;
  modal.classList.add('open');
  document.body.classList.add('agenda-editor-open');
  setTimeout(function(){form.elements.title.focus({preventScroll:true})},80);
@@ -1878,6 +1885,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
     <label>Hora de inicio<input class="field" type="time" name="start" required></label>
     <label>Hora de fin <span class="editor-optional">opcional si es un hito</span><input class="field" type="time" name="end"></label>
    </div>
+   <label class="agenda-flexible-toggle editor-full" data-editor-flexible><input type="checkbox" name="flexible"> Actividad flexible o hito sin hora de fin</label>
    <label data-editor-day>Día de la semana<select class="field" name="weekday"><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option><option>Domingo</option></select></label>
    <label data-editor-date hidden>Fecha<input class="field" type="date" name="date"></label>
    <fieldset class="agenda-editor-days editor-full" data-editor-days hidden><legend>Se repite estos días</legend><div class="agenda-editor-daychecks"><label><input type="checkbox" name="days" value="Lunes"> L</label><label><input type="checkbox" name="days" value="Martes"> M</label><label><input type="checkbox" name="days" value="Miércoles"> X</label><label><input type="checkbox" name="days" value="Jueves"> J</label><label><input type="checkbox" name="days" value="Viernes"> V</label><label><input type="checkbox" name="days" value="Sábado"> S</label><label><input type="checkbox" name="days" value="Domingo"> D</label></div></fieldset>
@@ -2685,12 +2693,11 @@ agendaEditorForm.addEventListener('submit',function(e){
  e.preventDefault();const f=new FormData(agendaEditorForm),mode=String(f.get('mode')),title=String(f.get('title')||'').trim(),start=String(f.get('start')||''),end=String(f.get('end')||''),description=String(f.get('description')||''),category=String(f.get('category')||'Personal');
  if(!title||!/^([01]?\d|2[0-3]):[0-5]\d$/.test(start)){alert('Escribe un nombre y una hora de inicio válidos.');return}
  if(end&&(!/^([01]?\d|2[0-3]):[0-5]\d$/.test(end)||end===start)){alert('La hora de fin debe ser posterior a la de inicio.');return}
- if(end&&end<start){alert('La hora de fin debe ser posterior a la de inicio. Para actividades nocturnas, usa el formato de hito con solo hora de inicio.');return}
  if(mode==='block'){
   const oldDay=String(f.get('day')),index=Number(f.get('index')),newDay=String(f.get('weekday'));
   const old=d.agenda[oldDay]&&d.agenda[oldDay][index];if(!old){closeAgendaEditor();return}
   const oldKey=old[4]||String(old[0])+'|'+String(old[1]);
-  const time=end?start+'–'+end:start;
+  const time=end?start+'–'+end:(f.get('flexible')==='on'?start+' en adelante':start);
   const updated=[time,title,description,category,old[4]||('block:'+Date.now()+'-'+Math.random().toString(36).slice(2,7))];
   migrateAgendaCompletionKey(oldKey,updated[4]);
   if(newDay===oldDay)d.agenda[oldDay][index]=updated;
