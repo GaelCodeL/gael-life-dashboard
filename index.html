@@ -1740,13 +1740,13 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom))!important}
 <nav class="mobile-dock" id="mobileDock" aria-label="Navegación inferior">
  <button class="dock-item active" data-dock="hub" aria-label="Inicio"><span>⌂</span><small>Inicio</small></button>
  <button class="dock-item" data-dock="agenda" aria-label="Agenda"><span>▦</span><small>Agenda</small></button>
- <button class="dock-add" id="dockAdd" aria-label="Añadir"><span>＋</span></button>
+ <button class="dock-add" id="dockAdd" aria-label="Abrir navegación" title="Abrir navegación"><span aria-hidden="true">⌖</span></button>
  <button class="dock-item" data-dock="estadisticas" aria-label="Estadísticas"><span>◔</span><small>Progreso</small></button>
  <button class="dock-item" data-dock="perfil" aria-label="Perfil"><span>◎</span><small>Perfil</small></button>
 </nav>
 <div class="quick-sheet-backdrop" id="quickSheet" aria-hidden="true">
- <section class="quick-sheet" role="dialog" aria-modal="true" aria-label="Añadir rápidamente">
-  <div class="quick-sheet-grabber"></div><div class="quick-sheet-head"><div><span class="eyebrow">ACCESO RÁPIDO</span><h2>¿Qué quieres añadir?</h2></div><button type="button" class="quick-sheet-close" id="quickSheetClose" aria-label="Cerrar">×</button></div>
+ <section class="quick-sheet" role="dialog" aria-modal="true" aria-label="Navegación rápida">
+  <div class="quick-sheet-grabber"></div><div class="quick-sheet-head"><div><span class="eyebrow">IR A</span><h2>¿A dónde quieres ir?</h2></div><button type="button" class="quick-sheet-close" id="quickSheetClose" aria-label="Cerrar">×</button></div>
   <div class="quick-sheet-grid">
    <button data-quick-go="tareas"><span>✓</span><b>Tarea</b></button>
    <button data-quick-go="agenda"><span>▦</span><b>Evento o cita</b></button>
