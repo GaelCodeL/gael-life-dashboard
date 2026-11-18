@@ -1617,11 +1617,23 @@ button,.btn,.actionbtn,.module-card{touch-action:manipulation}
 .hub-sleep-countdown small{grid-column:2;color:#b8b7ad;font-size:9px;line-height:1.2}
 .hub-sleep-countdown[data-urgent="true"]{border-color:#d59a4f;box-shadow:0 0 18px #ffbb5c30}
 @media(max-width:380px){#hub .hub-welcome h1{font-size:30px!important}.hub-sleep-countdown{padding:8px 10px}}
+
+/* CLEANUP: una sola portada y navegación directa */
+#hub{display:none!important}
+#subNav{display:none!important}
+#nav{display:flex;justify-content:center;gap:8px}
+#nav button{flex:1;max-width:180px;min-height:42px;font-size:13px}
+#nav button:not(.active){background:transparent;border-color:transparent;color:var(--muted)}
+#nav button.active{background:#dcefea;color:#285f57;border:1px solid #c6e2db}
+#inicio .home-greeting{margin-bottom:12px}
+#inicio .home-section{margin-top:12px}
+#inicio .home-lower{margin-bottom:90px}
+@media(max-width:720px){#nav{display:flex;overflow-x:auto;justify-content:flex-start}#nav button{flex:1 0 auto;max-width:none;padding:10px 13px}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div id="authGate"><div class="authbox"><span class="pill">GAEL · LIFE OS CLOUD</span><h2>Tu vida, sincronizada.</h2><p class="muted">Inicia sesión para acceder a tus datos desde el iPhone y el ordenador.</p><form id="authForm" class="stack"><input class="field" id="authEmail" type="email" placeholder="Tu correo electrónico" autocomplete="email" required><input class="field" id="authPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="current-password" required><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" id="signupBtn" type="button">Crear cuenta</button></form><div class="guest-divider">O PARA ENSEÑAR LA APP</div><button class="btn guest-entry" id="guestBtn" type="button">Entrar como invitado <span>↗</span></button><p class="guest-privacy">Demo independiente: no muestra, modifica ni sincroniza tus datos personales.</p><div id="authMessage" class="mutedbox">Tus datos personales solo aparecen al iniciar sesión con tu cuenta.</div></div></div><div class="wrap">
 <div class="topbar"><div class="brandline"><span class="logo">G.</span><div><h1>GAEL · LIFE OS</h1><div class="muted" style="font-size:10px;letter-spacing:1.5px">TU ESPACIO PERSONAL</div></div></div><button class="back-to-hub" id="backToHub" type="button" hidden><span>‹</span> Volver</button></div>
 
-<nav class="nav" id="nav" aria-label="Navegación principal"><button class="active" data-p="inicio">Hoy</button><button data-p="organizar">Organizar</button><button data-p="entreno">Entreno</button><button data-p="bienestar">Bienestar</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button><button onclick="go('diario')">Diario</button></div></div>
-<section id="hub" class="page active"><div class="hub-welcome"><span class="eyebrow">GAEL · LIFE OS</span><h1>Tu espacio.<br><span>A tu manera.</span></h1><p>Elige qué necesitas ahora. Lo demás permanece en segundo plano.</p><div class="hub-sleep-countdown" id="hubSleepCountdown" title="Tiempo que falta para tu hora prevista de dormir"><span>🌙 <b>DORMIR EN</b></span><strong id="hubSleepCountdownValue">Calculando…</strong><small id="hubSleepTarget">Tu descanso, a tiempo</small></div></div><section class="home-launchpad" aria-label="Secciones principales">
+<nav class="nav" id="nav" aria-label="Navegación principal"><button class="active" data-p="inicio">Hoy</button><button data-p="agenda">Agenda</button><button data-p="tareas">Tareas</button><button data-p="organizar">Vida</button><button data-p="perfil">Cuenta</button></nav><div class="subnav" id="subNav" hidden><div id="organizeSubNav"><button onclick="go('organizar')">Resumen</button><button onclick="go('agenda')">Agenda</button><button onclick="go('tareas')">Tareas</button><button onclick="go('comidas')">Menú y compra</button><button onclick="go('estudios')">Estudios</button><button onclick="go('hogar')">Hogar</button></div><div id="wellbeingSubNav" hidden><button onclick="go('bienestar')">Hábitos</button><button onclick="go('salud')">Salud</button><button onclick="go('diario')">Diario</button></div></div>
+<section id="hub" class="page"><div class="hub-welcome"><span class="eyebrow">GAEL · LIFE OS</span><h1>Tu espacio.<br><span>A tu manera.</span></h1><p>Elige qué necesitas ahora. Lo demás permanece en segundo plano.</p><div class="hub-sleep-countdown" id="hubSleepCountdown" title="Tiempo que falta para tu hora prevista de dormir"><span>🌙 <b>DORMIR EN</b></span><strong id="hubSleepCountdownValue">Calculando…</strong><small id="hubSleepTarget">Tu descanso, a tiempo</small></div></div><section class="home-launchpad" aria-label="Secciones principales">
  <div class="launchpad-heading"><div><span class="eyebrow">TU ESPACIO</span><h2>¿Qué necesitas?</h2></div><span class="launchpad-hint">Todo a tu ritmo</span></div>
  <div class="launchpad-grid">
   <button class="launch-tile tile-agenda" onclick="go('agenda')"><span class="launch-icon">▦</span><span><b>Agenda</b><small>Tu día y tus citas</small></span><i>↗</i></button>
@@ -1633,7 +1645,7 @@ button,.btn,.actionbtn,.module-card{touch-action:manipulation}
   <button class="launch-tile tile-home" onclick="go('hogar')"><span class="launch-icon">⌂</span><span><b>Hogar</b><small>Rutinas y organización</small></span><i>↗</i></button>
   <button class="launch-tile tile-diary" onclick="go('diario')"><span class="launch-icon">✎</span><span><b>Diario</b><small>Notas personales</small></span><i>↗</i></button>
  </div>
-</section><div class="hub-bottom-row"><button class="hub-secondary" onclick="go('inicio')"><span>◷</span><b>Mi día</b><small>Lo que toca ahora</small></button><button class="hub-secondary" onclick="go('estadisticas')"><span>◔</span><b>Mi progreso</b><small>Tu evolución</small></button><button class="hub-secondary" onclick="go('perfil')"><span>◎</span><b>Mi espacio</b><small>Cuenta y ajustes</small></button></div></section><section id="inicio" class="page">
+</section><div class="hub-bottom-row"><button class="hub-secondary" onclick="go('inicio')"><span>◷</span><b>Mi día</b><small>Lo que toca ahora</small></button><button class="hub-secondary" onclick="go('estadisticas')"><span>◔</span><b>Mi progreso</b><small>Tu evolución</small></button><button class="hub-secondary" onclick="go('perfil')"><span>◎</span><b>Mi espacio</b><small>Cuenta y ajustes</small></button></div></section><section id="inicio" class="page active">
  
  <div class="home-greeting"><div class="home-greeting-copy"><span class="home-date" id="liveDate">Cargando fecha…</span><div class="greeting-message"><strong id="greetingMain">Buenos días</strong><span class="greeting-sub" id="greetingSub">Vamos paso a paso.</span></div></div><div class="home-status-tools"><div class="sleep-countdown" id="sleepCountdown" title="Tiempo que falta para tu hora prevista de dormir"><span class="sleep-countdown-label">🌙 DORMIR EN</span><strong id="sleepCountdownValue">-- h -- min</strong></div><div class="home-clock" id="liveClock">--:--</div></div></div>
  <section class="today-focus" id="nowPanel">
@@ -1750,7 +1762,7 @@ button,.btn,.actionbtn,.module-card{touch-action:manipulation}
  <div class="card"><h3>Accesos</h3><div class="profile-links"><button class="module-card" onclick="go('bienestar')">Hábitos y bienestar <span>↗</span></button><button class="module-card" onclick="go('organizar')">Organización <span>↗</span></button></div></div>
 </section></div>
 <nav class="mobile-dock" id="mobileDock" aria-label="Navegación inferior">
- <button class="dock-item active" data-dock="hub" aria-label="Inicio"><span>⌂</span><small>Inicio</small></button>
+ <button class="dock-item active" data-dock="inicio" aria-label="Inicio"><span>⌂</span><small>Inicio</small></button>
  <button class="dock-item" data-dock="agenda" aria-label="Agenda"><span>▦</span><small>Agenda</small></button>
  <button class="dock-add" id="dockAdd" aria-label="Abrir navegación" title="Abrir navegación"><span aria-hidden="true">☰</span></button>
  <button class="dock-item" data-dock="estadisticas" aria-label="Estadísticas"><span>◔</span><small>Progreso</small></button>
@@ -1837,7 +1849,7 @@ function renderPreservingInputs(){
  if(activeId){const el=document.getElementById(activeId);if(el&&document.activeElement!==el)try{el.focus({preventScroll:true})}catch(e){el.focus()}}
 }
 function save(){localStorage.setItem(window.__lifeGuestMode?GUEST_K:K,JSON.stringify(d));if(!window.__lifeGuestMode&&typeof cloudSave==='function')cloudSave();renderPreservingInputs()}
-function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===p));scrollTo(0,0)}
+function go(p){const target=document.getElementById(p);if(!target)return;document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));target.classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===p));document.querySelectorAll('#mobileDock .dock-item').forEach(x=>x.classList.toggle('active',x.dataset.dock===p));scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function calendarTypeMeta(category,title,customColor){
