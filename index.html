@@ -2240,13 +2240,27 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
     }).subscribe();
   }
   async function writeSnapshot(snapshot,expectedUpdatedAt){
-    const stamp=new Date().toISOString();
-    pendingWriteTimestamp=stamp;writeInFlight=true;
-    let result;try{result=await client.from('gael_life_data').update({data:snapshot,updated_at:stamp}).eq('user_id',currentUser.id).eq('updated_at',expectedUpdatedAt).select('updated_at').maybeSingle()}finally{writeInFlight=false;pendingWriteTimestamp=null}
-    if(result.error)throw result.error;
-    if(!result.data){hasSyncConflict=true;localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ Conflicto de sincronización. Tus cambios siguen guardados en este dispositivo.';return false}
-    lastCloudUpdatedAt=result.data.updated_at;
-    return true;
+    let candidate=mergeData(d,snapshot,'root'),expected=expectedUpdatedAt;
+    for(let attempt=0;attempt<4;attempt++){
+      const stamp=new Date().toISOString();
+      pendingWriteTimestamp=stamp;writeInFlight=true;
+      let result;
+      try{result=await client.from('gael_life_data').update({data:candidate,updated_at:stamp}).eq('user_id',currentUser.id).eq('updated_at',expected).select('updated_at').maybeSingle()}
+      finally{writeInFlight=false;pendingWriteTimestamp=null}
+      if(result.error)throw result.error;
+      if(result.data){
+        d=candidate;persistLocal();lastCloudUpdatedAt=result.data.updated_at;
+        return true;
+      }
+      const latest=await client.from('gael_life_data').select('data,updated_at').eq('user_id',currentUser.id).maybeSingle();
+      if(latest.error)throw latest.error;
+      if(!latest.data)throw new Error('No se pudo recuperar la versión más reciente de la nube.');
+      localStorage.setItem(localBackupKey,stable(candidate));
+      localStorage.setItem(remoteBackupKey,stable({data:latest.data.data,updated_at:latest.data.updated_at}));
+      candidate=mergeData(mergeData(candidate,d,'root'),latest.data.data,'root');
+      d=candidate;persistLocal();expected=latest.data.updated_at;lastCloudUpdatedAt=expected;
+    }
+    throw new Error('La información sigue guardada en ambos sitios, pero hay cambios simultáneos. Reintentaré la sincronización.');
   }
   window.cloudSave=()=>{
    if(window.__lifeGuestMode||!ready||!currentUser)return;
@@ -2256,14 +2270,13 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
     timer=null;
     const revision=localRevision,snapshot=JSON.parse(stable(d));
     writeQueue=writeQueue.then(async()=>{
-      if(hasSyncConflict){status.textContent='⚠ Sincronización pausada para proteger tus datos';return}
       status.textContent='Guardando…';
       try{
         const ok=await writeSnapshot(snapshot,lastCloudUpdatedAt);
         if(!ok)return;
         if(revision===localRevision)status.textContent='☁ Todos los cambios guardados';
         else window.cloudSave();
-      }catch(error){localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ No se pudo sincronizar. Tus datos siguen guardados en este dispositivo; reintentaré automáticamente.';console.error('Cloud save failed',error);setTimeout(()=>{if(!hasSyncConflict)window.cloudSave()},5000)}
+      }catch(error){localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ No se pudo sincronizar. Tus datos siguen guardados en este dispositivo; reintentaré automáticamente.';console.error('Cloud save failed',error);setTimeout(()=>window.cloudSave(),5000)}
     }).catch(error=>{status.textContent='⚠ Error de sincronización: '+error.message});
    },500);
   };
