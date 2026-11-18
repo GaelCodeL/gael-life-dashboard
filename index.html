@@ -2209,8 +2209,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   async function writeSnapshot(snapshot,expectedUpdatedAt){
     const stamp=new Date().toISOString();
     writeInFlight=true;
-    const result=await client.from('gael_life_data').update({data:snapshot,updated_at:stamp}).eq('user_id',currentUser.id).eq('updated_at',expectedUpdatedAt).select('updated_at').maybeSingle();
-    writeInFlight=false;
+    let result;try{result=await client.from('gael_life_data').update({data:snapshot,updated_at:stamp}).eq('user_id',currentUser.id).eq('updated_at',expectedUpdatedAt).select('updated_at').maybeSingle()}finally{writeInFlight=false}
     if(result.error)throw result.error;
     if(!result.data){hasSyncConflict=true;localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ Conflicto de sincronización. Tus cambios siguen guardados en este dispositivo.';return false}
     lastCloudUpdatedAt=result.data.updated_at;
@@ -2221,6 +2220,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
    localRevision++;
    clearTimeout(timer);
    timer=setTimeout(()=>{
+    timer=null;
     const revision=localRevision,snapshot=JSON.parse(stable(d));
     writeQueue=writeQueue.then(async()=>{
       if(hasSyncConflict){status.textContent='⚠ Sincronización pausada para proteger tus datos';return}
