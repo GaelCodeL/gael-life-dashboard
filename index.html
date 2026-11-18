@@ -1814,24 +1814,27 @@ const initial={
 let d;try{d=JSON.parse(localStorage.getItem(window.__lifeGuestMode?GUEST_K:K))||JSON.parse(JSON.stringify(initial))}catch(e){d=JSON.parse(JSON.stringify(initial))}const todayName= new Intl.DateTimeFormat('es-ES',{weekday:'long'}).format(new Date());let day=days.find(x=>x.toLowerCase()===todayName.toLowerCase())||'Lunes';
 function renderPreservingInputs(){
  const snapshots=[],active=document.activeElement;
- document.querySelectorAll('input,textarea,select').forEach((el,index)=>{
+ document.querySelectorAll('input,textarea,select').forEach(el=>{
   if(el.type==='password'||el.type==='file')return;
-  const key=el.id?'#'+el.id:el.name?'[name="'+el.name+'"]:'+index:el.dataset.shopCheck!==undefined?'[data-shop-check="'+el.dataset.shopCheck+'"]':null;
+  let key=null;
+  if(el.id)key={kind:'id',value:el.id};
+  else if(el.form&&el.form.id)key={kind:'form',value:el.form.id,index:Array.from(el.form.elements).indexOf(el)};
+  else if(el.dataset.shopCheck!==undefined)key={kind:'shop',value:el.dataset.shopCheck};
   if(!key)return;
   snapshots.push({key:key,value:el.value,checked:el.checked,type:el.type,start:typeof el.selectionStart==='number'?el.selectionStart:null,end:typeof el.selectionEnd==='number'?el.selectionEnd:null});
  });
- const activeId=active&&active.id?'#'+active.id:null;
+ const activeId=active&&active.id?active.id:null;
  render();
  snapshots.forEach(item=>{
   let el=null;
-  if(item.key[0]==='#')el=document.querySelector(item.key);
-  else if(item.key.startsWith('[name=')){const name=item.key.match(/^\[name="([^"]+)"\]:(\d+)$/);if(name)el=Array.from(document.querySelectorAll('[name="'+name[1]+'"]'))[Number(name[2])]}
-  else el=document.querySelector(item.key);
+  if(item.key.kind==='id')el=document.getElementById(item.key.value);
+  else if(item.key.kind==='form'){const form=document.getElementById(item.key.value);el=form&&form.elements[item.key.index]}
+  else el=document.querySelector('[data-shop-check="'+item.key.value+'"]');
   if(!el)return;
   if(item.type==='checkbox'||item.type==='radio')el.checked=item.checked;else if(el.value!==item.value)el.value=item.value;
   if(item.start!==null&&typeof el.setSelectionRange==='function'){try{el.setSelectionRange(item.start,item.end)}catch(e){}}
  });
- if(activeId){const el=document.querySelector(activeId);if(el&&document.activeElement!==el)try{el.focus({preventScroll:true})}catch(e){el.focus()}}
+ if(activeId){const el=document.getElementById(activeId);if(el&&document.activeElement!==el)try{el.focus({preventScroll:true})}catch(e){el.focus()}}
 }
 function save(){localStorage.setItem(window.__lifeGuestMode?GUEST_K:K,JSON.stringify(d));if(!window.__lifeGuestMode&&typeof cloudSave==='function')cloudSave();renderPreservingInputs()}
 function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.p===p));scrollTo(0,0)}
@@ -2096,7 +2099,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  const SUPABASE_KEY='sb_publishable_URIU-rzGTtyRNSDT_NA5JA_40NtdX2g';
  const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
  const gate=document.getElementById('authGate'),msg=document.getElementById('authMessage'),status=document.getElementById('cloudStatus');
- let currentUser=null,ready=false,timer=null,channel=null,writeQueue=Promise.resolve(),localRevision=0,lastCloudUpdatedAt=null,hasSyncConflict=false;
+ let currentUser=null,ready=false,timer=null,channel=null,writeQueue=Promise.resolve(),localRevision=0,lastCloudUpdatedAt=null,hasSyncConflict=false,writeInFlight=false;
  const localBackupKey=K+'-pre-sync-repair-backup';
  const remoteBackupKey=K+'-remote-conflict-backup';
  const say=t=>msg.textContent=t;
@@ -2195,7 +2198,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
     if(channel)client.removeChannel(channel);
     channel=client.channel('gael-data-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'gael_life_data',filter:'user_id=eq.'+user.id},payload=>{
       if(!payload.new||!payload.new.data||payload.new.updated_at===lastCloudUpdatedAt)return;
-      if(timer||hasSyncConflict){localStorage.setItem(remoteBackupKey,stable({data:payload.new.data,updated_at:payload.new.updated_at}));hasSyncConflict=true;status.textContent='⚠ Otra versión en la nube. Tus datos actuales están protegidos.';return}
+      if(timer||writeInFlight||hasSyncConflict){localStorage.setItem(remoteBackupKey,stable({data:payload.new.data,updated_at:payload.new.updated_at}));hasSyncConflict=true;status.textContent='⚠ Otra versión en la nube. Tus datos actuales están protegidos.';return}
       localStorage.setItem(localBackupKey,stable(d));
       localStorage.setItem(remoteBackupKey,stable({data:payload.new.data,updated_at:payload.new.updated_at}));
       const accept=window.confirm('Hay una actualización desde otro dispositivo.\n\nAceptar = cargar la versión de la nube.\nCancelar = mantener esta versión en el dispositivo.');
@@ -2205,7 +2208,9 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   }
   async function writeSnapshot(snapshot,expectedUpdatedAt){
     const stamp=new Date().toISOString();
+    writeInFlight=true;
     const result=await client.from('gael_life_data').update({data:snapshot,updated_at:stamp}).eq('user_id',currentUser.id).eq('updated_at',expectedUpdatedAt).select('updated_at').maybeSingle();
+    writeInFlight=false;
     if(result.error)throw result.error;
     if(!result.data){hasSyncConflict=true;localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ Conflicto de sincronización. Tus cambios siguen guardados en este dispositivo.';return false}
     lastCloudUpdatedAt=result.data.updated_at;
