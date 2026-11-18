@@ -2099,11 +2099,12 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  const SUPABASE_KEY='sb_publishable_URIU-rzGTtyRNSDT_NA5JA_40NtdX2g';
  const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
  const gate=document.getElementById('authGate'),msg=document.getElementById('authMessage'),status=document.getElementById('cloudStatus');
- let currentUser=null,ready=false,timer=null,channel=null,writeQueue=Promise.resolve(),localRevision=0,lastCloudUpdatedAt=null,hasSyncConflict=false,writeInFlight=false;
+ let currentUser=null,ready=false,timer=null,channel=null,writeQueue=Promise.resolve(),localRevision=0,lastCloudUpdatedAt=null,hasSyncConflict=false,writeInFlight=false,pendingWriteTimestamp=null;
  const localBackupKey=K+'-pre-sync-repair-backup';
  const remoteBackupKey=K+'-remote-conflict-backup';
  const say=t=>msg.textContent=t;
  function stable(value){return JSON.stringify(value)}
+  function sameStamp(a,b){return !!(a&&b&&new Date(a).getTime()===new Date(b).getTime())}
  function countItems(value,key){return Array.isArray(value&&value[key])?value[key].length:0}
  function persistLocal(){localStorage.setItem(K,stable(d))}
  function guestData(){
@@ -2197,7 +2198,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
     ready=true;status.textContent='☁ Sincronizado · '+user.email;gate.style.display='none';render();
     if(channel)client.removeChannel(channel);
     channel=client.channel('gael-data-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'gael_life_data',filter:'user_id=eq.'+user.id},payload=>{
-      if(!payload.new||!payload.new.data||payload.new.updated_at===lastCloudUpdatedAt)return;
+      if(!payload.new||!payload.new.data||sameStamp(payload.new.updated_at,lastCloudUpdatedAt)||sameStamp(payload.new.updated_at,pendingWriteTimestamp))return;
       if(timer||writeInFlight||hasSyncConflict){localStorage.setItem(remoteBackupKey,stable({data:payload.new.data,updated_at:payload.new.updated_at}));hasSyncConflict=true;status.textContent='⚠ Otra versión en la nube. Tus datos actuales están protegidos.';return}
       localStorage.setItem(localBackupKey,stable(d));
       localStorage.setItem(remoteBackupKey,stable({data:payload.new.data,updated_at:payload.new.updated_at}));
@@ -2208,8 +2209,8 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   }
   async function writeSnapshot(snapshot,expectedUpdatedAt){
     const stamp=new Date().toISOString();
-    writeInFlight=true;
-    let result;try{result=await client.from('gael_life_data').update({data:snapshot,updated_at:stamp}).eq('user_id',currentUser.id).eq('updated_at',expectedUpdatedAt).select('updated_at').maybeSingle()}finally{writeInFlight=false}
+    pendingWriteTimestamp=stamp;writeInFlight=true;
+    let result;try{result=await client.from('gael_life_data').update({data:snapshot,updated_at:stamp}).eq('user_id',currentUser.id).eq('updated_at',expectedUpdatedAt).select('updated_at').maybeSingle()}finally{writeInFlight=false;pendingWriteTimestamp=null}
     if(result.error)throw result.error;
     if(!result.data){hasSyncConflict=true;localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ Conflicto de sincronización. Tus cambios siguen guardados en este dispositivo.';return false}
     lastCloudUpdatedAt=result.data.updated_at;
