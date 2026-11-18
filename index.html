@@ -2099,7 +2099,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  const SUPABASE_KEY='sb_publishable_URIU-rzGTtyRNSDT_NA5JA_40NtdX2g';
  const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
  const gate=document.getElementById('authGate'),msg=document.getElementById('authMessage'),status=document.getElementById('cloudStatus');
- let currentUser=null,ready=false,timer=null,channel=null,writeQueue=Promise.resolve(),localRevision=0,lastCloudUpdatedAt=null,hasSyncConflict=false,writeInFlight=false,pendingWriteTimestamp=null;
+ let currentUser=null,ready=false,timer=null,channel=null,writeQueue=Promise.resolve(),localRevision=0,lastCloudUpdatedAt=null,writeInFlight=false,pendingWriteTimestamp=null;
  const localBackupKey=K+'-pre-sync-repair-backup';
  const remoteBackupKey=K+'-remote-conflict-backup';
  const say=t=>msg.textContent=t;
