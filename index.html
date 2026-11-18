@@ -2230,7 +2230,7 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
         if(!ok)return;
         if(revision===localRevision)status.textContent='☁ Todos los cambios guardados';
         else window.cloudSave();
-      }catch(error){localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ No se pudo sincronizar. Tus datos siguen guardados en este dispositivo.';console.error('Cloud save failed',error)}
+      }catch(error){localStorage.setItem(localBackupKey,stable(snapshot));status.textContent='⚠ No se pudo sincronizar. Tus datos siguen guardados en este dispositivo; reintentaré automáticamente.';console.error('Cloud save failed',error);setTimeout(()=>{if(!hasSyncConflict)window.cloudSave()},5000)}
     }).catch(error=>{status.textContent='⚠ Error de sincronización: '+error.message});
    },500);
   };
