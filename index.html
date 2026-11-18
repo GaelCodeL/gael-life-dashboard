@@ -2106,6 +2106,42 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
  function stable(value){return JSON.stringify(value)}
   function sameStamp(a,b){return !!(a&&b&&new Date(a).getTime()===new Date(b).getTime())}
  function countItems(value,key){return Array.isArray(value&&value[key])?value[key].length:0}
+
+ function mergeKey(value,parentKey){
+  if(Array.isArray(value)){
+   if(parentKey==='agenda')return value[4]||String(value[0]||'')+'|'+String(value[1]||'');
+   return null;
+  }
+  if(!value||typeof value!=='object')return null;
+  if(value.id!==undefined&&value.id!==null&&value.id!=='')return 'id:'+String(value.id);
+  const fields={
+   tasks:['text','area','day'],shopping:['item','store','category'],chores:['name','day'],
+   appointments:['date','start','title'],sessions:['date','subject','minutes','note'],
+   trainingLogs:['date','planId','dayId'],weekMenu:['day']
+  }[parentKey];
+  if(fields&&fields.every(k=>value[k]!==undefined&&value[k]!==''))return parentKey+':'+fields.map(k=>String(value[k])).join('|').toLowerCase();
+  return null;
+ }
+ function mergeData(localValue,remoteValue,parentKey){
+  if(localValue===undefined||localValue===null)return remoteValue===undefined?localValue:remoteValue;
+  if(remoteValue===undefined||remoteValue===null)return localValue;
+  if(Array.isArray(localValue)&&Array.isArray(remoteValue)){
+   const out=localValue.map(x=>x),index=new Map();
+   out.forEach((x,i)=>{const k=mergeKey(x,parentKey);if(k!==null)index.set(k,i)});
+   remoteValue.forEach(item=>{
+    const key=mergeKey(item,parentKey);
+    if(key!==null&&index.has(key)){const i=index.get(key);out[i]=mergeData(out[i],item,parentKey)}
+    else if(!out.some(x=>stable(x)===stable(item))){if(key!==null)index.set(key,out.length);out.push(item)}
+   });
+   return out;
+  }
+  if(localValue&&remoteValue&&typeof localValue==='object'&&typeof remoteValue==='object'&&!Array.isArray(localValue)&&!Array.isArray(remoteValue)){
+   const out={...remoteValue};
+   Object.keys(localValue).forEach(k=>{out[k]=Object.prototype.hasOwnProperty.call(remoteValue,k)?mergeData(localValue[k],remoteValue[k],k):localValue[k]});
+   return out;
+  }
+  return localValue!==''&&localValue!==undefined?localValue:remoteValue;
+ }
  function persistLocal(){localStorage.setItem(K,stable(d))}
  function guestData(){
    const week=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
@@ -2165,24 +2201,19 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
   }
   async function syncFromCloud(user){
     const result=await client.from('gael_life_data').select('data,updated_at').eq('user_id',user.id).maybeSingle();
-    if(result.error) throw result.error;
-    const localRaw=localStorage.getItem(K);
-    const local=localRaw?JSON.parse(localRaw):null;
+    if(result.error)throw result.error;
+    const localRaw=localStorage.getItem(K),local=localRaw?JSON.parse(localRaw):null;
+    let needsPush=false;
     if(result.data&&result.data.data){
       const remote=result.data.data;
       lastCloudUpdatedAt=result.data.updated_at;
-      if(local&&stable(local)!==stable(remote)){
+      if(local){
         localStorage.setItem(localBackupKey,stable(local));
         localStorage.setItem(remoteBackupKey,stable({data:remote,updated_at:lastCloudUpdatedAt}));
-        const keepLocal=window.confirm(
-          'He encontrado dos versiones distintas de tus datos. He guardado copias de ambas para evitar pérdidas.\n\n' +
-          'EN ESTE DISPOSITIVO: '+countItems(local,'shopping')+' productos de compra y '+countItems(local,'tasks')+' tareas.\n' +
-          'EN LA NUBE: '+countItems(remote,'shopping')+' productos de compra y '+countItems(remote,'tasks')+' tareas.\n\n' +
-          'Aceptar = conservar los datos de este dispositivo y sincronizarlos.\nCancelar = recuperar la versión de la nube.'
-        );
-        if(keepLocal){d=local;persistLocal();await writeSnapshot(d,lastCloudUpdatedAt)}
-        else{d=remote;persistLocal()}
-      }else{d=remote;persistLocal()}
+        d=mergeData(local,remote,'root');
+        needsPush=stable(d)!==stable(remote);
+      }else{d=remote}
+      persistLocal();
     }else if(local){
       d=local;
       const inserted=await client.from('gael_life_data').insert({user_id:user.id,data:d}).select('updated_at').single();
@@ -2196,15 +2227,16 @@ if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWork
       persistLocal();
     }
     ready=true;status.textContent='☁ Sincronizado · '+user.email;gate.style.display='none';render();
+    if(needsPush)window.cloudSave();
     if(channel)client.removeChannel(channel);
     channel=client.channel('gael-data-'+user.id).on('postgres_changes',{event:'UPDATE',schema:'public',table:'gael_life_data',filter:'user_id=eq.'+user.id},payload=>{
       if(!payload.new||!payload.new.data||sameStamp(payload.new.updated_at,lastCloudUpdatedAt)||sameStamp(payload.new.updated_at,pendingWriteTimestamp))return;
-      if(timer||writeInFlight||hasSyncConflict){localStorage.setItem(remoteBackupKey,stable({data:payload.new.data,updated_at:payload.new.updated_at}));hasSyncConflict=true;status.textContent='⚠ Otra versión en la nube. Tus datos actuales están protegidos.';return}
       localStorage.setItem(localBackupKey,stable(d));
       localStorage.setItem(remoteBackupKey,stable({data:payload.new.data,updated_at:payload.new.updated_at}));
-      const accept=window.confirm('Hay una actualización desde otro dispositivo.\n\nAceptar = cargar la versión de la nube.\nCancelar = mantener esta versión en el dispositivo.');
-      if(accept){d=payload.new.data;lastCloudUpdatedAt=payload.new.updated_at;persistLocal();render();status.textContent='☁ Datos actualizados desde la nube'}
-      else{hasSyncConflict=true;status.textContent='⚠ Se ha conservado este dispositivo. La otra versión está guardada como copia.'}
+      const merged=mergeData(d,payload.new.data,'root'),changed=stable(merged)!==stable(d);
+      lastCloudUpdatedAt=payload.new.updated_at;
+      if(changed){d=merged;persistLocal();render();window.cloudSave()}
+      else status.textContent='☁ Sincronizado · cambios contrastados';
     }).subscribe();
   }
   async function writeSnapshot(snapshot,expectedUpdatedAt){
